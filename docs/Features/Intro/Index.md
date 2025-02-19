@@ -21,35 +21,37 @@ Why Both?
 
     ```swift
 	import MobileIdWalletSDK
-
+	import WalletSDKCore
+	
 	class ClosureVsAssync {
-    	let mobileIdWallet: MobileIdWalletProtocol
-    	init(mobileIdWallet: MobileIdWalletProtocol) {
-        	self.mobileIdWallet = mobileIdWallet
-    	}
-
+	    let mobileIdWallet: MobileIdWalletProtocol
+	    init(mobileIdWallet: MobileIdWalletProtocol) {
+	        self.mobileIdWallet = mobileIdWallet
+	    }
+	
 	    func fetchAllCredentialsAssync() {
 	        Task {
 	            do {
 	                let output = try await mobileIdWallet.fetchAllCredentials(.init())
-	                print(output.records.first?.claims)
-	            } catch {
+	                guard let verifiedIdEntity = output.records.first else { return }
+	                print(verifiedIdEntity)
+	            } catch {
 	                print(error)
 	            }
 	        }
 	    }
-	    
+	
 	    func fetchAllCredentialsCompletionHandler() {
 	        mobileIdWallet.fetchAllCredentials(.init()) { result in
 	            switch result {
 	            case .success(let output):
-	                print(output.records.first?.claims)
+	                guard let verifiedIdEntity = output.records.first else { return }
+	                print(verifiedIdEntity)
 	            case .failure(let error):
 	                print(error)
 	            }
 	        }
 	    }
 	}
-
     ```
 

@@ -17,6 +17,7 @@ With built-in scanning capabilities, the SDK extracts key information from a wid
     ```swift
 	import MobileIdWalletSDK
 	import Foundation
+	import UIKit
 	
 	class ManageBoardingPasses {
 	    let mobileIdWallet: MobileIdWalletProtocol
@@ -27,9 +28,13 @@ With built-in scanning capabilities, the SDK extracts key information from a wid
 	
 	extension ManageBoardingPasses {
 	    func fetchAllBoardingPass() async {
-	        try? await mobileIdWallet.fetchAllBoardingPass(.init())
+	        Task {
+	            let output = try? await mobileIdWallet.fetchAllBoardingPass(.init())
+	            print(output?.records ?? [])
+	        }
 	    }
 	}
+
     ```
 
 
@@ -56,9 +61,11 @@ With built-in scanning capabilities, the SDK extracts key information from a wid
 	
 	extension ManageBoardingPasses {
 	    func fetchBoardingPass() async {
-	        guard let output = try? await mobileIdWallet.fetchAllBoardingPass(.init()),
-	        let boardingPassId = output.records.first?.id else { return }
-	        try? await mobileIdWallet.fetchBoardingPass(.init(boardingPassId: boardingPassId))
+	        guard let fetchAllBoardingPassOutput = try? await mobileIdWallet.fetchAllBoardingPass(.init()),
+	              let boardingPassId = fetchAllBoardingPassOutput.records.first?.id else { return }
+	        let output = try? await mobileIdWallet.fetchBoardingPass(.init(boardingPassId: boardingPassId))
+	        guard let boardingPass = output?.record else { return }
+	        print(boardingPass)
 	    }
 	}
     ```
@@ -85,12 +92,14 @@ With built-in scanning capabilities, the SDK extracts key information from a wid
 	}
 	
 	extension ManageBoardingPasses {
-	    func readDocumentBoardingPass() async {
+	    func readDocumentBoardingPass() {
 	        /// The `viewController` is required because the SDK needs a base view controller
 	        /// to present the camera interface for document scanning. This should be the
 	        /// screen from which the SDK is invoked.
 	        let viewController = UIViewController()
-	        try? await mobileIdWallet.readDocument(.init(viewController: viewController, type: .boardingPass))
+	        Task {
+	            try? await mobileIdWallet.readDocument(.init(viewController: viewController, type: .boardingPass))
+	        }
 	    }
 	}
     ```
@@ -117,21 +126,25 @@ With built-in scanning capabilities, the SDK extracts key information from a wid
 	}
 	
 	extension ManageBoardingPasses {
-	    func assocBoardingPassWithCredential() async {
-	        guard let output = try? await mobileIdWallet.fetchAllBoardingPass(.init()),
-	        let boardingPassId = output.records.first?.id else { return }
-	        
-	        guard let output = try? await mobileIdWallet.fetchAllCredentials(.init()),
-	        let credentialId = output.records.first?.id else { return }
-	        
+	    func assocBoardingPassWithCredential() {
 	        /// The `viewController` is required because the SDK needs a base view controller
 	        /// to present the camera interface for face scanning. This should be the
 	        /// screen from which the SDK is invoked.
 	        let viewController = UIViewController()
-	        try? await mobileIdWallet.assocBoardingPassWithCredential(.init(viewController: viewController,
-	                                                                        credentialId: credentialId,
-	                                                                        boardingPassId: boardingPassId,
-	                                                                        requiresAuthenticationToCompleteFlow: true))
+	        Task {
+	            guard let output = try? await mobileIdWallet.fetchAllBoardingPass(.init()),
+	                  let boardingPassId = output.records.first?.id else { return }
+	
+	            guard let output = try? await mobileIdWallet.fetchAllCredentials(.init()),
+	                  let credentialId = output.records.first?.id else { return }
+	
+	            _ = try? await mobileIdWallet.assocBoardingPassWithCredential(.init(
+	                viewController: viewController,
+	                credentialId: credentialId,
+	                boardingPassId: boardingPassId,
+	                requiresAuthenticationToCompleteFlow: true
+	            ))
+	        }
 	    }
 	}
     ```

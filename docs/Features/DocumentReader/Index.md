@@ -17,6 +17,8 @@ With built-in camera integration, the SDK provides a smooth scanning experience,
     ```swift
 	import MobileIdWalletSDK
 	import WalletSDKCore
+	import UIKit
+	import Foundation
 	
 	class DocumentReader {
 	    let mobileIdWallet: MobileIdWalletProtocol
@@ -26,12 +28,16 @@ With built-in camera integration, the SDK provides a smooth scanning experience,
 	}
 	
 	extension DocumentReader {
-	    func readPassportDocument() async {
+	    func readPassportDocument() {
 	        /// The `viewController` is required because the SDK needs a base view controller
 	        /// to present the camera interface for document scanning. This should be the
 	        /// screen from which the SDK is invoked.
 	        let viewController = UIViewController()
-	        try? await mobileIdWallet.readDocument(.init(viewController: viewController, type: .passport))
+	        Task {
+	            let ouput = try? await mobileIdWallet.readDocument(.init(viewController: viewController, type: .passport))
+	            guard let boardingPass = ouput?.document as? Model.BoardingPass else { return }
+	            print(boardingPass)
+	        }
 	    }
 	}
     ```
@@ -50,6 +56,8 @@ With built-in camera integration, the SDK provides a smooth scanning experience,
     ```swift
 	import MobileIdWalletSDK
 	import WalletSDKCore
+	import UIKit
+	import Foundation
 	
 	class DocumentReader {
 	    let mobileIdWallet: MobileIdWalletProtocol
@@ -59,12 +67,16 @@ With built-in camera integration, the SDK provides a smooth scanning experience,
 	}
 	
 	extension DocumentReader {
-	    func readBoardingPass() async {
+	    func readBoardingPass() {
 	        /// The `viewController` is required because the SDK needs a base view controller
 	        /// to present the camera interface for document scanning. This should be the
 	        /// screen from which the SDK is invoked.
 	        let viewController = UIViewController()
-	        try? await mobileIdWallet.readDocument(.init(viewController: viewController, type: .boardingPass))
+	        Task {
+	            let ouput = try? await mobileIdWallet.readDocument(.init(viewController: viewController, type: .boardingPass))
+	            guard let boardingPass = ouput?.document as? Model.BoardingPass else { return }
+	            print(boardingPass)
+	        }
 	    }
 	}
 
