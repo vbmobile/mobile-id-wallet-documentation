@@ -35,8 +35,8 @@ With built-in camera integration, the SDK provides a smooth scanning experience,
 	        let viewController = UIViewController()
 	        Task {
 	            let ouput = try? await mobileIdWallet.readDocument(.init(viewController: viewController, type: .passport))
-	            guard let boardingPass = ouput?.document as? Model.BoardingPass else { return }
-	            print(boardingPass)
+	            guard let passportData = ouput?.document as? Model.PassportData else { return }
+	            print(passportData)
 	        }
 	    }
 	}
