@@ -93,30 +93,34 @@ Initiate  Feature intro
 	
 	extension ManageCredentials {
 	    func issueCredential() async {
-	        let documentData = Model.PassportData(
-	            id: UUID().uuidString ,
-	            docIcaoCode: "",
-	            docType: "",
+	        let documentData =         Model.PassportData(
+	            id: UUID().uuidString,
+	            docIcaoCode: "AUS",
+	            docType: "passport",
 	            isElectronic: true,
-	            mrz: "",
-	            name: "",
-	            surname: "",
-	            docNumber: "",
-	            issueState: "",
-	            expiryDate: "",
-	            issueDate: "",
-	            gender: "",
-	            optionalData: "",
-	            docImage: "",
-	            holderImage: "",
-	            biometricImage: "",
-	            biometricFormat: "",
-	            biometricSource: "",
-	            docAuthStatus: ""
+	            mrz: "P<AUSCITIZEN<<JANE<<<<<<<<<<<<<<<<<<<<<<<<<<D0996596<7AUS7906075F1812257<20014361L<<<<06",
+	            name: "JANE",
+	            surname: "CITIZEN",
+	            docNumber: "D0996596",
+	            issueState: "AUS",
+	            expiryDate: "2025-01-01 00:00:00 +0000",
+	            issueDate: "2035-01-01 00:00:00 +0000",
+	            gender: "F",
+	            optionalData: "20014361L",
+	            docImage: "/9j/4AAQSkZJRgABAQAASABIAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABA...", // Base64 Image
+	            holderImage: "/9j/4AAQSkZJRgABAQAASABIAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAA...", // Base64 Image
+	            biometricImage: "/9j/4AAQSkZJRgABAQAASABIAAD/4QCMRXhpZgAATU0AKgAAAAgABQECCCC...", // Base64 Image
+	            biometricFormat: "N/A",
+	            biometricSource: "scan",
+	            docAuthStatus: "false"
 	        )
-	        try? await mobileIdWallet.issueCredential(.init(documentData: documentData,
-	                                                        type: .passport,
-	                                                        requiresAuthenticationToCompleteFlow: true))
+	        let output = try? await mobileIdWallet.issueCredential(.init(
+	            documentData: documentData,
+	            type: .passport,
+	            requiresAuthenticationToCompleteFlow: true
+	        ))
+	        guard let newCredential = output?.records.last else { return }
+	        print(newCredential.claims)
 	    }
 	}
     ```
