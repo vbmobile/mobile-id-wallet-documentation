@@ -93,7 +93,7 @@ Initiate  Feature intro
 	
 	extension ManageCredentials {
 	    func issueCredential() async {
-	        let documentData =         Model.PassportData(
+	        let documentData = Model.PassportData(
 	            id: UUID().uuidString,
 	            docIcaoCode: "AUS",
 	            docType: "passport",
@@ -103,8 +103,8 @@ Initiate  Feature intro
 	            surname: "CITIZEN",
 	            docNumber: "D0996596",
 	            issueState: "AUS",
-	            expiryDate: "2025-01-01 00:00:00 +0000",
-	            issueDate: "2035-01-01 00:00:00 +0000",
+	            expiryDate: "35-01-01",
+	            issueDate: "25-01-01",
 	            gender: "F",
 	            optionalData: "20014361L",
 	            docImage: "/9j/4AAQSkZJRgABAQAASABIAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABA...", // Base64 Image
