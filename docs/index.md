@@ -122,7 +122,7 @@ You must send an ID (Bundle ID or Application ID) to vision-box so that we can a
         let mobileIdWalletUI: MobileIdWalletUIProtocol = MobileIdWalletUI.shared
         let mobileIdWallet: MobileIdWalletProtocol = MobileIdWallet.shared
         //
-        // Prepara SDK Config
+        // Prepare SDK Config
         //
         let mobileIdWalletConfig: MobileIdWalletConfig = .init(
             apiKey: ConfigValues.MobileIdSDK.apiKey,
@@ -174,7 +174,7 @@ __Option 2 - Using MobileIdWalletSDK__
         let mobileIdWallet: MobileIdWalletProtocol = MobileIdWallet.shared
 
         //
-        // Prepara SDK Config
+        // Prepare SDK Config
         //
         let mobileIdWalletConfig: MobileIdWalletConfig = .init(
             apiKey: ConfigValues.MobileIdSDK.apiKey,
