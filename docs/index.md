@@ -113,9 +113,8 @@ You must send an ID (Bundle ID or Application ID) to vision-box so that we can a
     
     import MobileIdWalletUISDK
     import MobileIdWalletSDK
-    import WalletSDKCore
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func applicationMobileIdWalletUIProtocol(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
 
         //
@@ -123,31 +122,25 @@ You must send an ID (Bundle ID or Application ID) to vision-box so that we can a
         //
         let mobileIdWalletUI: MobileIdWalletUIProtocol = MobileIdWalletUI.shared
         let mobileIdWallet: MobileIdWalletProtocol = MobileIdWallet.shared
-        let walletCore: WalletCoreProtocol =  WalletCore.shared
-        
         //
         // Prepara SDK Config
         //
-        let walletCoreConfig: WalletCoreConfig = .init(serverHost: ConfigValues.WalletSDKCore.serverHost)
         let mobileIdWalletConfig: MobileIdWalletConfig = .init(
-            apiKey:ConfigValues.MobileIdSDK.apiKey,
-            baseURL:ConfigValues.MobileIdSDK.baseURL,
+            apiKey: ConfigValues.MobileIdSDK.apiKey,
+            baseURL: ConfigValues.MobileIdSDK.baseURL,
             databaseID: ConfigValues.MobileIdSDK.databaseID,
-            walletCoreConfig: walletCoreConfig
+            serverHost: ConfigValues.WalletSDKCore.serverHost
         )
-        let mobileIdWalletSetup: MobileIdWalletSetup.Input = .init(
-            mobileIdWalletConfig: mobileIdWalletConfig,
-            walletCore: walletCore
-        )
-        
         //
         // Setup SDK
         //
         mobileIdWalletUI.setup(.init(
             mobileIdWallet: mobileIdWallet,
-            mobileIdWalletSetup: mobileIdWalletSetup
+            mobileIdWalletSetup: .init(
+                mobileIdWalletConfig: mobileIdWalletConfig
+            )
         ))
-        
+
         //
         // Inject app router
         //
@@ -162,7 +155,7 @@ You must send an ID (Bundle ID or Application ID) to vision-box so that we can a
         if let rootViewController = window?.rootViewController {
             walletUIRouter.setup(rootViewController: rootViewController)
         }
-        
+
         return true
     }
     ```
@@ -170,11 +163,8 @@ You must send an ID (Bundle ID or Application ID) to vision-box so that we can a
 	__Option 2 - Using MobileIdWalletSDK__
 	
     ```swift
-    
-    
     import MobileIdWalletUISDK
     import MobileIdWalletSDK
-    import WalletSDKCore
      
     func applicationMobileIdWalletProtocol(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
@@ -183,23 +173,20 @@ You must send an ID (Bundle ID or Application ID) to vision-box so that we can a
         // Create SDK Instances
         //
         let mobileIdWallet: MobileIdWalletProtocol = MobileIdWallet.shared
-        let walletCore: WalletCoreProtocol =  WalletCore.shared
-        
+
         //
         // Prepara SDK Config
         //
-        let walletCoreConfig: WalletCoreConfig = .init(serverHost: ConfigValues.WalletSDKCore.serverHost)
         let mobileIdWalletConfig: MobileIdWalletConfig = .init(
-            apiKey:ConfigValues.MobileIdSDK.apiKey,
-            baseURL:ConfigValues.MobileIdSDK.baseURL,
+            apiKey: ConfigValues.MobileIdSDK.apiKey,
+            baseURL: ConfigValues.MobileIdSDK.baseURL,
             databaseID: ConfigValues.MobileIdSDK.databaseID,
-            walletCoreConfig: walletCoreConfig
+            serverHost: ConfigValues.WalletSDKCore.serverHost
         )
         let mobileIdWalletSetup: MobileIdWalletSetup.Input = .init(
-            mobileIdWalletConfig: mobileIdWalletConfig,
-            walletCore: walletCore
+            mobileIdWalletConfig: mobileIdWalletConfig
         )
-        
+
         //
         // Setup SDK
         //
@@ -207,12 +194,10 @@ You must send an ID (Bundle ID or Application ID) to vision-box so that we can a
 
         window?.rootViewController = UINavigationController(rootViewController: WelcomeScreenViewController(dependencies: nil))
         window?.makeKeyAndVisible()
-        
+
         return true
     }
-	```    
-
-
+```    
 
 
 ## Permissions

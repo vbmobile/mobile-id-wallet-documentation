@@ -35,12 +35,12 @@ nav:
     - Manage Verifiable Credentials: Features/ManageVerifiableCredentials/Index.md
     - Manage Boarding Passes: Features/ManageBoardingPasses/Index.md
     
-  - Release notes:
-    - Android: ReleaseNotes/ReleaseNotes_Android.md
-    - iOS: ReleaseNotes/ReleaseNotes_iOS.md
-  - Migration guide:
-    - Android: MigrationGuide/MigrationGuide_Android.md
-    - iOS: MigrationGuide/MigrationGuide_iOS.md
+  #- Release notes:
+  #  - Android: ReleaseNotes/ReleaseNotes_Android.md
+  #  - iOS: ReleaseNotes/ReleaseNotes_iOS.md
+  #- Migration guide:
+  #  - Android: MigrationGuide/MigrationGuide_Android.md
+  #  - iOS: MigrationGuide/MigrationGuide_iOS.md
 markdown_extensions:
   - attr_list
   - pymdownx.superfences
