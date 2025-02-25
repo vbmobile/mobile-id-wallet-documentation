@@ -109,8 +109,7 @@ You must send an ID (Bundle ID or Application ID) to vision-box so that we can a
 
 	__Option 1 - Using MobileIdWalletUI__
 	
-    ```swift
-    
+```swift
     import MobileIdWalletUISDK
     import MobileIdWalletSDK
 
@@ -158,11 +157,11 @@ You must send an ID (Bundle ID or Application ID) to vision-box so that we can a
 
         return true
     }
-    ```
+```
 
-	__Option 2 - Using MobileIdWalletSDK__
+__Option 2 - Using MobileIdWalletSDK__
 	
-    ```swift
+```swift
     import MobileIdWalletUISDK
     import MobileIdWalletSDK
      
