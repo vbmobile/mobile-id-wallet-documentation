@@ -100,6 +100,14 @@ You must send an ID (Bundle ID or Application ID) to vision-box so that we can a
     
 ## Initialize the SDK
 
+When integrating the Mobile ID Wallet SDK, you have two options depending on your needs:
+
+__Option 1 - MobileIdWalletUI__: This option provides a pre-built UI that is ready to use out of the box. It simplifies integration and allows developers to quickly implement Mobile ID functionality without worrying about designing the user interface.
+
+__Option 2 - MobileIdWalletSDK__: For more customization and flexibility, this option allows developers to implement their own UI and define the logic for various features. It requires additional development effort but enables a fully tailored user experience.
+
+Choose the option that best fits your project’s requirements!
+
 === "Android"
 
     ...
@@ -110,92 +118,81 @@ You must send an ID (Bundle ID or Application ID) to vision-box so that we can a
 	__Option 1 - Using MobileIdWalletUI__
 	
 ```swift
-    import MobileIdWalletUISDK
-    import MobileIdWalletSDK
+import UIKit
+import MobileIdWalletUISDK
+import MobileIdWalletSDK
 
-    func applicationMobileIdWalletUIProtocol(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        window = UIWindow(frame: UIScreen.main.bounds)
-
-        //
-        // Create SDK Instances
-        //
-        let mobileIdWalletUI: MobileIdWalletUIProtocol = MobileIdWalletUI.shared
-        let mobileIdWallet: MobileIdWalletProtocol = MobileIdWallet.shared
-        //
-        // Prepare SDK Config
-        //
-        let mobileIdWalletConfig: MobileIdWalletConfig = .init(
-            apiKey: ConfigValues.MobileIdSDK.apiKey,
-            baseURL: ConfigValues.MobileIdSDK.baseURL,
-            databaseID: ConfigValues.MobileIdSDK.databaseID,
-            serverHost: ConfigValues.WalletSDKCore.serverHost
+func applicationMobileIdWalletUIProtocol(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    window = UIWindow(frame: UIScreen.main.bounds)
+    //
+    // Prepare SDK Config
+    //
+    let mobileIdWalletConfig: MobileIdWalletConfig = .init(
+        apiKey: ConfigValues.MobileIdSDK.apiKey,
+        baseURL: ConfigValues.MobileIdSDK.baseURL,
+        databaseID: ConfigValues.MobileIdSDK.databaseID,
+        serverHost: ConfigValues.WalletSDKCore.serverHost
+    )
+    //
+    // Create SDK Instances & Setup SDK
+    //
+    let mobileIdWalletUI: MobileIdWalletUIProtocol = MobileIdWalletUI.shared
+    let mobileIdWallet: MobileIdWalletProtocol = MobileIdWallet.shared
+    mobileIdWalletUI.setup(.init(
+        mobileIdWallet: mobileIdWallet,
+        mobileIdWalletSetup: .init(
+            mobileIdWalletConfig: mobileIdWalletConfig
         )
-        //
-        // Setup SDK
-        //
-        mobileIdWalletUI.setup(.init(
-            mobileIdWallet: mobileIdWallet,
-            mobileIdWalletSetup: .init(
-                mobileIdWalletConfig: mobileIdWalletConfig
-            )
-        ))
+    ))
 
-        //
-        // Inject app router
-        //
-        let walletUIRouter: MobileIdWalletUIRouterProtocol = MobileIdWalletUIRouter()
-        let initialViewController = WelcomeScreenViewController(
-            dependencies: .init(
-                router: walletUIRouter
-            )
-        )
-        window?.rootViewController = UINavigationController(rootViewController: initialViewController)
-        window?.makeKeyAndVisible()
-        if let rootViewController = window?.rootViewController {
-            walletUIRouter.setup(rootViewController: rootViewController)
-        }
-
-        return true
+    //
+    // Inject MobileIdWalletUIRouterProtocol router in your initial screen
+    // More info at documentation website at Features/MobileIdWalletUISDK/Intro
+    let walletUIRouter: MobileIdWalletUIRouterProtocol = MobileIdWalletUIRouter()
+    let initialViewController = MobileIdWalletUISDKSampleViewController(router: walletUIRouter)
+    window?.rootViewController = UINavigationController(rootViewController: initialViewController)
+    window?.makeKeyAndVisible()
+    if let rootViewController = window?.rootViewController {
+        walletUIRouter.setup(rootViewController: rootViewController)
     }
+    return true
+}
 ```
 
 __Option 2 - Using MobileIdWalletSDK__
 	
 ```swift
-    import MobileIdWalletUISDK
-    import MobileIdWalletSDK
-     
-    func applicationMobileIdWalletProtocol(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        window = UIWindow(frame: UIScreen.main.bounds)
+import MobileIdWalletUISDK
+import MobileIdWalletSDK
+ 
+func applicationMobileIdWalletProtocol(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    window = UIWindow(frame: UIScreen.main.bounds)
+    //
+    // Prepare SDK Config
+    //
+    let mobileIdWalletConfig: MobileIdWalletConfig = .init(
+        apiKey: ConfigValues.MobileIdSDK.apiKey,
+        baseURL: ConfigValues.MobileIdSDK.baseURL,
+        databaseID: ConfigValues.MobileIdSDK.databaseID,
+        serverHost: ConfigValues.WalletSDKCore.serverHost
+    )
+    let mobileIdWalletSetup: MobileIdWalletSetup.Input = .init(
+        mobileIdWalletConfig: mobileIdWalletConfig
+    )
+    //
+    // Create SDK Instances & Setup
+    //
+    let mobileIdWallet: MobileIdWalletProtocol = MobileIdWallet.shared
+    mobileIdWallet.setup(mobileIdWalletSetup)
+    
+    //
+    // WelcomeScreenViewController is your app inititial screen
+    //
+    window?.rootViewController = UINavigationController(rootViewController: WelcomeScreenViewController(dependencies: nil))
+    window?.makeKeyAndVisible()
 
-        //
-        // Create SDK Instances
-        //
-        let mobileIdWallet: MobileIdWalletProtocol = MobileIdWallet.shared
-
-        //
-        // Prepare SDK Config
-        //
-        let mobileIdWalletConfig: MobileIdWalletConfig = .init(
-            apiKey: ConfigValues.MobileIdSDK.apiKey,
-            baseURL: ConfigValues.MobileIdSDK.baseURL,
-            databaseID: ConfigValues.MobileIdSDK.databaseID,
-            serverHost: ConfigValues.WalletSDKCore.serverHost
-        )
-        let mobileIdWalletSetup: MobileIdWalletSetup.Input = .init(
-            mobileIdWalletConfig: mobileIdWalletConfig
-        )
-
-        //
-        // Setup SDK
-        //
-        mobileIdWallet.setup(mobileIdWalletSetup)
-
-        window?.rootViewController = UINavigationController(rootViewController: WelcomeScreenViewController(dependencies: nil))
-        window?.makeKeyAndVisible()
-
-        return true
-    }
+    return true
+}
 ```    
 
 
