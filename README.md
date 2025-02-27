@@ -1,7 +1,7 @@
-# mobile-id-documentation
-This repo contains documentation regarding our MobileID SDK for both Android and iOS with sample applications
+# mobile-id-wallet-documentation
+This repo contains documentation regarding our MobileID Wallet SDK for both Android and iOS with sample applications
 
-# MobileID SDK Documentation
+# MobileID Wallet SDK Documentation
 
 This repo will be used to store mkdocs project.
 

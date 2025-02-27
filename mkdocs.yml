@@ -30,15 +30,16 @@ extra_css:
 nav:
   - Getting started: index.md
   - Features:
-    - MobileIdWalletUISDK:
-      - Intro: Features/MobileIdWalletUISDK/Intro/Index.md
     - MobileIdWalletSDK:
       - Intro: Features/MobileIdWalletSDK/Intro/Index.md
       - Read Documents: Features/MobileIdWalletSDK/DocumentReader/Index.md
       - Manage Verifiable Credentials: Features/MobileIdWalletSDK/ManageVerifiableCredentials/Index.md
       - Manage Boarding Passes: Features/MobileIdWalletSDK/ManageBoardingPasses/Index.md
       - Sharing Credentials: Features/MobileIdWalletSDK/SharingCredentials/Index.md
-    
+    - MobileIdWalletUISDK:
+      - Intro: Features/MobileIdWalletUISDK/Intro/Index.md
+      - Sharing Credentials: Features/MobileIdWalletUISDK/SharingCredentials/Index.md
+            
   #- Release notes:
   #  - Android: ReleaseNotes/ReleaseNotes_Android.md
   #  - iOS: ReleaseNotes/ReleaseNotes_iOS.md

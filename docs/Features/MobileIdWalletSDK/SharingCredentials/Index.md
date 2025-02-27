@@ -24,7 +24,8 @@ Verifiable credentials (VCs) provide a secure, tamper-proof way to issue, share,
 	}
 	
 	extension DeeplinkManager {
-	    func handle(url: URL) {
+	    /// Given a presentation request, will pick a random Verified Credential stored and share/present it
+	    func handleWithoutUI(url: URL) {
 	        Task {
 	            // Step 1 - Validate URL
 	            guard let scheme = url.scheme, scheme == "openid-vc" else {
@@ -44,6 +45,9 @@ Verifiable credentials (VCs) provide a secure, tamper-proof way to issue, share,
 	                    credentialId: credentialToShared.id,
 	                    requiresAuthenticationToCompleteFlow: true
 	                ))
+	                // On return we will get all the activities associated to that credential
+	                // Activities are events of 2 type: issuance (when credential is created)
+	                // and present (when credential is presented)
 	                print(output.activityForDocument.last ?? "")
 	            } catch {
 	                print(error)
