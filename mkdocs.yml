@@ -37,7 +37,7 @@ nav:
       - Read Documents: Features/MobileIdWalletSDK/DocumentReader/Index.md
       - Manage Verifiable Credentials: Features/MobileIdWalletSDK/ManageVerifiableCredentials/Index.md
       - Manage Boarding Passes: Features/MobileIdWalletSDK/ManageBoardingPasses/Index.md
-
+      - Sharing Credentials: Features/MobileIdWalletSDK/SharingCredentials/Index.md
     
   #- Release notes:
   #  - Android: ReleaseNotes/ReleaseNotes_Android.md

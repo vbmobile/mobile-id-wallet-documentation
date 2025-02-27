@@ -16,7 +16,7 @@ This SDK is designed to offer both flexibility and ease of use, with two distinc
 * __MobileIdWalletUISDK__ – A higher-level module that includes a prebuilt UI, making it easier to integrate and manage credentials and boarding passes with minimal effort. This is perfect for those who want a faster implementation without designing custom interfaces.
 Whether you need a custom experience or a ready-to-use solution, the SDK adapts to your needs while ensuring a smooth and efficient workflow.
 
-![Arquitecture](images/SDKArquitecture.png "Arquitecture"){: style="display: block; margin: 5px auto"}
+![Arquitecture](assets/SDKArquitecture.png "Arquitecture"){: style="display: block; margin: 5px auto"}
 
 
 ## Prerequisites
@@ -208,7 +208,7 @@ func applicationMobileIdWalletProtocol(_ application: UIApplication, didFinishLa
             
     Add Near Field Communication Tag Reading under the Capabilities tab for the project’s target:
     
-    ![Permissions](images/Permissions.RFID_1.png "Permissions"){: style="display: block; margin: 5px auto"}
+    ![Permissions](assets/Permissions.RFID_1.png "Permissions"){: style="display: block; margin: 5px auto"}
     
     Add the NFCReaderUsageDescription permission to your Info.plist file as its needed to access the NFC hardware:
     
@@ -238,8 +238,36 @@ func applicationMobileIdWalletProtocol(_ application: UIApplication, didFinishLa
     </array>
     ```
 
-    ![Permissions](images/Permissions.RFID_2.png "Permissions"){: style="display: block; margin: 5px auto"}
+    ![Permissions](assets/Permissions.RFID_2.png "Permissions"){: style="display: block; margin: 5px auto"}
 
+### Deep Links
+In order for the SDK to use the deep links, the user must grant permission to do so.
+
+
+=== "Android"
+
+    ...
+    
+    
+=== "iOS"
+    
+    To configure, in the app's __Info.plist__ file, include __ CFBundleURLTypes__.
+    
+    ```
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>openid-vc</string>
+			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+	</array>
+	```
+	    
+    ![Permissions](assets/Permissions.Deeplinks.png "Permissions"){: style="display: block; margin: 5px auto"}
 
 ### FaceID
 In order for the SDK to use the FaceID, the user must grant permission to do so.
@@ -255,7 +283,7 @@ In order for the SDK to use the FaceID, the user must grant permission to do so.
     To configure, in the app's __Info.plist__ file, include __NSFaceIDUsageDescription__.
     After includ it, provide a description of why the app requires Face ID authentication.
     
-    ![Permissions](images/Camera_Permissions.png "Permissions"){: style="display: block; margin: 5px auto"}
+    ![Permissions](assets/Permissions.FaceID.png "Permissions"){: style="display: block; margin: 5px auto"}
     
     
 ### Camera
@@ -268,10 +296,10 @@ In order for the SDK to use the camera, the user must grant permission to do so.
 
 === "iOS"
 
-    To configure, in the app's __Info.plist__ file, include __ NSCameraUsageDescription__.
+    To configure, in the app's __Info.plist__ file, include __NSCameraUsageDescription__.
     After includ it, provide a message that explains the user why your app needs to capture media.
     
-    ![Permissions](images/Camera_Permissions.png "Permissions"){: style="display: block; margin: 5px auto"}
+    ![Permissions](assets/Permissions.Camera.png "Permissions"){: style="display: block; margin: 5px auto"}
 
 
 ## Dependencies
