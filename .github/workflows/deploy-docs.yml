@@ -15,8 +15,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Fetch all history for gh-pages
 
       - name: Set Up Python
         uses: actions/setup-python@v5
@@ -29,14 +27,12 @@ jobs:
       - name: Extract Version from Branch Name
         run: echo "VERSION=$(echo ${GITHUB_REF#refs/heads/release/})" >> $GITHUB_ENV
 
-      - name: Fetch gh-pages
-        run: |
-          git fetch origin gh-pages:gh-pages || true
-          git checkout gh-pages || true
-
       - name: Deploy Documentation
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
           mike deploy --push --update-aliases "$VERSION" latest
+
+      - name: Push Changes
+        run: git push
