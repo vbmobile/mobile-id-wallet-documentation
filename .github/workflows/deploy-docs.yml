@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for gh-pages
 
       - name: Set Up Python
         uses: actions/setup-python@v5
@@ -33,6 +35,3 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
           mike deploy --push --update-aliases "$VERSION" latest
-
-      - name: Push Changes
-        run: git push
