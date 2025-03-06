@@ -49,7 +49,7 @@ Inside the docs folder we have the following structure:
 https://squidfunk.github.io/mkdocs-material/
 
 ### Mike cmd 
-Install from oficial repo: https://github.com/jimporter/mike
+Install from official repo: https://github.com/jimporter/mike
 
 ## Deployment Process
 Create a branch following this structure: "release/major.minor"
