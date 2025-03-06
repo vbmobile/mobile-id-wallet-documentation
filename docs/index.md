@@ -51,7 +51,7 @@ You must send an ID (Bundle ID or Application ID) to vision-box so that we can a
     
     1. Add the following to your Podfile, with the latest version:
     ```
-    pod 'MobileIdWalletSDK', '1.0.0'
+    pod 'mobileid-wallet-sdk', '1.0.0-beta.1'
     ```
     2. Add MobileIdWalletSDK cocoapods repo as a source in your podfile:
     ```
