@@ -55,7 +55,7 @@ You must send an ID (Bundle ID or Application ID) to vision-box so that we can a
     ```
     2. Add MobileIdWalletSDK cocoapods repo as a source in your podfile:
     ```
-    source ‘https://cdn.cocoapods.org/
+    source 'https://cdn.cocoapods.org/'
     ```
     3. Run in Terminal the command below to install pods in your project:
     ```
