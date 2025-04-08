@@ -73,6 +73,34 @@ You must send an ID (Bundle ID or Application ID) to vision-box so that we can a
     end
     ```
     
+    
+	finally a full pod file will look like:
+    
+    ```
+	source 'https://github.com/CocoaPods/Specs.git'
+	
+	platform :ios, '15.0'
+	use_modular_headers!  
+	
+	project 'MobileIdWalletDemoApp.xcodeproj'
+	workspace 'Workspace.xcworkspace'
+	
+	target 'MobileIdWalletDemoApp' do
+	  use_frameworks!
+	  project 'MobileIdWalletDemoApp.xcodeproj'
+	  pod "WalletLibrary"
+	  pod "lottie-ios"
+	  pod 'mobileid-wallet-sdk', '1.0.0-beta.1'
+	  pod 'mobileid-wallet-ui-sdk', '1.0.0-beta.1'
+	end
+	
+	post_install do |installer|
+	  installer.pods_project.build_configurations.each do |config|
+	    config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
+	  end
+	end
+	```    
+    
 ## Configurations
 
 ### MobileIdWalletConfig, WalletCoreConfig
@@ -206,18 +234,25 @@ func applicationMobileIdWalletProtocol(_ application: UIApplication, didFinishLa
     
 === "iOS"
             
-    Add Near Field Communication Tag Reading under the Capabilities tab for the project’s target:
+    __Step 1:__ Add Near Field Communication Tag Reading under the Capabilities tab for the project’s target (or on your .entitlements file):
+    
+    ``` html
+    <key>com.apple.developer.nfc.readersession.formats</key>
+	<array>
+	    <string>TAG</string>
+	</array>
+	```
     
     ![Permissions](assets/Permissions.RFID_1.png "Permissions"){: style="display: block; margin: 5px auto"}
     
-    Add the NFCReaderUsageDescription permission to your Info.plist file as its needed to access the NFC hardware:
+    __Step 2:__  Add the NFCReaderUsageDescription permission to your Info.plist file as its needed to access the NFC hardware:
     
     ``` html
     <key>NFCReaderUsageDescription</key>
     <string>NFC tag to read NDEF messages</string>
     ```
     
-    Declare `com.apple.developer.nfc.readersession.iso7816.select-identifiers` a list of application identifiers that the app
+    __Step 3:__ Declare `com.apple.developer.nfc.readersession.iso7816.select-identifiers` a list of application identifiers that the app
     must be able to read according to ISO7816:
     
     ``` html
@@ -313,4 +348,23 @@ In order for the SDK to use the camera, the user must grant permission to do so.
     - 'MobileIdSDKiOS', '~> '8.0.0'
     - 'WalletLibrary', 
     - 'VBOcrMrzRfidRegula-ios'     
+
+
+## Other Settings
+
+=== "Android"
+
+    ...
+        
+=== "iOS"
+
+	Disable User Script Sandboxing by pasting 
+	
+	```
+	ENABLE_USER_SCRIPT_SANDBOXING = NO
+	``` 
+	
+	on project settings.
+
+    ![Permissions](assets/OtherSettings.Sandboxing.png "OtherSettings"){: style="display: block; margin: 5px auto"}
 
