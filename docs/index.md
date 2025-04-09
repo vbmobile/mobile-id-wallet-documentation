@@ -368,3 +368,12 @@ In order for the SDK to use the camera, the user must grant permission to do so.
 
     ![Permissions](assets/OtherSettings.Sandboxing.png "OtherSettings"){: style="display: block; margin: 5px auto"}
 
+## Sample App
+
+=== "Android"
+
+    ...
+
+=== "iOS"
+
+You can find a sample [__here__](https://github.com/vbmobile/app-wallet-sample-ios)
