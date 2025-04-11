@@ -8,8 +8,17 @@ Every function is available in both async/await and completion handler variants,
 
 === "Android"
 
-    ```kotlin
-        ...
+	```kotlin
+	launch {
+		val result = MobileIdWallet.getInstance().getIssuedCredentials()
+		
+		if (result.isSuccess) {
+			val credentials = result.getOrNull()
+			// handle success here
+		} else {
+			// handle error here
+		}
+	}
     ```
 
 === "iOS"
@@ -41,7 +50,18 @@ Initiate  Feature intro
 === "Android"
 
     ```kotlin
-        ...
+    launch {
+		val result = MobileIdWallet.getInstance().deleteDigitalId(
+			input = DeleteDigitalId.Input(
+				digitalIdID = digitalIdID
+			)
+		)
+		if (result.isSuccess && result.getOrNull()?.success == true) {
+			// handle success here
+		} else {
+			// handle error here
+		}
+	}
     ```
 
 === "iOS"
@@ -74,7 +94,23 @@ Initiate  Feature intro
 === "Android"
 
     ```kotlin
-        ...
+    launch {
+		val documentData = Document(
+			// TODO: fill document data
+		)
+		val result = MobileIdWallet.getInstance().issueCredential(
+			input = IssueCredential.Input(
+				documentData = documentData,
+				type = DocumentType.Passport,
+				requiresAuthenticationToCompleteFlow = true
+			)
+		)
+		if (result.isSuccess && result.getOrNull()?.success == true) {
+			// handle success here
+		} else {
+			// handle error here
+		}
+	}
     ```
 
 === "iOS"
@@ -130,7 +166,18 @@ Initiate  Feature intro
 === "Android"
 
     ```kotlin
-        ...
+    MobileIdWallet.getInstance().scanDocumentAndIssueCredential(
+		activity = requireActivity(),
+		params = DocumentReaderParameters(true),
+		callback = { result ->
+			if (result.isSuccess && result.getOrNull()?.success == true) {
+				val credentials = result.getOrNull()?.records
+				// handle success here
+			} else {
+				// handle error here
+			}
+		}
+	)
     ```
 
 === "iOS"

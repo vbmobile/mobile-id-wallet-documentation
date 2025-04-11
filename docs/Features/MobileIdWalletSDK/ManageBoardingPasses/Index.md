@@ -9,7 +9,16 @@ With built-in scanning capabilities, the SDK extracts key information from a wid
 === "Android"
 
     ```kotlin
-        ...
+    launch {
+		val result = MobileIdWallet.getInstance().fetchAllBoardingPasses()
+		
+		if (result.isSuccess) {
+			val boardingPasses = result.getOrNull()?.records
+			// TODO handle success here
+		} else {
+			// TODO handle error here
+		}
+	}
     ```
 
 === "iOS"
@@ -43,7 +52,20 @@ With built-in scanning capabilities, the SDK extracts key information from a wid
 === "Android"
 
     ```kotlin
-        ...
+    launch {
+		val result = MobileIdWallet.getInstance().fetchBoardingPass(
+			input = FetchBoardingPass.Input(
+				boardingPassId = boardingPassId
+			)
+		)
+
+		if (result.isSuccess) {
+			val boardingPasse = result.getOrNull()?.boardingPass
+			// TODO handle success here
+		} else {
+			// TODO handle error here
+		}
+	}
     ```
 
 === "iOS"
@@ -75,7 +97,19 @@ With built-in scanning capabilities, the SDK extracts key information from a wid
 === "Android"
 
     ```kotlin
-        ...
+    MobileIdWallet.getInstance().scanBoardingPass(
+		activity = requireActivity(),
+		params = BoardingPassParameters(false),
+		onScanBoardingPassCompletion = object : OnScanBoardingPassCompletion {
+			override fun onBoardingPassError(boardingPassError: BoardingPassError) {
+				
+			}
+
+			override fun onBoardingPassSuccess(boardingPass: BoardingPass) {
+				
+			}
+		}
+	)
     ```
 
 === "iOS"
@@ -109,7 +143,22 @@ With built-in scanning capabilities, the SDK extracts key information from a wid
 === "Android"
 
     ```kotlin
-        ...
+    launch {
+		val result = MobileIdWallet.getInstance().assocBoardingPassWithCredential(
+			context = requireActivity(),
+			input = AssocBoardingPassWithCredential.Input(
+				credentialId = credentialId,
+				boardingPassId = boardingPassId,
+				requiresAuthenticationToCompleteFlow = true
+			)
+		)
+
+		if (result.isSuccess && result.getOrNull()?.success == true) {
+			// TODO handle success here
+		} else {
+			// TODO handle error here
+		}
+	}
     ```
 
 === "iOS"

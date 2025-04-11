@@ -1,19 +1,31 @@
 # Android Release Notes
 
-## 1.0.0
+## 1.0.0-beta.1
 
 ### What's new
 
-- To do.
+- MobileIdWalletSDK:
+    - Feature scan document
+    - Feature scan boarding pass
+    - Feature issue credential
+    - Feature get credentials
+    - Feature delete credential
+    - Feature get boarding passes
+    - Feature get boarding pass by ID
+    - Feature delete boarding pass
+    - Feature associate boarding pass with credential
+    - Share credential
+
+- MobileIdWalletUISDK:
+    - Create trip
+    - Show credentials list
+    - Show boarding Passes list
+    - Share credential
 
 ### Improvements
 
-- To do.
-
-#### Technical Enhancements
-
-- To do.
-
-#### Warning
-
-- To do.
+- MobileIdWalletUISDK:
+    - Create feature "Share with airport".
+    - Register credential activity
+    - Give the user the oportunity to choose the claims that he wants to share/associate
+    
