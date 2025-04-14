@@ -10,9 +10,23 @@ The MobileIdWalletUIRouterProtocol handles routing to key sections, such as the 
 
 === "Android"
 
+	To create a trip, call the following facade method:
+
     ```kotlin
-        ...
+    MobileIdWalletUI.getInstance().createTrip(requireActivity())
     ```
+
+	To show the credentials list screen, call the following facade method:
+
+	```kotlin
+	MobileIdWalletUI.getInstance().showDigitalIds(requireActivity())
+	```
+
+	To show the boarding passes list screen, call the following facade method:
+
+	```kotlin
+	MobileIdWalletUI.getInstance().showBoardingPasses(requireActivity())
+	```
 
 === "iOS"
 

@@ -6,9 +6,7 @@ Verifiable credentials (VCs) provide a secure, tamper-proof way to issue, share,
 
 === "Android"
 
-    ```kotlin
-        ...
-    ```
+	When using the **MobileIdWalletUISDK** you don't need to do anything regarding the deeplink handling. The solution is already embedded in the **MobileIdWalletUISDK** and the deeplink will be automatically picked by the SDK.
 
 === "iOS"
 

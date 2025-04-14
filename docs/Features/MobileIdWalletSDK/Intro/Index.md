@@ -1,23 +1,46 @@
 # Intro
 
-## Async/Await vs Completion Handlers
-
-This SDK is built with flexibility in mind, offering both modern async/await support and traditional completion handlers for all functions. Whether you prefer the clarity of Swift Concurrency or need backward compatibility, you can choose the approach that best fits your project.
-
-Why Both?
-
-* Async/Await provides a cleaner, more readable way to handle asynchronous tasks, reducing nested closures and improving maintainability.
-* Completion Handlers ensure compatibility with older iOS versions and existing callback-based architectures.
-
-## Async/Await vs Completion Handlers sample
+Please notice that the method names can be updated in the final release.
 
 === "Android"
 
+	## Coroutines vs Callback
+
+	This SDK is built with flexibility in mind, offering both modern coroutine support and traditional callbacks for all functions. Whether you prefer the clarity of Kotlin Coroutines or need backward compatibility, you can choose the approach that best fits your project.
+
+	Using coroutines:
     ```kotlin
-        ...
+	launch {
+		val result = MobileIdWallet.getInstance().getIssuedCredentials()
+		
+		if (result.isSuccess) {
+			val credentials = result.getOrNull()
+			// handle success here
+		} else {
+			// handle error here
+		}
+	}
     ```
 
+	Using callback:
+	```kotlin
+	MobileIdWallet.getInstance().getIssuedCredentials {
+		if (it.isSuccess) {
+			val credentials = it.getOrNull()
+			// handle success here
+		} else {
+			// handle error here
+		}
+	}
+	```
+
 === "iOS"
+
+	## Async/Await vs Completion Handlers
+
+	This SDK is built with flexibility in mind, offering both modern async/await support and traditional completion handlers for all functions. Whether you prefer the clarity of Swift Concurrency or need backward compatibility, you can choose the approach that best fits your project.
+
+	## Async/Await vs Completion Handlers sample
 
     ```swift
 	import MobileIdWalletSDK

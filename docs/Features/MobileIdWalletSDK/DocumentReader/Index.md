@@ -2,14 +2,26 @@
 
 This SDK supports a wide range of passports and boarding passes, enabling seamless document reading and verification. By leveraging advanced OCR and NFC technologies, it ensures accurate data extraction from various document formats worldwide.
 
-With built-in camera integration, the SDK provides a smooth scanning experience, requiring only a base view controller to trigger the document capture. Whether you're handling passport-based identity verification or boarding pass processing, the SDK streamlines the process with high reliability and performance.maintainable.
+With built-in camera integration, the SDK provides a smooth scanning experience, requiring only a base view controller to trigger the document capture. Whether you're handling passport-based identity verification or boarding pass processing, the SDK streamlines the process with high reliability and performance.
 
 ## Read Passport
 
 === "Android"
 
     ```kotlin
-        ...
+    MobileIdWallet.getInstance().scanDocument(
+		activity = requireActivity(),
+		params = DocumentReaderParameters(true),
+		onReadDocumentCompletion = object : OnReadDocumentCompletion {
+			override fun onReadDocumentError(documentReaderError: DocumentReaderError) {
+				
+			}
+
+			override fun onReadDocumentSuccess(document: Document) {
+				
+			}
+		}
+	)
     ```
 
 === "iOS"
@@ -48,7 +60,19 @@ With built-in camera integration, the SDK provides a smooth scanning experience,
 === "Android"
 
     ```kotlin
-        ...
+	MobileIdWallet.getInstance().scanBoardingPass(
+		activity = requireActivity(),
+		params = BoardingPassParameters(false),
+		onScanBoardingPassCompletion = object : OnScanBoardingPassCompletion {
+			override fun onBoardingPassError(boardingPassError: BoardingPassError) {
+				
+			}
+
+			override fun onBoardingPassSuccess(boardingPass: BoardingPass) {
+				
+			}
+		}
+	)
     ```
 
 === "iOS"
