@@ -19,8 +19,8 @@ theme:
     - content.tabs.link
     - content.code.copy
   palette:
-      primary: light blue
-      accent: blue
+      primary: white
+      accent: indigo
 extra:
   version:
     provider:
