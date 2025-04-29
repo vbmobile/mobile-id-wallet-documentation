@@ -11,7 +11,7 @@ Please notice that the method names can be updated in the final release.
 	Using coroutines:
     ```kotlin
 	launch {
-		val result = MobileIdWallet.getInstance().getIssuedCredentials()
+		val result = MobileIdWallet.getInstance().getPassportCredentials()
 		
 		if (result.isSuccess) {
 			val credentials = result.getOrNull()
@@ -24,7 +24,7 @@ Please notice that the method names can be updated in the final release.
 
 	Using callback:
 	```kotlin
-	MobileIdWallet.getInstance().getIssuedCredentials {
+	MobileIdWallet.getInstance().getPassportCredentials {
 		if (it.isSuccess) {
 			val credentials = it.getOrNull()
 			// handle success here

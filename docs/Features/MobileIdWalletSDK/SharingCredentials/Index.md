@@ -8,8 +8,8 @@ Verifiable credentials (VCs) provide a secure, tamper-proof way to issue, share,
 
     ```kotlin
     launch {
-		val result = MobileIdWallet.getInstance().shareCredential(
-			input = ShareCredential.Input(
+		val result = MobileIdWallet.getInstance().sharePassportCredential(
+			input = SharePassportCredential.Input(
 				url = intent.data,
 				verifiedCredentialId = verifiedCredentialId,
 				requiresAuthenticationToCompleteFlow = true
