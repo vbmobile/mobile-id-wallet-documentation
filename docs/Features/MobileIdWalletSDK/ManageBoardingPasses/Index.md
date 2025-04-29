@@ -10,7 +10,7 @@ With built-in scanning capabilities, the SDK extracts key information from a wid
 
     ```kotlin
     launch {
-		val result = MobileIdWallet.getInstance().fetchAllBoardingPasses()
+		val result = MobileIdWallet.getInstance().getAllBoardingPass()
 		
 		if (result.isSuccess) {
 			val boardingPasses = result.getOrNull()?.records
@@ -53,8 +53,8 @@ With built-in scanning capabilities, the SDK extracts key information from a wid
 
     ```kotlin
     launch {
-		val result = MobileIdWallet.getInstance().fetchBoardingPass(
-			input = FetchBoardingPass.Input(
+		val result = MobileIdWallet.getInstance().getAllBoardingPass(
+			input = GetAllBoardingPass.Input(
 				boardingPassId = boardingPassId
 			)
 		)
@@ -97,7 +97,7 @@ With built-in scanning capabilities, the SDK extracts key information from a wid
 === "Android"
 
     ```kotlin
-    MobileIdWallet.getInstance().scanBoardingPass(
+    MobileIdWallet.getInstance().readBoardingPass(
 		activity = requireActivity(),
 		params = BoardingPassParameters(false),
 		onScanBoardingPassCompletion = object : OnScanBoardingPassCompletion {

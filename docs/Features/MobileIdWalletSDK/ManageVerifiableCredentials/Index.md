@@ -10,7 +10,7 @@ Every function is available in both async/await and completion handler variants,
 
 	```kotlin
 	launch {
-		val result = MobileIdWallet.getInstance().getIssuedCredentials()
+		val result = MobileIdWallet.getInstance().getPassportCredentials()
 		
 		if (result.isSuccess) {
 			val credentials = result.getOrNull()
@@ -51,8 +51,8 @@ Initiate  Feature intro
 
     ```kotlin
     launch {
-		val result = MobileIdWallet.getInstance().deleteDigitalId(
-			input = DeleteDigitalId.Input(
+		val result = MobileIdWallet.getInstance().deletePassportCredential(
+			input = DeletePassportCredential.Input(
 				digitalIdID = digitalIdID
 			)
 		)
@@ -98,8 +98,8 @@ Initiate  Feature intro
 		val documentData = Document(
 			// TODO: fill document data
 		)
-		val result = MobileIdWallet.getInstance().issueCredential(
-			input = IssueCredential.Input(
+		val result = MobileIdWallet.getInstance().issuePassportCredential(
+			input = IssuePassportCredential.Input(
 				documentData = documentData,
 				type = DocumentType.Passport,
 				requiresAuthenticationToCompleteFlow = true
@@ -166,7 +166,7 @@ Initiate  Feature intro
 === "Android"
 
     ```kotlin
-    MobileIdWallet.getInstance().scanDocumentAndIssueCredential(
+    MobileIdWallet.getInstance().readDocumentAndIssueCredential(
 		activity = requireActivity(),
 		params = DocumentReaderParameters(true),
 		callback = { result ->

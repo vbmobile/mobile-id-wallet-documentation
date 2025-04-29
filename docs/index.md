@@ -389,8 +389,8 @@ In order for the SDK to use the deep links, the user must grant permission to do
 
     And in your activity:
     ```kotlin
-    MobileIdWallet.getInstance().shareCredential(
-        input = ShareCredential.Input(
+    MobileIdWallet.getInstance().sharePassportCredential(
+        input = SharePassportCredential.Input(
             url = intent.data,
             verifiedCredentialId = digitalId,
             requiresAuthenticationToCompleteFlow = true
