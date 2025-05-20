@@ -4,7 +4,7 @@ This SDK supports a wide range of passports and boarding passes, enabling seamle
 
 With built-in camera integration, the SDK provides a smooth scanning experience, requiring only a base view controller to trigger the document capture. Whether you're handling passport-based identity verification or boarding pass processing, the SDK streamlines the process with high reliability and performance.
 
-## Read Passport
+## Read Document
 
 === "Android"
 
@@ -40,13 +40,13 @@ With built-in camera integration, the SDK provides a smooth scanning experience,
 	}
 	
 	extension DocumentReader {
-	    func readPassportDocument() {
+	    func readDocument() {
 	        /// The `viewController` is required because the SDK needs a base view controller
 	        /// to present the camera interface for document scanning. This should be the
 	        /// screen from which the SDK is invoked.
 	        let viewController = UIViewController()
 	        Task {
-	            let ouput = try? await mobileIdWallet.readDocument(.init(viewController: viewController, type: .passport))
+	            let ouput = try? await mobileIdWallet.readDocument(.init(viewController: viewController))
 	            guard let passportData = ouput?.document as? Model.PassportData else { return }
 	            print(passportData)
 	        }
@@ -97,11 +97,10 @@ With built-in camera integration, the SDK provides a smooth scanning experience,
 	        /// screen from which the SDK is invoked.
 	        let viewController = UIViewController()
 	        Task {
-	            let ouput = try? await mobileIdWallet.readDocument(.init(viewController: viewController, type: .boardingPass))
+	            let ouput = try? await mobileIdWallet.readBoardingPass(.init(viewController: viewController))
 	            guard let boardingPass = ouput?.document as? Model.BoardingPass else { return }
 	            print(boardingPass)
 	        }
 	    }
 	}
-
     ```

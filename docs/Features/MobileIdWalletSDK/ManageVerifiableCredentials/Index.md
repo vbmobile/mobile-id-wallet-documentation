@@ -32,9 +32,9 @@ Every function is available in both async/await and completion handler variants,
 	}
 	
 	extension ManageCredentials {
-	    func fetchAllCredentials() async {
-	        guard let output = try? await mobileIdWallet.fetchAllCredentials(.init()),
-	        let credentialClaims = output.records.first?.claims else {
+	    func getPassportCredentials() async {
+	        guard let output = try? await mobileIdWallet.getPassportCredentials(.init()),
+	              let credentialClaims = output.records.first?.claims else {
 	            return
 	        }
 	        print(credentialClaims)
@@ -77,12 +77,12 @@ Initiate  Feature intro
 	}
 	
 	extension ManageCredentials {
-	    func deleteCredential() async {
-	        guard let output = try? await mobileIdWallet.fetchAllCredentials(.init()),
-	        let credentialId = output.records.first?.id else {
+	    func deletePassportCredential() async {
+	        guard let output = try? await mobileIdWallet.getPassportCredentials(.init()),
+	              let credentialId = output.records.first?.id else {
 	            return
 	        }
-	        _ = try? await mobileIdWallet.deleteCredential(.init(credentialId: credentialId))
+	        _ = try? await mobileIdWallet.deletePassportCredential(.init(credentialId: credentialId))
 	    }
 	}
     ```
@@ -128,7 +128,7 @@ Initiate  Feature intro
 	}
 	
 	extension ManageCredentials {
-	    func issueCredential() async {
+	    func issuePassportCredential() async {
 	        let documentData = Model.PassportData(
 	            id: UUID().uuidString,
 	            docIcaoCode: "AUS",
@@ -139,8 +139,8 @@ Initiate  Feature intro
 	            surname: "CITIZEN",
 	            docNumber: "D0996596",
 	            issueState: "AUS",
-	            expiryDate: "35-01-01",
-	            issueDate: "25-01-01",
+	            expiryDate: "2025-01-01 00:00:00 +0000",
+	            issueDate: "2035-01-01 00:00:00 +0000",
 	            gender: "F",
 	            optionalData: "20014361L",
 	            docImage: "/9j/4AAQSkZJRgABAQAASABIAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABA...", // Base64 Image
@@ -150,7 +150,7 @@ Initiate  Feature intro
 	            biometricSource: "scan",
 	            docAuthStatus: "false"
 	        )
-	        let output = try? await mobileIdWallet.issueCredential(.init(
+	        let output = try? await mobileIdWallet.issuePassportCredential(.init(
 	            documentData: documentData,
 	            type: .passport,
 	            requiresAuthenticationToCompleteFlow: true
@@ -195,12 +195,16 @@ Initiate  Feature intro
 	}
 	
 	extension ManageCredentials {
-	    func readDocumentAndIssueCredential() async {
+	    func readDocumentAndIssuePassportCredential() {
 	        /// The `viewController` is required because the SDK needs a base view controller
 	        /// to present the camera interface for document scanning. This should be the
 	        /// screen from which the SDK is invoked.
 	        let viewController = UIViewController()
-	        try? await mobileIdWallet.readDocumentAndIssueCredential(.init(viewController: viewController, type: .passport))
+	        Task {
+	            let output = try? await mobileIdWallet.readDocumentAndIssuePassportCredential(.init(viewController: viewController, type: .passport))
+	            guard let newCredential = output?.records.last else { return }
+	            print(newCredential.claims)
+	        }
 	    }
 	}
     ```

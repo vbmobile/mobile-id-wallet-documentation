@@ -52,10 +52,10 @@ Please notice that the method names can be updated in the final release.
 	        self.mobileIdWallet = mobileIdWallet
 	    }
 	
-	    func fetchAllCredentialsAssync() {
+	    func getPassportCredentialsAssync() {
 	        Task {
 	            do {
-	                let output = try await mobileIdWallet.fetchAllCredentials(.init())
+	                let output = try await mobileIdWallet.getPassportCredentials(.init())
 	                guard let verifiedIdEntity = output.records.first else { return }
 	                print(verifiedIdEntity)
 	            } catch {
@@ -63,9 +63,9 @@ Please notice that the method names can be updated in the final release.
 	            }
 	        }
 	    }
-	
-	    func fetchAllCredentialsCompletionHandler() {
-	        mobileIdWallet.fetchAllCredentials(.init()) { result in
+		
+	    func getPassportCredentialsCompletionHandler() {
+	        mobileIdWallet.getPassportCredentials(.init()) { result in
 	            switch result {
 	            case .success(let output):
 	                guard let verifiedIdEntity = output.records.first else { return }

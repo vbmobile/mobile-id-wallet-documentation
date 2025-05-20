@@ -69,11 +69,11 @@ You must send an ID (Bundle ID or Application ID) to Amadeus so that we can asso
     
     1. Add the following to your Podfile, with the latest version:
     ```
-    pod 'mobileid-wallet-sdk', '1.0.0-beta.1'
+    pod 'mobileid-wallet-sdk', '1.0.0-beta.3'
     ```
     2. Add MobileIdWalletSDK cocoapods repo as a source in your podfile:
     ```
-    source ‘https://cdn.cocoapods.org/
+    source 'https://cdn.cocoapods.org/'
     ```
     3. Run in Terminal the command below to install pods in your project:
     ```
@@ -108,8 +108,8 @@ You must send an ID (Bundle ID or Application ID) to Amadeus so that we can asso
 	  project 'MobileIdWalletDemoApp.xcodeproj'
 	  pod "WalletLibrary"
 	  pod "lottie-ios"
-	  pod 'mobileid-wallet-sdk', '1.0.0-beta.1'
-	  pod 'mobileid-wallet-ui-sdk', '1.0.0-beta.1'
+	  pod 'mobileid-wallet-sdk', '1.0.0-beta.3'
+	  pod 'mobileid-wallet-ui-sdk', '1.0.0-beta.3'
 	end
 	
 	post_install do |installer|
