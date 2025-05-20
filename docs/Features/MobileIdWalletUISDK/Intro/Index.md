@@ -25,7 +25,7 @@ The MobileIdWalletUIRouterProtocol handles routing to key sections, such as the 
 	To show the boarding passes list screen, call the following facade method:
 
 	```kotlin
-	MobileIdWalletUI.getInstance().showBoardingPasses(requireActivity())
+	MobileIdWalletUI.getInstance().showTrips(requireActivity())
 	```
 
 === "iOS"

@@ -9,7 +9,7 @@ With built-in camera integration, the SDK provides a smooth scanning experience,
 === "Android"
 
     ```kotlin
-    MobileIdWallet.getInstance().scanDocument(
+    MobileIdWallet.getInstance().readDocument(
 		activity = requireActivity(),
 		params = DocumentReaderParameters(true),
 		onReadDocumentCompletion = object : OnReadDocumentCompletion {
@@ -60,7 +60,7 @@ With built-in camera integration, the SDK provides a smooth scanning experience,
 === "Android"
 
     ```kotlin
-	MobileIdWallet.getInstance().scanBoardingPass(
+	MobileIdWallet.getInstance().readBoardingPass(
 		activity = requireActivity(),
 		params = BoardingPassParameters(false),
 		onScanBoardingPassCompletion = object : OnScanBoardingPassCompletion {
