@@ -48,20 +48,17 @@ Verifiable credentials (VCs) provide a secure, tamper-proof way to issue, share,
 	            }
 	            do {
 	                // Step 2 - Choose Credential to share
-	                let fetchAllCredentialsOutput = try await mobileIdWallet.fetchAllCredentials(.init())
+	                let fetchAllCredentialsOutput = try await mobileIdWallet.getPassportCredentials(.init())
 	                guard let credentialToShared = fetchAllCredentialsOutput.records.randomElement() else {
 	                    // No credentias to share
 	                    return
 	                }
 	                // Step 3 - Share Credential
-	                let output = try await mobileIdWallet.shareCredential(.init(
+	                let output = try await mobileIdWallet.sharePassportCredential(.init(
 	                    url: url.absoluteString,
 	                    credentialId: credentialToShared.id,
 	                    requiresAuthenticationToCompleteFlow: true
 	                ))
-	                // On return we will get all the activities associated to that credential
-	                // Activities are events of 2 type: issuance (when credential is created)
-	                // and present (when credential is presented)
 	                print(output.activityForDocument.last ?? "")
 	            } catch {
 	                print(error)
