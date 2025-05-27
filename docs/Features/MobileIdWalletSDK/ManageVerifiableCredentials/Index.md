@@ -4,7 +4,7 @@ This SDK provides a simple and flexible way to manage Verifiable Credentials, su
 
 Every function is available in both async/await and completion handler variants, allowing you to choose the approach that best suits your app's architecture. With a focus on performance and security, these operations help you manage credentials efficiently while keeping your implementation clean and maintainable.
 
-## Fetch Verifiable Credentials
+## Get Passport Credentials (Verifiable Credentials)
 
 === "Android"
 
@@ -42,8 +42,50 @@ Every function is available in both async/await and completion handler variants,
 	}
     ```
 
+## Get original document used to create Passport Credential (Verifiable Credential) 
 
-## Delete Verifiable Credential 
+=== "Android"
+
+	```kotlin
+	To do
+    ```
+
+=== "iOS"
+
+    ```swift
+	class ManageCredentials {
+	    let mobileIdWallet: MobileIdWalletProtocol
+	    init(mobileIdWallet: MobileIdWalletProtocol) {
+	        self.mobileIdWallet = mobileIdWallet
+	    }
+	}
+	
+    func getOriginalDocumentForCreadential() {
+        Task {
+            /// Fetch all the credentials
+            guard let output = try? await mobileIdWallet.getPassportCredentials(.init()),
+                  let credential = output.records.first else {
+                return
+            }
+
+            /// Using the credential id, fetch the origial `DocumentReaderReport` used to create the credential
+            let documentReportOutput = try? await mobileIdWallet.getDocumentReport(.init(credentialId: credential.id))
+
+            /// Original `DocumentReaderReport` used to create the credential
+            guard let documentReaderReport = documentReportOutput?.originalDocument as? DocumentReaderReport else { return }
+            let icaoCodeFromDocumentReaderReport = documentReaderReport.documentData.documentTypeData?.info?.icaoCode
+            print(icaoCodeFromDocumentReaderReport)
+
+            /// `Model.PassportData` is a model that contains in one place the most relevant fields of a `DocumentReaderReport` object
+            guard let passportData = documentReaderReport.mapToPassportData as? Model.PassportData else { return }
+            let icaoCodePassportData = passportData.docIcaoCode
+            print(icaoCodePassportData)
+        }
+    }
+    ```
+
+
+## Delete Passport Credentials (Verifiable Credentials)
 
 Initiate  Feature intro 
 
@@ -87,7 +129,7 @@ Initiate  Feature intro
 	}
     ```
 
-## Issue Verifiable Credential (Option 1)
+## Issue Passport Credential (Option 1) 
 
 Initiate  Feature intro 
 
@@ -161,7 +203,7 @@ Initiate  Feature intro
 	}
     ```
 
-## Issue Verifiable Credential (Option 2)
+## Issue Passport Credential (Option 2) 
 
 === "Android"
 
