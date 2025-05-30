@@ -47,7 +47,19 @@ Every function is available in both async/await and completion handler variants,
 === "Android"
 
 	```kotlin
-	To do
+	val result = mobileIdWallet.getDocumentReaderReport(
+        activity = activity,
+        params = GetDocumentReaderReport.Input(
+            credentialId = credential.id
+        )
+    )
+    if (result.isSuccess && result.getOrNull() != null) {
+        val documentReaderReport = documentReaderReportOutput.getOrNull()?.documentReaderReport
+        // handle success here
+    } else {
+        // handle error here
+    }
+
     ```
 
 === "iOS"
