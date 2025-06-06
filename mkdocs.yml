@@ -36,6 +36,7 @@ nav:
       - Manage Verifiable Credentials: Features/MobileIdWalletSDK/ManageVerifiableCredentials/Index.md
       - Manage Boarding Passes: Features/MobileIdWalletSDK/ManageBoardingPasses/Index.md
       - Sharing Credentials: Features/MobileIdWalletSDK/SharingCredentials/Index.md
+      - Document: Features/MobileIdWalletSDK/Document/Index.md
     - MobileIdWalletUISDK:
       - Intro: Features/MobileIdWalletUISDK/Intro/Index.md
       - Sharing Credentials: Features/MobileIdWalletUISDK/SharingCredentials/Index.md
