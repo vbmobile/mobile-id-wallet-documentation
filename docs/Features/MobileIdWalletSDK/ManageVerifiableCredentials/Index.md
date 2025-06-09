@@ -47,7 +47,7 @@ Every function is available in both async/await and completion handler variants,
 === "Android"
 
 	```kotlin
-	val result = mobileIdWallet.getDocumentReaderReport(
+	val result = MobileIdWallet.getInstance().getDocumentReaderReport(
         activity = activity,
         params = GetDocumentReaderReport.Input(
             credentialId = credential.id
