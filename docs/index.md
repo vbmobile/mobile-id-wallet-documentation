@@ -54,7 +54,7 @@ You must send an ID (Bundle ID or Application ID) to Amadeus so that we can asso
     ```
     2. Declare Mobile ID SDK and document reader provider as a dependency in your app level gradle file:
     ```
-    implementation("com.amadeus.wallet.sdk:mobileid-wallet-sdk:<1.0.0-beta.1>@aar") { transitive = true }
+    implementation("com.amadeus.wallet.sdk:mobileid-wallet-sdk:<1.0.0-beta.6>@aar") { transitive = true }
 
     ```
     3. Sync gradle.
