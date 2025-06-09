@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://vbmobile.github.io/mobile-id-wallet-documentation/1.0/Features/MobileIdWalletSDK/SharingCredentials/Index.html">
+        <link rel="canonical" href="https://vbmobile.github.io/mobile-id-wallet-documentation/1.0/Features/MobileIdWalletSDK/Document/Index.html">
       
       
-        <link rel="prev" href="../ManageBoardingPasses/Index.html">
+        <link rel="prev" href="../SharingCredentials/Index.html">
       
       
-        <link rel="next" href="../Document/Index.html">
+        <link rel="next" href="../../MobileIdWalletUISDK/Intro/Index.html">
       
       
       <link rel="icon" href="../../../assets/vb-favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>Sharing Credentials - Wallet SDK Documentation</title>
+        <title>Document - Wallet SDK Documentation</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#sharing-credentials" class="md-skip">
+        <a href="#build-document-data-from-documentreaderreport" class="md-skip">
           Skip to content
         </a>
       
@@ -133,7 +133,7 @@ You're not viewing the latest version.
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Sharing Credentials
+              Document
             
           </span>
         </div>
@@ -516,6 +516,29 @@ You're not viewing the latest version.
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../SharingCredentials/Index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sharing Credentials
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -533,7 +556,7 @@ You're not viewing the latest version.
   
   
   <span class="md-ellipsis">
-    Sharing Credentials
+    Document
     
   </span>
   
@@ -546,7 +569,7 @@ You're not viewing the latest version.
   
   
   <span class="md-ellipsis">
-    Sharing Credentials
+    Document
     
   </span>
   
@@ -570,8 +593,8 @@ You're not viewing the latest version.
       
         <!-- Table of contents item -->
 <li class="md-nav__item">
-    <a href="#sharing-credentials-using-deep-linking" class="md-nav__link">
-        Sharing credentials using Deep linking
+    <a href="#build-document-data" class="md-nav__link">
+        Build Document data
     </a>
 
     <!-- Table of contents list -->
@@ -583,29 +606,6 @@ You're not viewing the latest version.
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../Document/Index.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Document
-    
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -749,8 +749,8 @@ You're not viewing the latest version.
       
         <!-- Table of contents item -->
 <li class="md-nav__item">
-    <a href="#sharing-credentials-using-deep-linking" class="md-nav__link">
-        Sharing credentials using Deep linking
+    <a href="#build-document-data" class="md-nav__link">
+        Build Document data
     </a>
 
     <!-- Table of contents list -->
@@ -777,19 +777,15 @@ You're not viewing the latest version.
   
 
 
-<h1 id="sharing-credentials">Sharing Credentials<a class="headerlink" href="#sharing-credentials" title="Permanent link">&para;</a></h1>
-<p>Verifiable credentials (VCs) provide a secure, tamper-proof way to issue, share, and verify digital credentials. When sharing or presenting a credential, users can selectively disclose information based on the verifier's request. This means they can prove specific claims (e.g., age or membership) without exposing unrelated details. The process typically involves cryptographic proofs, ensuring authenticity while preventing forgery or unauthorized modifications. VCs also support privacy-preserving techniques like zero-knowledge proofs, allowing users to confirm a fact without revealing the underlying data. This makes credential sharing both secure and user-controlled across various digital interactions.</p>
-<h2 id="sharing-credentials-using-deep-linking">Sharing credentials using Deep linking<a class="headerlink" href="#sharing-credentials-using-deep-linking" title="Permanent link">&para;</a></h2>
+<h1 id="build-document-data-from-documentreaderreport">Build Document Data from DocumentReaderReport<a class="headerlink" href="#build-document-data-from-documentreaderreport" title="Permanent link">&para;</a></h1>
+<p>We provide a facade method where the developer can convert a DocumentReaderReport into a Document.</p>
+<h2 id="build-document-data">Build Document data<a class="headerlink" href="#build-document-data" title="Permanent link">&para;</a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Android</label><label for="__tabbed_1_2">iOS</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="n">launch</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kd">val</span><span class="w"> </span><span class="nv">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MobileIdWallet</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">sharePassportCredential</span><span class="p">(</span>
-<span class="w">        </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SharePassportCredential</span><span class="p">.</span><span class="na">Input</span><span class="p">(</span>
-<span class="w">            </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">intent</span><span class="p">.</span><span class="na">data</span><span class="p">,</span>
-<span class="w">            </span><span class="n">verifiedCredentialId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">verifiedCredentialId</span><span class="p">,</span>
-<span class="w">            </span><span class="n">requiresAuthenticationToCompleteFlow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
-<span class="w">        </span><span class="p">)</span>
+<span class="w">    </span><span class="kd">val</span><span class="w"> </span><span class="nv">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MobileIdWallet</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">buildDocumentData</span><span class="p">(</span>
+<span class="w">        </span><span class="n">MapDocumentReaderReportToDocumentData</span><span class="p">.</span><span class="na">Input</span><span class="p">(</span><span class="n">documentReaderReport</span><span class="p">)</span>
 <span class="w">    </span><span class="p">)</span>
 
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="na">isSuccess</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="na">getOrNull</span><span class="p">()</span><span class="o">?.</span><span class="na">success</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -801,45 +797,7 @@ You're not viewing the latest version.
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="kd">import</span><span class="w"> </span><span class="nc">MobileIdWalletSDK</span>
-<span class="kd">import</span><span class="w"> </span><span class="nc">Foundation</span>
-
-<span class="kd">class</span><span class="w"> </span><span class="nc">DeeplinkManager</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nv">mobileIdWallet</span><span class="p">:</span><span class="w"> </span><span class="n">MobileIdWalletProtocol</span>
-<span class="w">    </span><span class="kd">init</span><span class="p">(</span><span class="n">mobileIdWallet</span><span class="p">:</span><span class="w"> </span><span class="n">MobileIdWalletProtocol</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="kc">self</span><span class="p">.</span><span class="n">mobileIdWallet</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">mobileIdWallet</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-
-<span class="kd">extension</span><span class="w"> </span><span class="nc">DeeplinkManager</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="c1">/// Given a presentation request, will pick a random Verified Credential stored and share/present it</span>
-<span class="w">    </span><span class="kd">func</span><span class="w"> </span><span class="nf">handleWithoutUI</span><span class="p">(</span><span class="n">url</span><span class="p">:</span><span class="w"> </span><span class="n">URL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">Task</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="c1">// Step 1 - Validate URL</span>
-<span class="w">            </span><span class="k">guard</span><span class="w"> </span><span class="kd">let</span><span class="w"> </span><span class="nv">scheme</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">url</span><span class="p">.</span><span class="n">scheme</span><span class="p">,</span><span class="w"> </span><span class="n">scheme</span><span class="w"> </span><span class="p">==</span><span class="w"> </span><span class="s">&quot;openid-vc&quot;</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="c1">// Invalid URL</span>
-<span class="w">                </span><span class="k">return</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">            </span><span class="k">do</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="c1">// Step 2 - Choose Credential to share</span>
-<span class="w">                </span><span class="kd">let</span><span class="w"> </span><span class="nv">fetchAllCredentialsOutput</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">try</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">mobileIdWallet</span><span class="p">.</span><span class="n">getPassportCredentials</span><span class="p">(.</span><span class="kd">init</span><span class="p">())</span>
-<span class="w">                </span><span class="k">guard</span><span class="w"> </span><span class="kd">let</span><span class="w"> </span><span class="nv">credentialToShared</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">fetchAllCredentialsOutput</span><span class="p">.</span><span class="n">records</span><span class="p">.</span><span class="n">randomElement</span><span class="p">()</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                    </span><span class="c1">// No credentias to share</span>
-<span class="w">                    </span><span class="k">return</span>
-<span class="w">                </span><span class="p">}</span>
-<span class="w">                </span><span class="c1">// Step 3 - Share Credential</span>
-<span class="w">                </span><span class="kd">let</span><span class="w"> </span><span class="nv">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">try</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">mobileIdWallet</span><span class="p">.</span><span class="n">sharePassportCredential</span><span class="p">(.</span><span class="kd">init</span><span class="p">(</span>
-<span class="w">                    </span><span class="n">url</span><span class="p">:</span><span class="w"> </span><span class="n">url</span><span class="p">.</span><span class="n">absoluteString</span><span class="p">,</span>
-<span class="w">                    </span><span class="n">credentialId</span><span class="p">:</span><span class="w"> </span><span class="n">credentialToShared</span><span class="p">.</span><span class="n">id</span><span class="p">,</span>
-<span class="w">                    </span><span class="n">requiresAuthenticationToCompleteFlow</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-<span class="w">                </span><span class="p">))</span>
-<span class="w">                </span><span class="bp">print</span><span class="p">(</span><span class="n">output</span><span class="p">.</span><span class="n">activityForDocument</span><span class="p">.</span><span class="bp">last</span><span class="w"> </span><span class="p">??</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">)</span>
-<span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="bp">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="n">TODO</span>
 </code></pre></div>
 </div>
 </div>
