@@ -11,7 +11,19 @@ All operations are fully asynchronous with async/await support and provide compl
 === "Android"
 
     ```kotlin
-	TO DO
+	val walletSdkConfig = WalletSdkConfig(
+        ...
+    ) 
+    MobileIdWallet.initialize(
+        context = this,
+        walletConfig = walletSdkConfig,
+        onEnrolmentInitialized = { success, error ->
+                if (!success) {
+                    print(error)
+                }
+            }
+        )
+    )
     ```
 
 === "iOS"
@@ -39,7 +51,34 @@ All operations are fully asynchronous with async/await support and provide compl
 === "Android"
 
     ```kotlin
-	TO DO
+	launch {
+        val result = MobileIdWallet.getInstance().scanBoardingPass(
+            activity = context,
+            input = ScanBoardingPass.Input(BoardingPassParameters(validate = false)),
+        )
+
+        if (result.isSuccess) {
+            val boardingPass = result.getOrNull()?.records
+            // handle success here
+        } else {
+            // handle error here
+        }
+    }
+
+    launch {
+        val imageUri: Uri = <YOUR_IMAGE_URI>
+        val result = MobileIdWallet.getInstance().parseBoardingPass(
+            activity = context,
+            input = ParseBoardingPass.Input(BoardingPassImageParserParameters(validate = false, uri = imageUri)),
+        )
+
+        if (result.isSuccess) {
+            val boardingPass = result.getOrNull()?.records
+            // handle success here
+        } else {
+            // handle error here
+        }
+    }
     ```
 
 === "iOS"
@@ -76,7 +115,16 @@ All operations are fully asynchronous with async/await support and provide compl
 === "Android"
 
     ```kotlin
-	TO DO
+	launch {
+        val result = MobileIdWallet.getInstance().getAllBoardingPass()
+    
+        if (result.isSuccess) {
+            val document = result.getOrNull()?.records
+            // handle success here
+        } else {
+            // handle error here
+        }
+    }
     ```
 
 === "iOS"
@@ -106,7 +154,19 @@ All operations are fully asynchronous with async/await support and provide compl
 === "Android"
 
     ```kotlin
-	TO DO
+	launch {
+        val result = MobileIdWallet.getInstance().deleteBoardingPass(
+            input = DeleteBoardingPass.Input(
+                boardingPassId = boardingPassId
+            )
+        )
+    
+        if (result.isSuccess) {
+            // handle success here
+        } else {
+            // handle error here
+        }
+    }
     ```
 
 === "iOS"

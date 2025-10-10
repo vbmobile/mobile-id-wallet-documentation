@@ -10,7 +10,18 @@ All operations support Swift’s async/await concurrency model, with optional co
 === "Android"
 
     ```kotlin
-	TO DO
+	val walletSdkConfig = WalletSdkConfig(
+        ...
+    ) 
+    MobileIdWallet.initialize(
+        context = this,
+        walletConfig = walletSdkConfig,
+        onEnrolmentInitialized = { success, error ->
+            if (!success) {
+                print(error)
+            }
+        }
+    )
     ```
 
 === "iOS"
@@ -34,12 +45,20 @@ All operations support Swift’s async/await concurrency model, with optional co
 	}
 	```
 	
-## Batch Delte
+## Batch Delete
 
 === "Android"
 
     ```kotlin
-	TO DO
+	launch {
+        val result = MobileIdWallet.getInstance().batchDelete()
+
+        if (result.isSuccess) {
+            // handle success here
+        } else {
+            // handle error here
+        }
+    }
     ```
 
 === "iOS"

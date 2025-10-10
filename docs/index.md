@@ -142,7 +142,7 @@ You must send an ID (Bundle ID or Application ID) to Amadeus so that we can asso
         enrolmentConfig = EnrolmentConfig(
             documentReaderConfig = DocumentReaderConfig(
                 multipageProcessing = true,
-                databaseId = "Full"
+                databaseId = "<YOUR_DATABASE_ID>"
             ),
             apiConfig = APIConfig(
                 baseUrl = URL("<YOUR_ENROLMENT_BASE_URL>"),
@@ -151,6 +151,9 @@ You must send an ID (Bundle ID or Application ID) to Amadeus so that we can asso
                 apiKey = "<YOUR_API_KEY>"
             )
         ),
+        enrolmentCustomViews = EnrolmentCustomViews(
+            ...
+        )
         walletConfig = WalletConfig(
             url = URL("<YOUR_WALLET_SERVER_HOST_BASE_URL>"),
             logLevel = WalletLogLevel.NONE
@@ -188,26 +191,17 @@ Choose the option that best fits your project’s requirements!
     We advise to initialize the sdk on the application level:
 
     ```kotlin
+    val walletSdkConfig = WalletSdkConfig(
+        ...
+    ) 
     MobileIdWallet.initialize(
         context = this,
-        walletConfig = WalletSdkConfig(
-            enrolmentConfig = EnrolmentConfig(
-                documentReaderConfig = DocumentReaderConfig(
-                    multipageProcessing = true,
-                    databaseId = "Full"
-                ),
-                apiConfig = APIConfig(
-                    baseUrl = URL("<YOUR_ENROLMENT_BASE_URL>"),
-                    timeout = 30,
-                    logLevel = MobileAPILogLevel.NONE,
-                    apiKey = "<YOUR_API_KEY>"
-                )
-            ),
-            walletConfig = WalletConfig(
-                url = URL("<YOUR_WALLET_SERVER_HOST_BASE_URL>"),
-                logLevel = WalletLogLevel.NONE
-            )
-        )
+        walletConfig = walletSdkConfig,
+        onEnrolmentInitialized = { success, error ->
+            if (!success) {
+                print(error)
+            }
+        }
     )
     ```
 
@@ -353,9 +347,6 @@ In order for the SDK to use the camera, the user must grant permission to do so.
 ## Dependencies
 
 === "Android"
-
-    - Microsoft
-        - com.microsoft.entra.verifiedid:walletlibrary:1.0.0
 
     - Amadeus Enrolment
         - com.visionbox.mobileid.sdk:mid-sdk-enrolment:8.1.0

@@ -10,7 +10,18 @@ All operations support Swift’s async/await concurrency model, with optional co
 === "Android"
 
     ```kotlin
-	 TO DO    
+    val walletSdkConfig = WalletSdkConfig(
+        ...
+    ) 
+    MobileIdWallet.initialize(
+        context = this,
+        walletConfig = walletSdkConfig,
+        onEnrolmentInitialized = { success, error ->
+            if (!success) {
+                print(error)
+            }
+        }
+    )
     ```
     
 === "iOS"
@@ -39,19 +50,23 @@ All operations support Swift’s async/await concurrency model, with optional co
 === "Android"
 
     ```kotlin
-    MobileIdWallet.getInstance().readDocument(
-		activity = requireActivity(),
-		params = DocumentReaderParameters(true),
-		onReadDocumentCompletion = object : OnReadDocumentCompletion {
-			override fun onReadDocumentError(documentReaderError: DocumentReaderError) {
-				
-			}
-
-			override fun onReadDocumentSuccess(document: Document) {
-				
-			}
-		}
-	)
+    launch {
+        val result = MobileIdWallet.getInstance().readDocument(
+            activity = activity,
+            input = ReadDocument.Input(
+                params = DocumentReaderParameters(
+                    rfidRead = true
+                )
+            )
+        )
+    
+        if (result.isSuccess) {
+            val document = result.getOrNull()?.records
+            // handle success here
+        } else {
+            // handle error here
+        }
+    }
     ```
 
 === "iOS"
@@ -79,7 +94,16 @@ All operations support Swift’s async/await concurrency model, with optional co
 === "Android"
 
     ```kotlin
-	TO DO
+	launch {
+        val result = MobileIdWallet.getInstance().getAllDocuments()
+    
+        if (result.isSuccess) {
+            val document = result.getOrNull()?.records
+            // handle success here
+        } else {
+            // handle error here
+        }
+    }
     ```
 
 === "iOS"
@@ -127,7 +151,19 @@ All operations support Swift’s async/await concurrency model, with optional co
 === "Android"
 
     ```kotlin
-	TO DO
+	launch {
+        val result = MobileIdWallet.getInstance().deleteDocument(
+            input = DeleteDocument.Input(
+                documentId = documentId
+            )
+        )
+    
+        if (result.isSuccess) {
+            // handle success here
+        } else {
+            // handle error here
+        }
+    }
     ```
 
 === "iOS"

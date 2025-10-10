@@ -10,7 +10,18 @@ All operations support Swift’s async/await concurrency model and offer complet
 === "Android"
 
     ```kotlin
-	 TO DO
+	 val walletSdkConfig = WalletSdkConfig(
+        ...
+    ) 
+    MobileIdWallet.initialize(
+        context = this,
+        walletConfig = walletSdkConfig,
+        onEnrolmentInitialized = { success, error ->
+            if (!success) {
+                print(error)
+            }
+        }
+    )
     ```
 
 === "iOS"
@@ -39,7 +50,22 @@ All operations support Swift’s async/await concurrency model and offer complet
 === "Android"
 
     ```kotlin
-	 TO DO
+    launch {
+        val result = MobileIdWallet.getInstance().assocBoardingPassWithDocument(
+            context = context,
+            AssocBoardingPassWithDocument.Input(
+                documentId = documentId,
+                boardingPassId = boardingPassId,
+            )
+        )
+
+        if (result.isSuccess) {
+            val subjectId = result.getOrNull()?.subjectId
+            // handle success here
+        } else {
+            // handle error here
+        }
+    }
     ```
 
 === "iOS"
@@ -70,7 +96,18 @@ All operations support Swift’s async/await concurrency model and offer complet
 === "Android"
 
     ```kotlin
-	 TO DO
+    launch {
+        val result = MobileIdWallet.getInstance().getSubjectStatus(
+            GetSubjectStatus.Input(subjectId)
+        )
+
+        if (result.isSuccess) {
+            val subjectId = result.getOrNull()?.subjectStatus
+            // handle success here
+        } else {
+            // handle error here
+        }
+    }
     ```
 
 === "iOS"
