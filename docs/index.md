@@ -7,17 +7,9 @@ hide:
 
 ## Overall arquicteture
 
-__MobileIdWalletSDK__ vs. __MobileIdWalletUISDK__
-
-This SDK is designed to offer both flexibility and ease of use, with two distinct modules to fit different integration needs:
-
-* __MobileIdWalletSDK__ – The core SDK, providing all essential features for managing verifiable credentials and boarding passes. Ideal for developers who want full control over UI design and implementation.
-
-* __MobileIdWalletUISDK__ – A higher-level module that includes a prebuilt UI, making it easier to integrate and manage credentials and boarding passes with minimal effort. This is perfect for those who want a faster implementation without designing custom interfaces.
-Whether you need a custom experience or a ready-to-use solution, the SDK adapts to your needs while ensuring a smooth and efficient workflow.
+__MobileIdWalletSDK__ provides all essential features for managing credencials, boarding passes and subjects. 
 
 ![Arquitecture](assets/SDKArquitecture.png "Arquitecture"){: style="display: block; margin: 5px auto"}
-
 
 ## Prerequisites
 
@@ -109,7 +101,6 @@ You must send an ID (Bundle ID or Application ID) to Amadeus so that we can asso
 	  pod "WalletLibrary"
 	  pod "lottie-ios"
 	  pod 'mobileid-wallet-sdk', '1.0.0-beta.3'
-	  pod 'mobileid-wallet-ui-sdk', '1.0.0-beta.3'
 	end
 	
 	post_install do |installer|

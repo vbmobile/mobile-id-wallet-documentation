@@ -32,13 +32,12 @@ nav:
   - Features:
     - MobileIdWalletSDK:
       - Intro: Features/MobileIdWalletSDK/Intro/Index.md
-      - Read Documents: Features/MobileIdWalletSDK/DocumentReader/Index.md
-      - Manage Verifiable Credentials: Features/MobileIdWalletSDK/ManageVerifiableCredentials/Index.md
-      - Manage Boarding Passes: Features/MobileIdWalletSDK/ManageBoardingPasses/Index.md
-      - Sharing Credentials: Features/MobileIdWalletSDK/SharingCredentials/Index.md
-    - MobileIdWalletUISDK:
-      - Intro: Features/MobileIdWalletUISDK/Intro/Index.md
-      - Sharing Credentials: Features/MobileIdWalletUISDK/SharingCredentials/Index.md
+      - Documents: Features/MobileIdWalletSDK/Documents/Index.md
+      - Boarding Passes: Features/MobileIdWalletSDK/BoardingPasses/Index.md
+      - Enrolment: Features/MobileIdWalletSDK/Enrolment/Index.md
+    #- MobileIdWalletUISDK:
+    #  - Intro: Features/MobileIdWalletUISDK/Intro/Index.md
+    #  - Sharing Credentials: Features/MobileIdWalletUISDK/SharingCredentials/Index.md
             
   #- Release notes:
   #  - Android: ReleaseNotes/ReleaseNotes_Android.md
