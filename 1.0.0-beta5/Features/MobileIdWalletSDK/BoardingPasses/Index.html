@@ -600,6 +600,29 @@ You're not viewing the latest version.
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Misc/Index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Misc
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -705,8 +728,8 @@ You're not viewing the latest version.
 
 
 <h1 id="boarding-passes">Boarding Passes<a class="headerlink" href="#boarding-passes" title="Permanent link">&para;</a></h1>
-<p>This SDK provides full CRUD support for boarding passes, allowing you to create, read, update, and delete them with ease. By integrating boarding pass data with verifiable credentials, the SDK enhances the airport experience, enabling smoother check-ins, security screenings, and boarding processes.</p>
-<p>With built-in scanning capabilities, the SDK extracts key information from a wide range of boarding passes, ensuring seamless integration with digital identity solutions. By linking a boarding pass to a verifiable credential, travelers can experience faster verification and reduced friction throughout their journey.</p>
+<p>The Mobile ID Wallet SDK provides robust functionality for managing boarding passes within the wallet. Developers can retrieve all stored boarding passes or access a specific boarding pass by its unique identifier, including full details when needed. Boarding passes can be added to the wallet by parsing images or scanning them directly with the device camera, and they can also be deleted when no longer required. </p>
+<p>All operations are fully asynchronous with async/await support and provide completion handler alternatives for legacy workflows. Inputs and outputs are strongly typed, ensuring safe and predictable access to boarding pass data, while the SDK maintains a consistent Swift-native API style for seamless integration into your app.</p>
 <h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Android</label><label for="__tabbed_1_2">iOS</label></div>
 <div class="tabbed-content">
@@ -724,6 +747,11 @@ You're not viewing the latest version.
 <span class="w">    </span><span class="kd">init</span><span class="p">(</span><span class="n">mobileIdWallet</span><span class="p">:</span><span class="w"> </span><span class="n">MobileIdWalletProtocol</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="kc">self</span><span class="p">.</span><span class="n">mobileIdWallet</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">mobileIdWallet</span>
 <span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">init</span><span class="p">(</span><span class="n">input</span><span class="p">:</span><span class="w"> </span><span class="n">MobileIdWalletSetup</span><span class="p">.</span><span class="n">Input</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kc">self</span><span class="p">.</span><span class="n">mobileIdWallet</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">MobileIdWallet</span><span class="p">.</span><span class="n">shared</span>
+<span class="w">        </span><span class="n">mobileIdWallet</span><span class="p">.</span><span class="n">setup</span><span class="p">(.</span><span class="kd">init</span><span class="p">(</span><span class="n">mobileIdWalletConfig</span><span class="p">:</span><span class="w"> </span><span class="n">input</span><span class="p">.</span><span class="n">mobileIdWalletConfig</span><span class="p">))</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
 </div>
@@ -738,11 +766,10 @@ You're not viewing the latest version.
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="kd">extension</span><span class="w"> </span><span class="nc">BoardingPassManagerSampleUsage</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="c1">/// Scan boarding pass using the device camera</span>
+<span class="w">    </span><span class="c1">/// Scans a boarding pass using the device camera, parses its information, and stores it in the wallet.</span>
 <span class="w">    </span><span class="kd">func</span><span class="w"> </span><span class="nf">scanBoardingPass</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="nv">viewController</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="bp">UIViewController</span><span class="p">()</span>
 <span class="w">        </span><span class="n">Task</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="c1">/// Scan boarding pass using the device camera</span>
 <span class="w">            </span><span class="k">try</span><span class="p">?</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">mobileIdWallet</span><span class="p">.</span><span class="n">scanBoardingPass</span><span class="p">(.</span><span class="kd">init</span><span class="p">(</span>
 <span class="w">                </span><span class="n">viewController</span><span class="p">:</span><span class="w"> </span><span class="n">viewController</span><span class="p">,</span>
 <span class="w">                </span><span class="n">parameters</span><span class="p">:</span><span class="w"> </span><span class="p">.</span><span class="kd">init</span><span class="p">(</span><span class="n">validateBoardingPass</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span>
@@ -750,12 +777,11 @@ You're not viewing the latest version.
 <span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 
-<span class="w">    </span><span class="c1">/// Parse boarding pass providing a picture of the boarding pass</span>
+<span class="w">    </span><span class="c1">/// Parses a boarding pass image to extract flight information and stores it in the wallet.</span>
 <span class="w">    </span><span class="kd">func</span><span class="w"> </span><span class="nf">parseBoardingPass</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="nv">viewController</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="bp">UIViewController</span><span class="p">()</span>
 <span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="nv">boardingPassImage</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="bp">UIImage</span><span class="p">()</span>
 <span class="w">        </span><span class="n">Task</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="c1">/// Parse boarding pass providing a picture of the boarding pass</span>
 <span class="w">            </span><span class="k">try</span><span class="p">?</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">mobileIdWallet</span><span class="p">.</span><span class="n">parseBoardingPass</span><span class="p">(.</span><span class="kd">init</span><span class="p">(</span>
 <span class="w">                </span><span class="n">viewController</span><span class="p">:</span><span class="w"> </span><span class="n">viewController</span><span class="p">,</span>
 <span class="w">                </span><span class="n">parameters</span><span class="p">:</span><span class="w"> </span><span class="p">.</span><span class="kd">init</span><span class="p">(</span><span class="n">validateBoardingPass</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="n">boardingPassData</span><span class="p">:</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="n">boardingPassImage</span><span class="p">:</span><span class="w"> </span><span class="n">boardingPassImage</span><span class="p">)</span>
@@ -775,28 +801,27 @@ You're not viewing the latest version.
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<p>```swift
-extension BoardingPassManagerSampleUsage {
-    /// Get/Fetch all stored boading passes
-    func getAllBoardingPass() async {
-        Task {
-            let result = try? await mobileIdWallet.getAllBoardingPass()
-            print(result?.records ?? [])
-        }
-    }</p>
-<pre><code>/// Get/Fetch boarding pass by id
-func getBoardingPassById() async {
-    let boardingPassId = "your_boarding_pass_id"
-    let result = try? await mobileIdWallet.getBoardingPass(.init(boardingPassId: boardingPassId))
-    guard let boardingPass = result?.record else { return }
-    print(boardingPass)
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kd">extension</span><span class="w"> </span><span class="nc">BoardingPassManagerSampleUsage</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">/// Retrieves all boarding passes currently stored in the wallet.</span>
+<span class="w">    </span><span class="kd">func</span><span class="w"> </span><span class="nf">getAllBoardingPass</span><span class="p">()</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Task</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="kd">let</span><span class="w"> </span><span class="nv">result</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">try</span><span class="p">?</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">mobileIdWallet</span><span class="p">.</span><span class="n">getAllBoardingPass</span><span class="p">()</span>
+<span class="w">            </span><span class="bp">print</span><span class="p">(</span><span class="n">result</span><span class="p">?.</span><span class="n">records</span><span class="w"> </span><span class="p">??</span><span class="w"> </span><span class="p">[])</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">/// Retrieves a specific boarding pass using its unique identifier.</span>
+<span class="w">    </span><span class="kd">func</span><span class="w"> </span><span class="nf">getBoardingPassById</span><span class="p">()</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="nv">boardingPassId</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;your_boarding_pass_id&quot;</span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="nv">result</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">try</span><span class="p">?</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">mobileIdWallet</span><span class="p">.</span><span class="n">getBoardingPass</span><span class="p">(.</span><span class="kd">init</span><span class="p">(</span><span class="n">boardingPassId</span><span class="p">:</span><span class="w"> </span><span class="n">boardingPassId</span><span class="p">))</span>
+<span class="w">        </span><span class="k">guard</span><span class="w"> </span><span class="kd">let</span><span class="w"> </span><span class="nv">boardingPass</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">result</span><span class="p">?.</span><span class="n">record</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="bp">print</span><span class="p">(</span><span class="n">boardingPass</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
 </div>
 </div>
 </div>
-<p>}
-    ```</p>
 <h2 id="delete">Delete<a class="headerlink" href="#delete" title="Permanent link">&para;</a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Android</label><label for="__tabbed_4_2">iOS</label></div>
 <div class="tabbed-content">
@@ -806,7 +831,7 @@ func getBoardingPassById() async {
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="kd">extension</span><span class="w"> </span><span class="nc">BoardingPassManagerSampleUsage</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="c1">/// Delete boarding pass by id</span>
+<span class="w">    </span><span class="c1">/// Deletes a specific boarding pass using its unique identifier.</span>
 <span class="w">    </span><span class="kd">func</span><span class="w"> </span><span class="nf">deleteBoardingPass</span><span class="p">()</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="nv">boardingPassId</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;your_boarding_pass_id&quot;</span>
 <span class="w">        </span><span class="kc">_</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">try</span><span class="p">?</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">mobileIdWallet</span><span class="p">.</span><span class="n">deleteBoardingPass</span><span class="p">(.</span><span class="kd">init</span><span class="p">(</span><span class="n">boardingPassId</span><span class="p">:</span><span class="w"> </span><span class="n">boardingPassId</span><span class="p">))</span>

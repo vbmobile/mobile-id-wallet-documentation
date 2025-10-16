@@ -600,6 +600,29 @@ You're not viewing the latest version.
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Misc/Index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Misc
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -705,8 +728,8 @@ You're not viewing the latest version.
 
 
 <h1 id="document-reader">Document Reader<a class="headerlink" href="#document-reader" title="Permanent link">&para;</a></h1>
-<p>This SDK supports a wide range of passports and boarding passes, enabling seamless document reading and verification. By leveraging advanced OCR and NFC technologies, it ensures accurate data extraction from various document formats worldwide.</p>
-<p>With built-in camera integration, the SDK provides a smooth scanning experience, requiring only a base view controller to trigger the document capture. Whether you're handling passport-based identity verification or boarding pass processing, the SDK streamlines the process with high reliability and performance.</p>
+<p>The Mobile ID Wallet SDK provides comprehensive support for managing identity documents within the wallet. Developers can retrieve all stored documents or access a specific document by its unique identifier. Documents can be added to the wallet by capturing them with the device camera and optionally using RFID for enhanced security. Stored documents can also be deleted when no longer needed. </p>
+<p>All operations support Swift’s async/await concurrency model, with optional completion handler alternatives for traditional callback-based workflows. Strongly typed input and output models ensure safe and predictable access to document data, while the API maintains a consistent Swift-native style for seamless integration into your app.</p>
 <h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Android</label><label for="__tabbed_1_2">iOS</label></div>
 <div class="tabbed-content">
@@ -724,6 +747,11 @@ You're not viewing the latest version.
 <span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nv">mobileIdWallet</span><span class="p">:</span><span class="w"> </span><span class="n">MobileIdWalletProtocol</span>
 <span class="w">    </span><span class="kd">init</span><span class="p">(</span><span class="n">mobileIdWallet</span><span class="p">:</span><span class="w"> </span><span class="n">MobileIdWalletProtocol</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="kc">self</span><span class="p">.</span><span class="n">mobileIdWallet</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">mobileIdWallet</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">init</span><span class="p">(</span><span class="n">input</span><span class="p">:</span><span class="w"> </span><span class="n">MobileIdWalletSetup</span><span class="p">.</span><span class="n">Input</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kc">self</span><span class="p">.</span><span class="n">mobileIdWallet</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">MobileIdWallet</span><span class="p">.</span><span class="n">shared</span>
+<span class="w">        </span><span class="n">mobileIdWallet</span><span class="p">.</span><span class="n">setup</span><span class="p">(.</span><span class="kd">init</span><span class="p">(</span><span class="n">mobileIdWalletConfig</span><span class="p">:</span><span class="w"> </span><span class="n">input</span><span class="p">.</span><span class="n">mobileIdWalletConfig</span><span class="p">))</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
@@ -751,10 +779,15 @@ You're not viewing the latest version.
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="kd">extension</span><span class="w"> </span><span class="nc">DocumentsManagerSampleUsage</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">/// Reads a document using the device camera and optionally RFID, parses its information, and stores it in the wallet.</span>
 <span class="w">    </span><span class="kd">func</span><span class="w"> </span><span class="nf">readDocument</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="nv">yourTopViewController</span><span class="p">:</span><span class="w"> </span><span class="bp">UIViewController</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">.</span><span class="kd">init</span><span class="p">()</span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="nv">parameters</span><span class="p">:</span><span class="w"> </span><span class="n">ReadDocumentParameters</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">.</span><span class="kd">init</span><span class="p">(</span><span class="n">readRFID</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span>
 <span class="w">        </span><span class="n">Task</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="kd">let</span><span class="w"> </span><span class="nv">result</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">try</span><span class="p">?</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">mobileIdWallet</span><span class="p">.</span><span class="n">readDocument</span><span class="p">(.</span><span class="kd">init</span><span class="p">(</span><span class="n">viewController</span><span class="p">:</span><span class="w"> </span><span class="n">yourTopViewController</span><span class="p">))</span>
+<span class="w">            </span><span class="kd">let</span><span class="w"> </span><span class="nv">result</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">try</span><span class="p">?</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">mobileIdWallet</span><span class="p">.</span><span class="n">readDocument</span><span class="p">(.</span><span class="kd">init</span><span class="p">(</span>
+<span class="w">                </span><span class="n">viewController</span><span class="p">:</span><span class="w"> </span><span class="n">yourTopViewController</span><span class="p">,</span>
+<span class="w">                </span><span class="n">readDocumentParameters</span><span class="p">:</span><span class="w"> </span><span class="n">parameters</span>
+<span class="w">            </span><span class="p">))</span>
 <span class="w">            </span><span class="k">guard</span><span class="w"> </span><span class="kd">let</span><span class="w"> </span><span class="nv">document</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">result</span><span class="p">?.</span><span class="n">document</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="p">}</span>
 <span class="w">            </span><span class="bp">print</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
 <span class="w">        </span><span class="p">}</span>
@@ -773,8 +806,7 @@ You're not viewing the latest version.
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="kd">extension</span><span class="w"> </span><span class="nc">DocumentsManagerSampleUsage</span><span class="w"> </span><span class="p">{</span>
-
-<span class="w">    </span><span class="c1">/// Get/Fetch all the documents</span>
+<span class="w">    </span><span class="c1">/// Retrieves all documents currently stored in the wallet.</span>
 <span class="w">    </span><span class="kd">func</span><span class="w"> </span><span class="nf">getAllDocuments</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="n">Task</span><span class="w"> </span><span class="p">{</span>
 <span class="w">            </span><span class="k">guard</span><span class="w"> </span><span class="kd">let</span><span class="w"> </span><span class="nv">result</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">try</span><span class="p">?</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">mobileIdWallet</span><span class="p">.</span><span class="n">getAllDocuments</span><span class="p">()</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="p">}</span>
@@ -782,7 +814,7 @@ You're not viewing the latest version.
 <span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 
-<span class="w">    </span><span class="c1">/// Get/Fetch document by id</span>
+<span class="w">    </span><span class="c1">/// Retrieves a specific document from the wallet using its unique identifier.</span>
 <span class="w">    </span><span class="kd">func</span><span class="w"> </span><span class="nf">getDocumentById</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="n">Task</span><span class="w"> </span><span class="p">{</span>
 <span class="w">            </span><span class="kd">let</span><span class="w"> </span><span class="nv">documentId</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;your_document_id&quot;</span>
@@ -794,7 +826,7 @@ You're not viewing the latest version.
 <span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 
-<span class="w">    </span><span class="c1">/// Get/Fetch DocumentReaderReport by id</span>
+<span class="w">    </span><span class="c1">/// Retrieves a specific document from the wallet using its unique identifier.</span>
 <span class="w">    </span><span class="kd">func</span><span class="w"> </span><span class="nf">getDocumentReaderReportById</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="n">Task</span><span class="w"> </span><span class="p">{</span>
 <span class="w">            </span><span class="kd">let</span><span class="w"> </span><span class="nv">documentId</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;your_document_id&quot;</span>
@@ -821,7 +853,6 @@ You're not viewing the latest version.
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="kd">extension</span><span class="w"> </span><span class="nc">DocumentsManagerSampleUsage</span><span class="w"> </span><span class="p">{</span>
-
 <span class="w">    </span><span class="c1">/// Delete document by id</span>
 <span class="w">    </span><span class="kd">func</span><span class="w"> </span><span class="nf">deleteDocument</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="n">Task</span><span class="w"> </span><span class="p">{</span>

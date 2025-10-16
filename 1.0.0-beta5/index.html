@@ -367,8 +367,8 @@ You're not viewing the latest version.
       
         <!-- Table of contents item -->
 <li class="md-nav__item">
-    <a href="#overall-arquicteture" class="md-nav__link">
-        Overall arquicteture
+    <a href="#intro" class="md-nav__link">
+        Intro
     </a>
 
     <!-- Table of contents list -->
@@ -446,17 +446,6 @@ You're not viewing the latest version.
 <li class="md-nav__item">
     <a href="#other-settings" class="md-nav__link">
         Other Settings
-    </a>
-
-    <!-- Table of contents list -->
-    
-    
-</li>
-      
-        <!-- Table of contents item -->
-<li class="md-nav__item">
-    <a href="#sample-app" class="md-nav__link">
-        Sample App
     </a>
 
     <!-- Table of contents list -->
@@ -646,6 +635,29 @@ You're not viewing the latest version.
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Features/MobileIdWalletSDK/Misc/Index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Misc
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -691,8 +703,8 @@ You're not viewing the latest version.
       
         <!-- Table of contents item -->
 <li class="md-nav__item">
-    <a href="#overall-arquicteture" class="md-nav__link">
-        Overall arquicteture
+    <a href="#intro" class="md-nav__link">
+        Intro
     </a>
 
     <!-- Table of contents list -->
@@ -777,17 +789,6 @@ You're not viewing the latest version.
     
 </li>
       
-        <!-- Table of contents item -->
-<li class="md-nav__item">
-    <a href="#sample-app" class="md-nav__link">
-        Sample App
-    </a>
-
-    <!-- Table of contents list -->
-    
-    
-</li>
-      
     </ul>
   
 </nav>
@@ -810,8 +811,10 @@ You're not viewing the latest version.
 
 
 <h1 id="getting-started">Getting started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h1>
-<h2 id="overall-arquicteture">Overall arquicteture<a class="headerlink" href="#overall-arquicteture" title="Permanent link">&para;</a></h2>
-<p><strong>MobileIdWalletSDK</strong> provides all essential features for managing credencials, boarding passes and subjects. </p>
+<h2 id="intro">Intro<a class="headerlink" href="#intro" title="Permanent link">&para;</a></h2>
+<p>The Mobile ID Wallet SDK provides a comprehensive set of tools to manage digital identity documents and boarding passes securely within an app. It allows developers to capture and parse documents and boarding passes using the device camera, optionally leveraging RFID for added security. Parsed information can be stored in the wallet, retrieved for display, or deleted as needed. </p>
+<p>The SDK supports both modern Swift concurrency with async/await and traditional callback-based workflows, ensuring flexible integration for different app architectures. All operations use structured input and output models, providing type-safe access to documents, boarding passes, and subject-related data. Developers can also associate passengers with flights by linking boarding passes to documents, and query the status of subjects to facilitate verification workflows. </p>
+<p>Designed with a consistent, Swift-native API style, the Mobile ID Wallet SDK simplifies secure digital document management, enabling apps to seamlessly integrate identity verification and boarding pass handling in a user-centric way.</p>
 <p><img alt="Arquitecture" src="assets/SDKArquitecture.png" style="display: block; margin: 5px auto" title="Arquitecture" /></p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <p>You must send an ID (Bundle ID or Application ID) to Amadeus so that we can associate the API key with the application, this way your API key is protected with only authorized applications.</p>
@@ -858,7 +861,7 @@ maven { url &quot;https://jitpack.io&quot; }
 <p>To always use the latest release, add the following to your Podfile:</p>
 <ol>
 <li>Add the following to your Podfile, with the latest version:
-<div class="highlight"><pre><span></span><code>pod &#39;mobileid-wallet-sdk&#39;, &#39;1.0.0-beta.3&#39;
+<div class="highlight"><pre><span></span><code>pod &#39;mobileid-wallet-sdk&#39;, &#39;1.0.0&#39;
 </code></pre></div></li>
 <li>Add MobileIdWalletSDK cocoapods repo as a source in your podfile:
 <div class="highlight"><pre><span></span><code>source &#39;https://cdn.cocoapods.org/&#39;
@@ -876,27 +879,28 @@ Example:
     end
 end
 </code></pre></div></p>
-<p>finally a full pod file will look like:</p>
+<p>finally a full pod file will look something like:</p>
 <div class="highlight"><pre><span></span><code>source &#39;https://github.com/CocoaPods/Specs.git&#39;
 
 platform :ios, &#39;15.0&#39;
 use_modular_headers!  
 
-project &#39;MobileIdWalletDemoApp.xcodeproj&#39;
 workspace &#39;Workspace.xcworkspace&#39;
+project &#39;DemoApp.xcodeproj&#39;
 
-target &#39;MobileIdWalletDemoApp&#39; do
+target &#39;DemoApp&#39; do
   use_frameworks!
-  project &#39;MobileIdWalletDemoApp.xcodeproj&#39;
-  pod &quot;WalletLibrary&quot;
-  pod &quot;lottie-ios&quot;
-  pod &#39;mobileid-wallet-sdk&#39;, &#39;1.0.0-beta.3&#39;
+  project &#39;DemoApp.xcodeproj&#39;
+  pod &#39;MobileIdWalletSDK&#39;, &#39;1.0.0&#39;
 end
 
-post_install do |installer|
-  installer.pods_project.build_configurations.each do |config|
-    config.build_settings[&#39;BUILD_LIBRARY_FOR_DISTRIBUTION&#39;] = &#39;YES&#39;
-  end
+post_install do |pi|
+    pi.pods_project.targets.each do |t|
+        t.build_configurations.each do |config|
+            config.build_settings[&#39;ONLY_ACTIVE_ARCH&#39;] = &#39;NO&#39;
+            config.build_settings[&#39;BUILD_LIBRARY_FOR_DISTRIBUTION&#39;] = &#39;YES&#39;
+        end
+    end
 end
 </code></pre></div>
 </div>
@@ -934,50 +938,31 @@ end
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nv">walletCoreConfig</span><span class="p">:</span><span class="w"> </span><span class="n">WalletCoreConfig</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">.</span><span class="kd">init</span><span class="p">(</span><span class="n">serverHost</span><span class="p">:</span><span class="w"> </span><span class="n">ConfigValues</span><span class="p">.</span><span class="n">WalletSDKCore</span><span class="p">.</span><span class="n">serverHost</span><span class="p">)</span>
-<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nv">mobileIdWalletConfig</span><span class="p">:</span><span class="w"> </span><span class="n">MobileIdWalletConfig</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">.</span><span class="kd">init</span><span class="p">(</span>
-<span class="w">        </span><span class="n">apiKey</span><span class="p">:</span><span class="n">ConfigValues</span><span class="p">.</span><span class="n">MobileIdSDK</span><span class="p">.</span><span class="n">apiKey</span><span class="p">,</span>
-<span class="w">        </span><span class="n">baseURL</span><span class="p">:</span><span class="n">ConfigValues</span><span class="p">.</span><span class="n">MobileIdSDK</span><span class="p">.</span><span class="n">baseURL</span><span class="p">,</span>
-<span class="w">        </span><span class="n">databaseID</span><span class="p">:</span><span class="w"> </span><span class="n">ConfigValues</span><span class="p">.</span><span class="n">MobileIdSDK</span><span class="p">.</span><span class="n">databaseID</span><span class="p">,</span>
-<span class="w">        </span><span class="n">walletCoreConfig</span><span class="p">:</span><span class="w"> </span><span class="n">walletCoreConfig</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nv">mobileIdWalletConfig</span><span class="p">:</span><span class="w"> </span><span class="n">MobileIdWalletConfig</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">.</span><span class="kd">init</span><span class="p">(</span>
+<span class="w">        </span><span class="n">enrolmentConfig</span><span class="p">:</span><span class="w"> </span><span class="p">.</span><span class="kd">init</span><span class="p">(</span><span class="n">apiConfig</span><span class="p">:</span>
+<span class="w">            </span><span class="p">.</span><span class="kd">init</span><span class="p">(</span>
+<span class="w">                </span><span class="n">baseURL</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;YOUR_WALLET_SERVER_HOST_BASE_URL&gt;&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="n">timeout</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span>
+<span class="w">                </span><span class="n">apiKey</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;YOUR_API_KEY&gt;&quot;</span>
+<span class="w">            </span><span class="p">)</span>
+<span class="w">        </span><span class="p">),</span>
+<span class="w">        </span><span class="n">documentReaderConfig</span><span class="p">:</span><span class="w"> </span><span class="p">.</span><span class="kd">init</span><span class="p">(</span>
+<span class="w">            </span><span class="n">multipageProcessing</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">            </span><span class="n">databaseID</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;YOUR_DATABASE_ID&gt;&quot;</span>
+<span class="w">        </span><span class="p">),</span>
+<span class="w">        </span><span class="n">enrolmentViewRegister</span><span class="p">:</span><span class="w"> </span><span class="p">.</span><span class="kd">init</span><span class="p">()</span>
 <span class="w">    </span><span class="p">)</span>
 </code></pre></div>
 </div>
 </div>
 </div>
 <h2 id="initialize-the-sdk">Initialize the SDK<a class="headerlink" href="#initialize-the-sdk" title="Permanent link">&para;</a></h2>
-<p>When integrating the Mobile ID Wallet SDK, you have two options depending on your needs:</p>
-<p><strong>Option 1 - MobileIdWalletUI</strong>: This option provides a pre-built UI that is ready to use out of the box. It simplifies integration and allows developers to quickly implement Mobile ID functionality without worrying about designing the user interface.</p>
-<p><strong>Option 2 - MobileIdWalletSDK</strong>: For more customization and flexibility, this option allows developers to implement their own UI and define the logic for various features. It requires additional development effort but enables a fully tailored user experience.</p>
+<p>For more customization and flexibility, this option allows developers to implement their own UI and define the logic for various features. It requires additional development effort but enables a fully tailored user experience.</p>
 <p>Choose the option that best fits your project’s requirements!</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Android</label><label for="__tabbed_4_2">iOS</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>We advise to initialize the sdk on the application level:</p>
-<p><strong>Option 1 - Using MobileIdWalletUISDK</strong>
-<div class="highlight"><pre><span></span><code><span class="n">MobileIdWalletUI</span><span class="p">.</span><span class="na">initialize</span><span class="p">(</span>
-<span class="w">    </span><span class="n">context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">,</span>
-<span class="w">    </span><span class="n">documentReaderParameters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DocumentReaderParameters</span><span class="p">(</span><span class="kc">true</span><span class="p">),</span>
-<span class="w">    </span><span class="n">boardingPassScanParameters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BoardingPassParameters</span><span class="p">(</span><span class="kc">false</span><span class="p">),</span>
-<span class="w">    </span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MobileIdWalletUIConfig</span><span class="p">(</span>
-<span class="w">        </span><span class="n">documentReaderConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DocumentReaderConfig</span><span class="p">(</span>
-<span class="w">            </span><span class="n">multipageProcessing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">            </span><span class="n">databaseId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Full&quot;</span>
-<span class="w">        </span><span class="p">),</span>
-<span class="w">        </span><span class="n">apiConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">APIConfig</span><span class="p">(</span>
-<span class="w">            </span><span class="n">baseUrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">URL</span><span class="p">(</span><span class="s">&quot;&lt;YOUR_ENROLMENT_BASE_URL&gt;&quot;</span><span class="p">),</span>
-<span class="w">            </span><span class="n">timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">30</span><span class="p">,</span>
-<span class="w">            </span><span class="n">logLevel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MobileAPILogLevel</span><span class="p">.</span><span class="na">NONE</span><span class="p">,</span>
-<span class="w">            </span><span class="n">apiKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&lt;YOUR_API_KEY&gt;&quot;</span>
-<span class="w">        </span><span class="p">),</span>
-<span class="w">        </span><span class="n">walletUIConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WalletUIConfig</span><span class="p">(</span>
-<span class="w">            </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">URL</span><span class="p">(</span><span class="s">&quot;&lt;YOUR_WALLET_SERVER_HOST_BASE_URL&gt;&quot;</span><span class="p">),</span>
-<span class="w">            </span><span class="n">logLevel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WalletUILogLevel</span><span class="p">.</span><span class="na">NONE</span>
-<span class="w">        </span><span class="p">)</span>
-<span class="w">    </span><span class="p">)</span>
-<span class="p">)</span>
-</code></pre></div></p>
-<p><strong>Option 2 - Using MobileIdWalletSDK</strong></p>
 <div class="highlight"><pre><span></span><code><span class="n">MobileIdWallet</span><span class="p">.</span><span class="na">initialize</span><span class="p">(</span>
 <span class="w">    </span><span class="n">context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">,</span>
 <span class="w">    </span><span class="n">walletConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WalletSdkConfig</span><span class="p">(</span>
@@ -1002,78 +987,47 @@ end
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<p><strong>Option 1 - Using MobileIdWalletUI</strong></p>
 <div class="highlight"><pre><span></span><code><span class="kd">import</span><span class="w"> </span><span class="nc">UIKit</span>
-<span class="kd">import</span><span class="w"> </span><span class="nc">MobileIdWalletUISDK</span>
+<span class="kd">import</span><span class="w"> </span><span class="nc">MobileIdSDKiOS</span>
 <span class="kd">import</span><span class="w"> </span><span class="nc">MobileIdWalletSDK</span>
 
-<span class="kd">func</span><span class="w"> </span><span class="nf">applicationMobileIdWalletUIProtocol</span><span class="p">(</span><span class="kc">_</span><span class="w"> </span><span class="n">application</span><span class="p">:</span><span class="w"> </span><span class="bp">UIApplication</span><span class="p">,</span><span class="w"> </span><span class="n">didFinishLaunchingWithOptions</span><span class="w"> </span><span class="n">launchOptions</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="bp">UIApplication</span><span class="p">.</span><span class="n">LaunchOptionsKey</span><span class="p">:</span><span class="w"> </span><span class="nb">Any</span><span class="p">]?)</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="nb">Bool</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">window</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="bp">UIWindow</span><span class="p">(</span><span class="n">frame</span><span class="p">:</span><span class="w"> </span><span class="bp">UIScreen</span><span class="p">.</span><span class="n">main</span><span class="p">.</span><span class="n">bounds</span><span class="p">)</span>
-<span class="w">    </span><span class="c1">//</span>
-<span class="w">    </span><span class="c1">// Prepare SDK Config</span>
-<span class="w">    </span><span class="c1">//</span>
-<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nv">mobileIdWalletConfig</span><span class="p">:</span><span class="w"> </span><span class="n">MobileIdWalletConfig</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">.</span><span class="kd">init</span><span class="p">(</span>
-<span class="w">        </span><span class="n">apiKey</span><span class="p">:</span><span class="w"> </span><span class="n">ConfigValues</span><span class="p">.</span><span class="n">MobileIdSDK</span><span class="p">.</span><span class="n">apiKey</span><span class="p">,</span>
-<span class="w">        </span><span class="n">baseURL</span><span class="p">:</span><span class="w"> </span><span class="n">ConfigValues</span><span class="p">.</span><span class="n">MobileIdSDK</span><span class="p">.</span><span class="n">baseURL</span><span class="p">,</span>
-<span class="w">        </span><span class="n">databaseID</span><span class="p">:</span><span class="w"> </span><span class="n">ConfigValues</span><span class="p">.</span><span class="n">MobileIdSDK</span><span class="p">.</span><span class="n">databaseID</span><span class="p">,</span>
-<span class="w">        </span><span class="n">serverHost</span><span class="p">:</span><span class="w"> </span><span class="n">ConfigValues</span><span class="p">.</span><span class="n">WalletSDKCore</span><span class="p">.</span><span class="n">serverHost</span>
-<span class="w">    </span><span class="p">)</span>
-<span class="w">    </span><span class="c1">//</span>
-<span class="w">    </span><span class="c1">// Create SDK Instances &amp; Setup SDK</span>
-<span class="w">    </span><span class="c1">//</span>
-<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nv">mobileIdWalletUI</span><span class="p">:</span><span class="w"> </span><span class="n">MobileIdWalletUIProtocol</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">MobileIdWalletUI</span><span class="p">.</span><span class="n">shared</span>
-<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nv">mobileIdWallet</span><span class="p">:</span><span class="w"> </span><span class="n">MobileIdWalletProtocol</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">MobileIdWallet</span><span class="p">.</span><span class="n">shared</span>
-<span class="w">    </span><span class="n">mobileIdWalletUI</span><span class="p">.</span><span class="n">setup</span><span class="p">(.</span><span class="kd">init</span><span class="p">(</span>
-<span class="w">        </span><span class="n">mobileIdWallet</span><span class="p">:</span><span class="w"> </span><span class="n">mobileIdWallet</span><span class="p">,</span>
-<span class="w">        </span><span class="n">mobileIdWalletSetup</span><span class="p">:</span><span class="w"> </span><span class="p">.</span><span class="kd">init</span><span class="p">(</span>
+<span class="kd">extension</span><span class="w"> </span><span class="nc">AppDelegate</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">func</span><span class="w"> </span><span class="nf">application</span><span class="p">(</span><span class="kc">_</span><span class="w"> </span><span class="n">application</span><span class="p">:</span><span class="w"> </span><span class="bp">UIApplication</span><span class="p">,</span><span class="w"> </span><span class="n">didFinishLaunchingWithOptions</span><span class="w"> </span><span class="n">launchOptions</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="bp">UIApplication</span><span class="p">.</span><span class="n">LaunchOptionsKey</span><span class="p">:</span><span class="w"> </span><span class="nb">Any</span><span class="p">]?)</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="nb">Bool</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">window</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="bp">UIWindow</span><span class="p">(</span><span class="n">frame</span><span class="p">:</span><span class="w"> </span><span class="bp">UIScreen</span><span class="p">.</span><span class="n">main</span><span class="p">.</span><span class="n">bounds</span><span class="p">)</span>
+<span class="w">        </span><span class="c1">//</span>
+<span class="w">        </span><span class="c1">// Prepare SDK Config</span>
+<span class="w">        </span><span class="c1">//</span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="nv">mobileIdWalletConfig</span><span class="p">:</span><span class="w"> </span><span class="n">MobileIdWalletConfig</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">.</span><span class="kd">init</span><span class="p">(</span>
+<span class="w">            </span><span class="n">enrolmentConfig</span><span class="p">:</span><span class="w"> </span><span class="p">.</span><span class="kd">init</span><span class="p">(</span><span class="n">apiConfig</span><span class="p">:</span>
+<span class="w">                </span><span class="p">.</span><span class="kd">init</span><span class="p">(</span>
+<span class="w">                    </span><span class="n">baseURL</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;YOUR_ENROLMENT_BASE_URL&gt;&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="n">timeout</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span>
+<span class="w">                    </span><span class="n">apiKey</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;YOUR_API_KEY&gt;&quot;</span>
+<span class="w">                </span><span class="p">)</span>
+<span class="w">            </span><span class="p">),</span>
+<span class="w">            </span><span class="n">documentReaderConfig</span><span class="p">:</span><span class="w"> </span><span class="p">.</span><span class="kd">init</span><span class="p">(</span>
+<span class="w">                </span><span class="n">multipageProcessing</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">                </span><span class="n">databaseID</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;YOUR_DATABASE_ID&gt;&quot;</span>
+<span class="w">            </span><span class="p">),</span>
+<span class="w">            </span><span class="n">enrolmentViewRegister</span><span class="p">:</span><span class="w"> </span><span class="p">.</span><span class="kd">init</span><span class="p">()</span>
+<span class="w">        </span><span class="p">)</span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="nv">mobileIdWalletSetup</span><span class="p">:</span><span class="w"> </span><span class="n">MobileIdWalletSetup</span><span class="p">.</span><span class="n">Input</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">.</span><span class="kd">init</span><span class="p">(</span>
 <span class="w">            </span><span class="n">mobileIdWalletConfig</span><span class="p">:</span><span class="w"> </span><span class="n">mobileIdWalletConfig</span>
 <span class="w">        </span><span class="p">)</span>
-<span class="w">    </span><span class="p">))</span>
+<span class="w">        </span><span class="c1">//</span>
+<span class="w">        </span><span class="c1">// Create SDK Instances &amp; Setup</span>
+<span class="w">        </span><span class="c1">//</span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="nv">mobileIdWallet</span><span class="p">:</span><span class="w"> </span><span class="n">MobileIdWalletProtocol</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">MobileIdWallet</span><span class="p">.</span><span class="n">shared</span>
+<span class="w">        </span><span class="n">mobileIdWallet</span><span class="p">.</span><span class="n">setup</span><span class="p">(</span><span class="n">mobileIdWalletSetup</span><span class="p">)</span>
 
-<span class="w">    </span><span class="c1">//</span>
-<span class="w">    </span><span class="c1">// Inject MobileIdWalletUIRouterProtocol router in your initial screen</span>
-<span class="w">    </span><span class="c1">// More info at documentation website at Features/MobileIdWalletUISDK/Intro</span>
-<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nv">walletUIRouter</span><span class="p">:</span><span class="w"> </span><span class="n">MobileIdWalletUIRouterProtocol</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">MobileIdWalletUIRouter</span><span class="p">()</span>
-<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nv">initialViewController</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">MobileIdWalletUISDKSampleViewController</span><span class="p">(</span><span class="n">router</span><span class="p">:</span><span class="w"> </span><span class="n">walletUIRouter</span><span class="p">)</span>
-<span class="w">    </span><span class="n">window</span><span class="p">?.</span><span class="n">rootViewController</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="bp">UINavigationController</span><span class="p">(</span><span class="n">rootViewController</span><span class="p">:</span><span class="w"> </span><span class="n">initialViewController</span><span class="p">)</span>
-<span class="w">    </span><span class="n">window</span><span class="p">?.</span><span class="n">makeKeyAndVisible</span><span class="p">()</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="kd">let</span><span class="w"> </span><span class="nv">rootViewController</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">window</span><span class="p">?.</span><span class="n">rootViewController</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">walletUIRouter</span><span class="p">.</span><span class="n">setup</span><span class="p">(</span><span class="n">rootViewController</span><span class="p">:</span><span class="w"> </span><span class="n">rootViewController</span><span class="p">)</span>
+<span class="w">        </span><span class="c1">//</span>
+<span class="w">        </span><span class="c1">// WelcomeScreenViewController is your app inititial screen</span>
+<span class="w">        </span><span class="c1">//</span>
+<span class="w">        </span><span class="n">window</span><span class="p">?.</span><span class="n">rootViewController</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="bp">UINavigationController</span><span class="p">(</span><span class="n">rootViewController</span><span class="p">:</span><span class="w"> </span><span class="n">WelcomeScreenViewController</span><span class="p">(</span><span class="n">dependencies</span><span class="p">:</span><span class="w"> </span><span class="kc">nil</span><span class="p">))</span>
+<span class="w">        </span><span class="n">window</span><span class="p">?.</span><span class="n">makeKeyAndVisible</span><span class="p">()</span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span>
 <span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span>
-<span class="p">}</span>
-</code></pre></div>
-<p><strong>Option 2 - Using MobileIdWalletSDK</strong></p>
-<div class="highlight"><pre><span></span><code><span class="kd">import</span><span class="w"> </span><span class="nc">MobileIdWalletUISDK</span>
-<span class="kd">import</span><span class="w"> </span><span class="nc">MobileIdWalletSDK</span>
-
-<span class="kd">func</span><span class="w"> </span><span class="nf">applicationMobileIdWalletProtocol</span><span class="p">(</span><span class="kc">_</span><span class="w"> </span><span class="n">application</span><span class="p">:</span><span class="w"> </span><span class="bp">UIApplication</span><span class="p">,</span><span class="w"> </span><span class="n">didFinishLaunchingWithOptions</span><span class="w"> </span><span class="n">launchOptions</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="bp">UIApplication</span><span class="p">.</span><span class="n">LaunchOptionsKey</span><span class="p">:</span><span class="w"> </span><span class="nb">Any</span><span class="p">]?)</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="nb">Bool</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">window</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="bp">UIWindow</span><span class="p">(</span><span class="n">frame</span><span class="p">:</span><span class="w"> </span><span class="bp">UIScreen</span><span class="p">.</span><span class="n">main</span><span class="p">.</span><span class="n">bounds</span><span class="p">)</span>
-<span class="w">    </span><span class="c1">//</span>
-<span class="w">    </span><span class="c1">// Prepare SDK Config</span>
-<span class="w">    </span><span class="c1">//</span>
-<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nv">mobileIdWalletConfig</span><span class="p">:</span><span class="w"> </span><span class="n">MobileIdWalletConfig</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">.</span><span class="kd">init</span><span class="p">(</span>
-<span class="w">        </span><span class="n">apiKey</span><span class="p">:</span><span class="w"> </span><span class="n">ConfigValues</span><span class="p">.</span><span class="n">MobileIdSDK</span><span class="p">.</span><span class="n">apiKey</span><span class="p">,</span>
-<span class="w">        </span><span class="n">baseURL</span><span class="p">:</span><span class="w"> </span><span class="n">ConfigValues</span><span class="p">.</span><span class="n">MobileIdSDK</span><span class="p">.</span><span class="n">baseURL</span><span class="p">,</span>
-<span class="w">        </span><span class="n">databaseID</span><span class="p">:</span><span class="w"> </span><span class="n">ConfigValues</span><span class="p">.</span><span class="n">MobileIdSDK</span><span class="p">.</span><span class="n">databaseID</span><span class="p">,</span>
-<span class="w">        </span><span class="n">serverHost</span><span class="p">:</span><span class="w"> </span><span class="n">ConfigValues</span><span class="p">.</span><span class="n">WalletSDKCore</span><span class="p">.</span><span class="n">serverHost</span>
-<span class="w">    </span><span class="p">)</span>
-<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nv">mobileIdWalletSetup</span><span class="p">:</span><span class="w"> </span><span class="n">MobileIdWalletSetup</span><span class="p">.</span><span class="n">Input</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">.</span><span class="kd">init</span><span class="p">(</span>
-<span class="w">        </span><span class="n">mobileIdWalletConfig</span><span class="p">:</span><span class="w"> </span><span class="n">mobileIdWalletConfig</span>
-<span class="w">    </span><span class="p">)</span>
-<span class="w">    </span><span class="c1">//</span>
-<span class="w">    </span><span class="c1">// Create SDK Instances &amp; Setup</span>
-<span class="w">    </span><span class="c1">//</span>
-<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nv">mobileIdWallet</span><span class="p">:</span><span class="w"> </span><span class="n">MobileIdWalletProtocol</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">MobileIdWallet</span><span class="p">.</span><span class="n">shared</span>
-<span class="w">    </span><span class="n">mobileIdWallet</span><span class="p">.</span><span class="n">setup</span><span class="p">(</span><span class="n">mobileIdWalletSetup</span><span class="p">)</span>
-
-<span class="w">    </span><span class="c1">//</span>
-<span class="w">    </span><span class="c1">// WelcomeScreenViewController is your app inititial screen</span>
-<span class="w">    </span><span class="c1">//</span>
-<span class="w">    </span><span class="n">window</span><span class="p">?.</span><span class="n">rootViewController</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="bp">UINavigationController</span><span class="p">(</span><span class="n">rootViewController</span><span class="p">:</span><span class="w"> </span><span class="n">WelcomeScreenViewController</span><span class="p">(</span><span class="n">dependencies</span><span class="p">:</span><span class="w"> </span><span class="kc">nil</span><span class="p">))</span>
-<span class="w">    </span><span class="n">window</span><span class="p">?.</span><span class="n">makeKeyAndVisible</span><span class="p">()</span>
-
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span>
 <span class="p">}</span>
 </code></pre></div>
 </div>
@@ -1123,53 +1077,9 @@ must be able to read according to ISO7816:</p>
 </div>
 </div>
 </div>
-<h3 id="deep-links">Deep Links<a class="headerlink" href="#deep-links" title="Permanent link">&para;</a></h3>
-<p>In order for the SDK to use the deep links, the user must grant permission to do so.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1">Android</label><label for="__tabbed_6_2">iOS</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<p>In order to handle the deeplinks to share the credential, if you use the <strong>MobileIdWalletUISDK</strong> you don't need to do anything. The UI SDK already handles the deeplink.</p>
-<p>If you are using the <strong>MobileIdWalletSDK</strong> you need to handle the deeplink. In the Manifest add the following intent-filter to your activity:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">&lt;intent-filter</span><span class="w"> </span><span class="nt">&gt;</span>
-<span class="w">    </span><span class="nt">&lt;action</span><span class="w"> </span><span class="na">android:name=</span><span class="s">&quot;android.intent.action.VIEW&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
-<span class="w">    </span><span class="nt">&lt;category</span><span class="w"> </span><span class="na">android:name=</span><span class="s">&quot;android.intent.category.DEFAULT&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
-<span class="w">    </span><span class="nt">&lt;category</span><span class="w"> </span><span class="na">android:name=</span><span class="s">&quot;android.intent.category.BROWSABLE&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
-
-<span class="w">    </span><span class="nt">&lt;data</span><span class="w"> </span><span class="na">android:scheme=</span><span class="s">&quot;openid-vc&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
-<span class="nt">&lt;/intent-filter&gt;</span>
-</code></pre></div>
-<p>And in your activity:
-<div class="highlight"><pre><span></span><code><span class="n">MobileIdWallet</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">sharePassportCredential</span><span class="p">(</span>
-<span class="w">    </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SharePassportCredential</span><span class="p">.</span><span class="na">Input</span><span class="p">(</span>
-<span class="w">        </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">intent</span><span class="p">.</span><span class="na">data</span><span class="p">,</span>
-<span class="w">        </span><span class="n">verifiedCredentialId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">digitalId</span><span class="p">,</span>
-<span class="w">        </span><span class="n">requiresAuthenticationToCompleteFlow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
-<span class="w">    </span><span class="p">)</span>
-<span class="p">)</span>
-</code></pre></div></p>
-<p>The digital id, should be the id of the credential that the user wants to share.</p>
-</div>
-<div class="tabbed-block">
-<p>To configure, in the app's <strong>Info.plist</strong> file, include __ CFBundleURLTypes__.</p>
-<div class="highlight"><pre><span></span><code>&lt;key&gt;CFBundleURLTypes&lt;/key&gt;
-&lt;array&gt;
-    &lt;dict&gt;
-        &lt;key&gt;CFBundleURLSchemes&lt;/key&gt;
-        &lt;array&gt;
-            &lt;string&gt;openid-vc&lt;/string&gt;
-        &lt;/array&gt;
-        &lt;key&gt;CFBundleTypeRole&lt;/key&gt;
-        &lt;string&gt;Editor&lt;/string&gt;
-    &lt;/dict&gt;
-&lt;/array&gt;
-</code></pre></div>
-<p><img alt="Permissions" src="assets/Permissions.Deeplinks.png" style="display: block; margin: 5px auto" title="Permissions" /></p>
-</div>
-</div>
-</div>
 <h3 id="faceid">FaceID<a class="headerlink" href="#faceid" title="Permanent link">&para;</a></h3>
 <p>In order for the SDK to use the FaceID, the user must grant permission to do so.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="__tabbed_7_1">Android</label><label for="__tabbed_7_2">iOS</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1">Android</label><label for="__tabbed_6_2">iOS</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Nothing to do.</p>
@@ -1183,7 +1093,7 @@ After includ it, provide a description of why the app requires Face ID authentic
 </div>
 <h3 id="camera">Camera<a class="headerlink" href="#camera" title="Permanent link">&para;</a></h3>
 <p>In order for the SDK to use the camera, the user must grant permission to do so.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="8:2"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio" /><input id="__tabbed_8_2" name="__tabbed_8" type="radio" /><div class="tabbed-labels"><label for="__tabbed_8_1">Android</label><label for="__tabbed_8_2">iOS</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="__tabbed_7_1">Android</label><label for="__tabbed_7_2">iOS</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>In order to use the camera related features, the user must give the camera permission in runtime, otherwise it won't work. We already handle the permission check and added to the manifest the following:
@@ -1199,7 +1109,7 @@ After includ it, provide a message that explains the user why your app needs to 
 </div>
 </div>
 <h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="9:2"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio" /><input id="__tabbed_9_2" name="__tabbed_9" type="radio" /><div class="tabbed-labels"><label for="__tabbed_9_1">Android</label><label for="__tabbed_9_2">iOS</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="8:2"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio" /><input id="__tabbed_8_2" name="__tabbed_8" type="radio" /><div class="tabbed-labels"><label for="__tabbed_8_1">Android</label><label for="__tabbed_8_2">iOS</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <ul>
@@ -1220,7 +1130,7 @@ After includ it, provide a message that explains the user why your app needs to 
 </div>
 <div class="tabbed-block">
 <ul>
-<li>'MobileIdSDKiOS', '~&gt; '8.0.0'</li>
+<li>'MobileIdSDKiOS', '~&gt; '8.1.6'</li>
 <li>'WalletLibrary', </li>
 <li>'VBOcrMrzRfidRegula-ios'     </li>
 </ul>
@@ -1228,7 +1138,7 @@ After includ it, provide a message that explains the user why your app needs to 
 </div>
 </div>
 <h2 id="other-settings">Other Settings<a class="headerlink" href="#other-settings" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="10:2"><input checked="checked" id="__tabbed_10_1" name="__tabbed_10" type="radio" /><input id="__tabbed_10_2" name="__tabbed_10" type="radio" /><div class="tabbed-labels"><label for="__tabbed_10_1">Android</label><label for="__tabbed_10_2">iOS</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="9:2"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio" /><input id="__tabbed_9_2" name="__tabbed_9" type="radio" /><div class="tabbed-labels"><label for="__tabbed_9_1">Android</label><label for="__tabbed_9_2">iOS</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Nothing to do.</p>
@@ -1239,17 +1149,6 @@ After includ it, provide a message that explains the user why your app needs to 
 </code></pre></div>
 <p>on project settings.</p>
 <p><img alt="Permissions" src="assets/OtherSettings.Sandboxing.png" style="display: block; margin: 5px auto" title="OtherSettings" /></p>
-</div>
-</div>
-</div>
-<h2 id="sample-app">Sample App<a class="headerlink" href="#sample-app" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="11:2"><input checked="checked" id="__tabbed_11_1" name="__tabbed_11" type="radio" /><input id="__tabbed_11_2" name="__tabbed_11" type="radio" /><div class="tabbed-labels"><label for="__tabbed_11_1">Android</label><label for="__tabbed_11_2">iOS</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<p>You can find a sample <a href="https://github.com/vbmobile/app-wallet-sample-android"><strong>here</strong></a></p>
-</div>
-<div class="tabbed-block">
-<p>You can find a sample <a href="https://github.com/vbmobile/app-wallet-sample-ios"><strong>here</strong></a></p>
 </div>
 </div>
 </div>

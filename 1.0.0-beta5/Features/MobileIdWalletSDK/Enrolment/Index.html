@@ -14,6 +14,8 @@
         <link rel="prev" href="../BoardingPasses/Index.html">
       
       
+        <link rel="next" href="../Misc/Index.html">
+      
       
       <link rel="icon" href="../../../assets/vb-favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
@@ -587,6 +589,29 @@ You're not viewing the latest version.
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Misc/Index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Misc
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -681,7 +706,8 @@ You're not viewing the latest version.
 
 
 <h1 id="enrolment">Enrolment<a class="headerlink" href="#enrolment" title="Permanent link">&para;</a></h1>
-<p>TO DO</p>
+<p>The Mobile ID Wallet SDK provides functionality to manage the relationships between passengers, flights, documents, and boarding passes. Developers can retrieve the current status of a subject using its unique identifier, allowing apps to track verification progress or workflow state. The SDK also supports creating and verifying subjects by associating a boarding pass with a document, linking passengers to their flights securely within the wallet. </p>
+<p>All operations support Swift’s async/await concurrency model and offer completion handler alternatives for legacy callback-based workflows. Inputs and outputs are strongly typed, ensuring safe and predictable access to subject and association data, while the API follows a consistent Swift-native design for seamless integration into your app.</p>
 <h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Android</label><label for="__tabbed_1_2">iOS</label></div>
 <div class="tabbed-content">
@@ -700,6 +726,11 @@ You're not viewing the latest version.
 <span class="w">    </span><span class="kd">init</span><span class="p">(</span><span class="n">mobileIdWallet</span><span class="p">:</span><span class="w"> </span><span class="n">MobileIdWalletProtocol</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="kc">self</span><span class="p">.</span><span class="n">mobileIdWallet</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">mobileIdWallet</span>
 <span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">init</span><span class="p">(</span><span class="n">input</span><span class="p">:</span><span class="w"> </span><span class="n">MobileIdWalletSetup</span><span class="p">.</span><span class="n">Input</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kc">self</span><span class="p">.</span><span class="n">mobileIdWallet</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">MobileIdWallet</span><span class="p">.</span><span class="n">shared</span>
+<span class="w">        </span><span class="n">mobileIdWallet</span><span class="p">.</span><span class="n">setup</span><span class="p">(.</span><span class="kd">init</span><span class="p">(</span><span class="n">mobileIdWalletConfig</span><span class="p">:</span><span class="w"> </span><span class="n">input</span><span class="p">.</span><span class="n">mobileIdWalletConfig</span><span class="p">))</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
 </div>
@@ -714,8 +745,7 @@ You're not viewing the latest version.
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="kd">extension</span><span class="w"> </span><span class="nc">EnrolmentManagerSampleUsage</span><span class="w"> </span><span class="p">{</span>
-
-<span class="w">    </span><span class="c1">/// Verify and create a Subject (connects a passanger with a fligth)</span>
+<span class="w">    </span><span class="c1">/// Verifies and creates a subject, associates a passenger with a flight, and links a boarding pass with a document in the wallet.</span>
 <span class="w">    </span><span class="kd">func</span><span class="w"> </span><span class="nf">assocBoardingPassWithDocument</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="nv">viewController</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="bp">UIViewController</span><span class="p">()</span>
 <span class="w">        </span><span class="n">Task</span><span class="w"> </span><span class="p">{</span>
@@ -745,6 +775,7 @@ You're not viewing the latest version.
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="kd">extension</span><span class="w"> </span><span class="nc">EnrolmentManagerSampleUsage</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">/// Given a _subject id_, will return the `MobileIdSDKiOS.SubjectStatus`</span>
 <span class="w">    </span><span class="kd">func</span><span class="w"> </span><span class="nf">getSubjectStatus</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="n">Task</span><span class="w"> </span><span class="p">{</span>
 <span class="w">            </span><span class="kd">let</span><span class="w"> </span><span class="nv">subjectId</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;your_subject_id&quot;</span>
