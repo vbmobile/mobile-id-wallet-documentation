@@ -1,8 +1,9 @@
 # Boarding Passes
 
-This SDK provides full CRUD support for boarding passes, allowing you to create, read, update, and delete them with ease. By integrating boarding pass data with verifiable credentials, the SDK enhances the airport experience, enabling smoother check-ins, security screenings, and boarding processes.
+The Mobile ID Wallet SDK provides robust functionality for managing boarding passes within the wallet. Developers can retrieve all stored boarding passes or access a specific boarding pass by its unique identifier, including full details when needed. Boarding passes can be added to the wallet by parsing images or scanning them directly with the device camera, and they can also be deleted when no longer required. 
 
-With built-in scanning capabilities, the SDK extracts key information from a wide range of boarding passes, ensuring seamless integration with digital identity solutions. By linking a boarding pass to a verifiable credential, travelers can experience faster verification and reduced friction throughout their journey.
+All operations are fully asynchronous with async/await support and provide completion handler alternatives for legacy workflows. Inputs and outputs are strongly typed, ensuring safe and predictable access to boarding pass data, while the SDK maintains a consistent Swift-native API style for seamless integration into your app.
+
 
 
 ## Setup
@@ -25,6 +26,11 @@ With built-in scanning capabilities, the SDK extracts key information from a wid
 	    init(mobileIdWallet: MobileIdWalletProtocol) {
 	        self.mobileIdWallet = mobileIdWallet
 	    }
+	
+	    init(input: MobileIdWalletSetup.Input) {
+	        self.mobileIdWallet = MobileIdWallet.shared
+	        mobileIdWallet.setup(.init(mobileIdWalletConfig: input.mobileIdWalletConfig))
+	    }
 	}
 	```
 
@@ -40,11 +46,10 @@ With built-in scanning capabilities, the SDK extracts key information from a wid
 
     ```swift
 	extension BoardingPassManagerSampleUsage {
-	    /// Scan boarding pass using the device camera
+	    /// Scans a boarding pass using the device camera, parses its information, and stores it in the wallet.
 	    func scanBoardingPass() {
 	        let viewController = UIViewController()
 	        Task {
-	            /// Scan boarding pass using the device camera
 	            try? await mobileIdWallet.scanBoardingPass(.init(
 	                viewController: viewController,
 	                parameters: .init(validateBoardingPass: true)
@@ -52,12 +57,11 @@ With built-in scanning capabilities, the SDK extracts key information from a wid
 	        }
 	    }
 	
-	    /// Parse boarding pass providing a picture of the boarding pass
+	    /// Parses a boarding pass image to extract flight information and stores it in the wallet.
 	    func parseBoardingPass() {
 	        let viewController = UIViewController()
 	        let boardingPassImage = UIImage()
 	        Task {
-	            /// Parse boarding pass providing a picture of the boarding pass
 	            try? await mobileIdWallet.parseBoardingPass(.init(
 	                viewController: viewController,
 	                parameters: .init(validateBoardingPass: true, boardingPassData: nil, boardingPassImage: boardingPassImage)
@@ -79,7 +83,7 @@ With built-in scanning capabilities, the SDK extracts key information from a wid
 
     ```swift
 	extension BoardingPassManagerSampleUsage {
-	    /// Get/Fetch all stored boading passes
+	    /// Retrieves all boarding passes currently stored in the wallet.
 	    func getAllBoardingPass() async {
 	        Task {
 	            let result = try? await mobileIdWallet.getAllBoardingPass()
@@ -87,14 +91,14 @@ With built-in scanning capabilities, the SDK extracts key information from a wid
 	        }
 	    }
 	
-	    /// Get/Fetch boarding pass by id
+	    /// Retrieves a specific boarding pass using its unique identifier.
 	    func getBoardingPassById() async {
 	        let boardingPassId = "your_boarding_pass_id"
 	        let result = try? await mobileIdWallet.getBoardingPass(.init(boardingPassId: boardingPassId))
 	        guard let boardingPass = result?.record else { return }
 	        print(boardingPass)
 	    }
-}
+	}
 	```
 	
 ## Delete
@@ -109,7 +113,7 @@ With built-in scanning capabilities, the SDK extracts key information from a wid
 
     ```swift
 	extension BoardingPassManagerSampleUsage {
-	    /// Delete boarding pass by id
+	    /// Deletes a specific boarding pass using its unique identifier.
 	    func deleteBoardingPass() async {
 	        let boardingPassId = "your_boarding_pass_id"
 	        _ = try? await mobileIdWallet.deleteBoardingPass(.init(boardingPassId: boardingPassId))

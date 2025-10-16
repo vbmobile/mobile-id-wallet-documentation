@@ -1,8 +1,9 @@
 # Document Reader 
 
-This SDK supports a wide range of passports and boarding passes, enabling seamless document reading and verification. By leveraging advanced OCR and NFC technologies, it ensures accurate data extraction from various document formats worldwide.
+The Mobile ID Wallet SDK provides comprehensive support for managing identity documents within the wallet. Developers can retrieve all stored documents or access a specific document by its unique identifier. Documents can be added to the wallet by capturing them with the device camera and optionally using RFID for enhanced security. Stored documents can also be deleted when no longer needed. 
 
-With built-in camera integration, the SDK provides a smooth scanning experience, requiring only a base view controller to trigger the document capture. Whether you're handling passport-based identity verification or boarding pass processing, the SDK streamlines the process with high reliability and performance.
+All operations support Swift’s async/await concurrency model, with optional completion handler alternatives for traditional callback-based workflows. Strongly typed input and output models ensure safe and predictable access to document data, while the API maintains a consistent Swift-native style for seamless integration into your app.
+
 
 ## Setup
 
@@ -24,6 +25,11 @@ With built-in camera integration, the SDK provides a smooth scanning experience,
 	    let mobileIdWallet: MobileIdWalletProtocol
 	    init(mobileIdWallet: MobileIdWalletProtocol) {
 	        self.mobileIdWallet = mobileIdWallet
+	    }
+	
+	    init(input: MobileIdWalletSetup.Input) {
+	        self.mobileIdWallet = MobileIdWallet.shared
+	        mobileIdWallet.setup(.init(mobileIdWalletConfig: input.mobileIdWalletConfig))
 	    }
 	}
 	```
@@ -52,10 +58,15 @@ With built-in camera integration, the SDK provides a smooth scanning experience,
 
     ```swift
 	extension DocumentsManagerSampleUsage {
+	    /// Reads a document using the device camera and optionally RFID, parses its information, and stores it in the wallet.
 	    func readDocument() {
 	        let yourTopViewController: UIViewController = .init()
+	        let parameters: ReadDocumentParameters = .init(readRFID: true)
 	        Task {
-	            let result = try? await mobileIdWallet.readDocument(.init(viewController: yourTopViewController))
+	            let result = try? await mobileIdWallet.readDocument(.init(
+	                viewController: yourTopViewController,
+	                readDocumentParameters: parameters
+	            ))
 	            guard let document = result?.document else { return }
 	            print(document)
 	        }
@@ -75,8 +86,7 @@ With built-in camera integration, the SDK provides a smooth scanning experience,
 
     ```swift
 	extension DocumentsManagerSampleUsage {
-	    
-	    /// Get/Fetch all the documents
+	    /// Retrieves all documents currently stored in the wallet.
 	    func getAllDocuments() {
 	        Task {
 	            guard let result = try? await mobileIdWallet.getAllDocuments() else { return }
@@ -84,7 +94,7 @@ With built-in camera integration, the SDK provides a smooth scanning experience,
 	        }
 	    }
 	
-	    /// Get/Fetch document by id
+	    /// Retrieves a specific document from the wallet using its unique identifier.
 	    func getDocumentById() {
 	        Task {
 	            let documentId = "your_document_id"
@@ -96,7 +106,7 @@ With built-in camera integration, the SDK provides a smooth scanning experience,
 	        }
 	    }
 	
-	    /// Get/Fetch DocumentReaderReport by id
+	    /// Retrieves a specific document from the wallet using its unique identifier.
 	    func getDocumentReaderReportById() {
 	        Task {
 	            let documentId = "your_document_id"
@@ -124,7 +134,6 @@ With built-in camera integration, the SDK provides a smooth scanning experience,
 
     ```swift
 	extension DocumentsManagerSampleUsage {
-	    
 	    /// Delete document by id
 	    func deleteDocument() {
 	        Task {

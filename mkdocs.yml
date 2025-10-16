@@ -35,6 +35,7 @@ nav:
       - Documents: Features/MobileIdWalletSDK/Documents/Index.md
       - Boarding Passes: Features/MobileIdWalletSDK/BoardingPasses/Index.md
       - Enrolment: Features/MobileIdWalletSDK/Enrolment/Index.md
+      - Misc: Features/MobileIdWalletSDK/Misc/Index.md
     #- MobileIdWalletUISDK:
     #  - Intro: Features/MobileIdWalletUISDK/Intro/Index.md
     #  - Sharing Credentials: Features/MobileIdWalletUISDK/SharingCredentials/Index.md
