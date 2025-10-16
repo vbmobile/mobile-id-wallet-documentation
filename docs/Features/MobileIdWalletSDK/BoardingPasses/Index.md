@@ -20,7 +20,7 @@ With built-in scanning capabilities, the SDK extracts key information from a wid
 	import Foundation
 	import UIKit
 	
-	class ManageBoardingPasses {
+	class BoardingPassManagerSampleUsage {
 	    let mobileIdWallet: MobileIdWalletProtocol
 	    init(mobileIdWallet: MobileIdWalletProtocol) {
 	        self.mobileIdWallet = mobileIdWallet
@@ -28,7 +28,7 @@ With built-in scanning capabilities, the SDK extracts key information from a wid
 	}
 	```
 
-## Read or Scan
+## Parse/Scan
 
 === "Android"
 
@@ -39,24 +39,35 @@ With built-in scanning capabilities, the SDK extracts key information from a wid
 === "iOS"
 
     ```swift
-	extension ManageBoardingPasses {
+	extension BoardingPassManagerSampleUsage {
+	    /// Scan boarding pass using the device camera
 	    func scanBoardingPass() {
 	        let viewController = UIViewController()
 	        Task {
-	            try? await mobileIdWallet.scanBoardingPass(.init(viewController: viewController, parameters: .defaultParameters()))
+	            /// Scan boarding pass using the device camera
+	            try? await mobileIdWallet.scanBoardingPass(.init(
+	                viewController: viewController,
+	                parameters: .init(validateBoardingPass: true)
+	            ))
 	        }
 	    }
 	
+	    /// Parse boarding pass providing a picture of the boarding pass
 	    func parseBoardingPass() {
 	        let viewController = UIViewController()
+	        let boardingPassImage = UIImage()
 	        Task {
-	            try? await mobileIdWallet.parseBoardingPass(.init(viewController: viewController, parameters: .defaultParameters(image: UIImage())))
+	            /// Parse boarding pass providing a picture of the boarding pass
+	            try? await mobileIdWallet.parseBoardingPass(.init(
+	                viewController: viewController,
+	                parameters: .init(validateBoardingPass: true, boardingPassData: nil, boardingPassImage: boardingPassImage)
+	            ))
 	        }
 	    }
 	}
 	```
 	
-## Get/Fetch
+## Get/Fetch 
 
 === "Android"
 
@@ -67,24 +78,23 @@ With built-in scanning capabilities, the SDK extracts key information from a wid
 === "iOS"
 
     ```swift
-	extension ManageBoardingPasses {
+	extension BoardingPassManagerSampleUsage {
+	    /// Get/Fetch all stored boading passes
 	    func getAllBoardingPass() async {
 	        Task {
-	            let output = try? await mobileIdWallet.getAllBoardingPass()
-	            if let records = output?.records {
-	                print(records)
-	            }
+	            let result = try? await mobileIdWallet.getAllBoardingPass()
+	            print(result?.records ?? [])
 	        }
 	    }
 	
-	    func getBoardingPass() async {
-	        guard let fetchAllBoardingPassOutput = try? await mobileIdWallet.getAllBoardingPass(),
-	              let boardingPassId = fetchAllBoardingPassOutput.records.first?.id else { return }
-	        let output = try? await mobileIdWallet.getBoardingPass(.init(boardingPassId: boardingPassId))
-	        guard let boardingPass = output?.record else { return }
+	    /// Get/Fetch boarding pass by id
+	    func getBoardingPassById() async {
+	        let boardingPassId = "your_boarding_pass_id"
+	        let result = try? await mobileIdWallet.getBoardingPass(.init(boardingPassId: boardingPassId))
+	        guard let boardingPass = result?.record else { return }
 	        print(boardingPass)
 	    }
-	}
+}
 	```
 	
 ## Delete
@@ -98,26 +108,11 @@ With built-in scanning capabilities, the SDK extracts key information from a wid
 === "iOS"
 
     ```swift
-	extension ManageBoardingPasses {
+	extension BoardingPassManagerSampleUsage {
+	    /// Delete boarding pass by id
 	    func deleteBoardingPass() async {
-	        guard let fetchAllBoardingPassOutput = try? await mobileIdWallet.getAllBoardingPass(),
-	              let boardingPassId = fetchAllBoardingPassOutput.records.first?.id else { return }
+	        let boardingPassId = "your_boarding_pass_id"
 	        _ = try? await mobileIdWallet.deleteBoardingPass(.init(boardingPassId: boardingPassId))
 	    }
 	}
 	```
-	
-## Sample
-
-=== "Android"
-
-    ```kotlin
-	TO DO
-    ```
-
-=== "iOS"
-
-    ```swift
-	TO DO
-	```
-	

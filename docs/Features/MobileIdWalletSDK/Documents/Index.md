@@ -20,7 +20,7 @@ With built-in camera integration, the SDK provides a smooth scanning experience,
 	import MobileIdWalletSDK
 	import MobileIdSDKiOS // MobileID (VB Enrollment SDK)
 	
-	class ManageDocuments {
+	class DocumentsManagerSampleUsage {
 	    let mobileIdWallet: MobileIdWalletProtocol
 	    init(mobileIdWallet: MobileIdWalletProtocol) {
 	        self.mobileIdWallet = mobileIdWallet
@@ -28,7 +28,7 @@ With built-in camera integration, the SDK provides a smooth scanning experience,
 	}
 	```
 
-## Read Document
+## Read
 
 === "Android"
 
@@ -51,13 +51,12 @@ With built-in camera integration, the SDK provides a smooth scanning experience,
 === "iOS"
 
     ```swift
-	extension ManageDocuments {
+	extension DocumentsManagerSampleUsage {
 	    func readDocument() {
+	        let yourTopViewController: UIViewController = .init()
 	        Task {
-	            let output = try? await mobileIdWallet.readDocument(.init(viewController: UIViewController()))
-	            guard let document = output?.document else {
-	                return
-	            }
+	            let result = try? await mobileIdWallet.readDocument(.init(viewController: yourTopViewController))
+	            guard let document = result?.document else { return }
 	            print(document)
 	        }
 	    }
@@ -75,39 +74,37 @@ With built-in camera integration, the SDK provides a smooth scanning experience,
 === "iOS"
 
     ```swift
-	extension ManageDocuments {
+	extension DocumentsManagerSampleUsage {
+	    
+	    /// Get/Fetch all the documents
 	    func getAllDocuments() {
 	        Task {
-	            /// Fetch all the documents
-	            guard let output = try? await mobileIdWallet.getAllDocuments() else {
-	                return
-	            }
-	            print(output.records)
+	            guard let result = try? await mobileIdWallet.getAllDocuments() else { return }
+	            print(result.records)
 	        }
 	    }
 	
-	    func getDocument() {
+	    /// Get/Fetch document by id
+	    func getDocumentById() {
 	        Task {
-	            guard let getAllDocumentsOutput = try? await mobileIdWallet.getAllDocuments(),
-	                  let document = getAllDocumentsOutput.records.first else {
+	            let documentId = "your_document_id"
+	            let getDocumentOutput = try? await mobileIdWallet.getDocument(.init(documentId: documentId))
+	            guard let document = getDocumentOutput?.record else {
 	                return
 	            }
-	            let getDocumentOutput = try? await mobileIdWallet.getDocument(.init(documentId: document.id))
-	            if let document = getDocumentOutput?.record {
-	                print(document)
-	                print(document.documentReaderReport as Any)
-	            }
+	            print(document)
 	        }
 	    }
 	
-	    func getDocumentReaderReport() {
+	    /// Get/Fetch DocumentReaderReport by id
+	    func getDocumentReaderReportById() {
 	        Task {
-	            guard let getAllDocumentsOutput = try? await mobileIdWallet.getAllDocuments(),
-	                  let document = getAllDocumentsOutput.records.first else {
+	            let documentId = "your_document_id"
+	            let getDocumentOutput = try? await mobileIdWallet.getDocument(.init(documentId: documentId))
+	            guard let document = getDocumentOutput?.record else {
 	                return
 	            }
-	            let getDocumentOutput = try? await mobileIdWallet.getDocument(.init(documentId: document.id))
-	            if let documentReaderReport = getDocumentOutput?.record.documentReaderReport {
+	            if let documentReaderReport = document.documentReaderReport {
 	                print(documentReaderReport)
 	            }
 	        }
@@ -126,15 +123,14 @@ With built-in camera integration, the SDK provides a smooth scanning experience,
 === "iOS"
 
     ```swift
-	extension ManageDocuments {
+	extension DocumentsManagerSampleUsage {
+	    
+	    /// Delete document by id
 	    func deleteDocument() {
 	        Task {
-	            guard let output = try? await mobileIdWallet.getAllDocuments(),
-	                  let document = output.records.first else {
-	                return
-	            }
-	            let deleteDocumentOutput = try? await mobileIdWallet.deleteDocument(.init(documentId: document.id))
-	            if let success = deleteDocumentOutput?.success {
+	            let documentId = "your_document_id"
+	            let result = try? await mobileIdWallet.deleteDocument(.init(documentId: documentId))
+	            if let success = result?.success {
 	                print("success: \(success)")
 	            }
 	        }

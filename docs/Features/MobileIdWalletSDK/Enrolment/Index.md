@@ -18,7 +18,7 @@ TO DO
 	import MobileIdWalletSDK
 	import MobileIdSDKiOS // MobileID (VB Enrollment SDK)
 	
-	class ManageEnrolment {
+	class EnrolmentManagerSampleUsage {
 	    let mobileIdWallet: MobileIdWalletProtocol
 	    init(mobileIdWallet: MobileIdWalletProtocol) {
 	        self.mobileIdWallet = mobileIdWallet
@@ -37,21 +37,22 @@ TO DO
 === "iOS"
 
     ```swift
-	extension ManageEnrolment {
+	extension EnrolmentManagerSampleUsage {
+	    
+	    /// Verify and create a Subject (connects a passanger with a fligth)
 	    func assocBoardingPassWithDocument() {
 	        let viewController = UIViewController()
 	        Task {
-	            guard let output = try? await mobileIdWallet.getAllBoardingPass(),
-	                  let boardingPassId = output.records.first?.id else { return }
-	
-	            guard let output = try? await mobileIdWallet.getAllDocuments(),
-	                  let documentId = output.records.first?.id else { return }
-	
-	            _ = try? await mobileIdWallet.assocBoardingPassWithDocument(.init(
+	            let documentId = "your_document_id"
+	            let boardingPassId = "your_boarding_pass_id"
+	            let result = try? await mobileIdWallet.assocBoardingPassWithDocument(.init(
 	                viewController: viewController,
 	                documentId: documentId,
 	                boardingPassId: boardingPassId
 	            ))
+	            /// Returns the subject id
+	            guard let subjectId = result?.subjectId else { return }
+	            print(subjectId)
 	        }
 	    }
 	}
@@ -68,27 +69,15 @@ TO DO
 === "iOS"
 
     ```swift
-    func getSubjectStatus() {
-        let viewController = UIViewController()
-        Task {
-            guard let output = try? await mobileIdWallet.getAllBoardingPass(),
-                  let boardingPassId = output.records.first?.id else { return }
-
-            guard let output = try? await mobileIdWallet.getAllDocuments(),
-                  let documentId = output.records.first?.id else { return }
-
-            let assocBoardingPassWithDocumentOutput = try? await mobileIdWallet.assocBoardingPassWithDocument(.init(
-                viewController: viewController,
-                documentId: documentId,
-                boardingPassId: boardingPassId
-            ))
-            if let subjectId = assocBoardingPassWithDocumentOutput?.subjectId {
-                let getSubjectStatusOutput = try? await mobileIdWallet.getSubjectStatus(.init(subjectId: subjectId))
-                if let subjectStatus = getSubjectStatusOutput?.subjectStatus {
-                    print(subjectStatus.id)
-                    print(subjectStatus.status)
-                }
-            }
-        }
-    }
+	extension EnrolmentManagerSampleUsage {
+	    func getSubjectStatus() {
+	        Task {
+	            let subjectId = "your_subject_id"
+	            let output = try? await mobileIdWallet.getSubjectStatus(.init(subjectId: subjectId))
+	            guard let subjectStatus = output?.subjectStatus else { return }
+	            print(subjectStatus.id)
+	            print(subjectStatus.status)
+	        }
+	    }
+	}
     ```
