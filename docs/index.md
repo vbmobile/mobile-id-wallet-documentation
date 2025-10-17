@@ -5,14 +5,23 @@ hide:
 
 # Getting started
 
-## Intro
+## Introduction
 
 The Mobile ID Wallet SDK provides a comprehensive set of tools to manage digital identity documents and boarding passes securely within an app. It allows developers to capture and parse documents and boarding passes using the device camera, optionally leveraging RFID for added security. Parsed information can be stored in the wallet, retrieved for display, or deleted as needed. 
 
-The SDK supports both modern Swift concurrency with async/await and traditional callback-based workflows, ensuring flexible integration for different app architectures. All operations use structured input and output models, providing type-safe access to documents, boarding passes, and subject-related data. Developers can also associate passengers with flights by linking boarding passes to documents, and query the status of subjects to facilitate verification workflows. 
+### Key Features
 
-Designed with a consistent, Swift-native API style, the Mobile ID Wallet SDK simplifies secure digital document management, enabling apps to seamlessly integrate identity verification and boarding pass handling in a user-centric way.
-
+* __Setup & Configuration:__ Initialize and configure the wallet with custom setup parameters.
+* __Document & Boarding Pass Management:__ Parse Boarding Pass: Extract flight details from an image.
+Scan Boarding Pass: Capture and parse boarding passes using the device camera.
+Read Document: Scan identity documents via camera and RFID.
+* __Data Retrieval & Storage:__ Retrieve all stored documents or boarding passes.
+Fetch specific items by unique identifiers.
+Access full details of original boarding passes.
+* __Deletion Operations:__ Delete individual documents or boarding passes.
+Perform batch deletion of all wallet content.
+* __Association & Linking:__ Associate boarding passes with identity documents and create subject relationships.
+* __Status Tracking:__ Query the current status of a subject by ID.
 
 ![Arquitecture](assets/SDKArquitecture.png "Arquitecture"){: style="display: block; margin: 5px auto"}
 
