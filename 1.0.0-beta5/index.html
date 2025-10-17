@@ -875,7 +875,7 @@ maven { url &quot;https://jitpack.io&quot; }
 <li>Add the following to your Podfile, with the latest version:
 <div class="highlight"><pre><span></span><code>pod &#39;mobileid-wallet-sdk&#39;, &#39;1.0.0&#39;
 </code></pre></div></li>
-<li>Add MobileIdWalletSDK cocoapods repo as a source in your podfile:
+<li>Add cocoapods repo as a source in your podfile:
 <div class="highlight"><pre><span></span><code>source &#39;https://cdn.cocoapods.org/&#39;
 </code></pre></div></li>
 <li>Run in Terminal the command below to install pods in your project:
@@ -884,15 +884,17 @@ maven { url &quot;https://jitpack.io&quot; }
 </ol>
 <p><strong>NOTE:</strong> Due the necessity of the SDK to be built for distribution, a post installscript might be needed in your Podfile: (https://github.com/CocoaPods/CocoaPods/issues/9232).
 Example:
-<div class="highlight"><pre><span></span><code>post_install do |installer|
-    installer.pods_project.build_configurations.each do |config|
-        config.build_settings[&#39;BUILD_LIBRARY_FOR_DISTRIBUTION&#39;] = &#39;YES&#39;
-        config.build_settings[&quot;EXCLUDED_ARCHS[sdk=iphonesimulator*]&quot;] = &quot;arm64&quot;
-    end
-end
+<div class="highlight"><pre><span></span><code> post_install do |pi|
+     pi.pods_project.targets.each do |t|
+         t.build_configurations.each do |config|
+             config.build_settings[&#39;ONLY_ACTIVE_ARCH&#39;] = &#39;NO&#39;
+             config.build_settings[&#39;BUILD_LIBRARY_FOR_DISTRIBUTION&#39;] = &#39;YES&#39;
+         end
+     end
+ end
 </code></pre></div></p>
 <p>finally a full pod file will look something like:</p>
-<div class="highlight"><pre><span></span><code>source &#39;https://github.com/CocoaPods/Specs.git&#39;
+<div class="highlight"><pre><span></span><code>source &#39;https://cdn.cocoapods.org/&#39;
 
 platform :ios, &#39;15.0&#39;
 use_modular_headers!  
@@ -903,7 +905,7 @@ project &#39;DemoApp.xcodeproj&#39;
 target &#39;DemoApp&#39; do
   use_frameworks!
   project &#39;DemoApp.xcodeproj&#39;
-  pod &#39;MobileIdWalletSDK&#39;, &#39;1.0.0&#39;
+  pod &#39;mobileid-wallet-sdk&#39;, &#39;1.0.0&#39;
 end
 
 post_install do |pi|
