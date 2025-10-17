@@ -77,7 +77,7 @@ You must send an ID (Bundle ID or Application ID) to Amadeus so that we can asso
     ```
     pod 'mobileid-wallet-sdk', '1.0.0'
     ```
-    2. Add MobileIdWalletSDK cocoapods repo as a source in your podfile:
+    2. Add cocoapods repo as a source in your podfile:
     ```
     source 'https://cdn.cocoapods.org/'
     ```
@@ -89,19 +89,20 @@ You must send an ID (Bundle ID or Application ID) to Amadeus so that we can asso
     **NOTE:** Due the necessity of the SDK to be built for distribution, a post installscript might be needed in your Podfile: (https://github.com/CocoaPods/CocoaPods/issues/9232).
     Example:
     ```
-    post_install do |installer|
-        installer.pods_project.build_configurations.each do |config|
-            config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
-            config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
-        end
-    end
+	 post_install do |pi|
+	     pi.pods_project.targets.each do |t|
+	         t.build_configurations.each do |config|
+	             config.build_settings['ONLY_ACTIVE_ARCH'] = 'NO'
+	             config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
+	         end
+	     end
+	 end
     ```
-    
     
 	finally a full pod file will look something like:
     
     ```
-	source 'https://github.com/CocoaPods/Specs.git'
+	source 'https://cdn.cocoapods.org/'
 	
 	platform :ios, '15.0'
 	use_modular_headers!  
@@ -112,7 +113,7 @@ You must send an ID (Bundle ID or Application ID) to Amadeus so that we can asso
 	target 'DemoApp' do
 	  use_frameworks!
 	  project 'DemoApp.xcodeproj'
-	  pod 'MobileIdWalletSDK', '1.0.0'
+	  pod 'mobileid-wallet-sdk', '1.0.0'
 	end
 	
 	post_install do |pi|
