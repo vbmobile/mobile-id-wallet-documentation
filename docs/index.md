@@ -5,19 +5,25 @@ hide:
 
 # Getting started
 
-## Overall arquicteture
+## Introduction
 
-__MobileIdWalletSDK__ vs. __MobileIdWalletUISDK__
+The Mobile ID Wallet SDK provides a comprehensive set of tools to manage digital identity documents and boarding passes securely within an app. It allows developers to capture and parse documents and boarding passes using the device camera, optionally leveraging RFID for added security. Parsed information can be stored in the wallet, retrieved for display, or deleted as needed. 
 
-This SDK is designed to offer both flexibility and ease of use, with two distinct modules to fit different integration needs:
+### Key Features
 
-* __MobileIdWalletSDK__ – The core SDK, providing all essential features for managing verifiable credentials and boarding passes. Ideal for developers who want full control over UI design and implementation.
-
-* __MobileIdWalletUISDK__ – A higher-level module that includes a prebuilt UI, making it easier to integrate and manage credentials and boarding passes with minimal effort. This is perfect for those who want a faster implementation without designing custom interfaces.
-Whether you need a custom experience or a ready-to-use solution, the SDK adapts to your needs while ensuring a smooth and efficient workflow.
+* __Setup & Configuration:__ Initialize and configure the wallet with custom setup parameters.
+* __Document & Boarding Pass Management:__ Parse Boarding Pass: Extract flight details from an image.
+Scan Boarding Pass: Capture and parse boarding passes using the device camera.
+Read Document: Scan identity documents via camera and RFID.
+* __Data Retrieval & Storage:__ Retrieve all stored documents or boarding passes.
+Fetch specific items by unique identifiers.
+Access full details of original boarding passes.
+* __Deletion Operations:__ Delete individual documents or boarding passes.
+Perform batch deletion of all wallet content.
+* __Association & Linking:__ Associate boarding passes with identity documents and create subject relationships.
+* __Status Tracking:__ Query the current status of a subject by ID.
 
 ![Arquitecture](assets/SDKArquitecture.png "Arquitecture"){: style="display: block; margin: 5px auto"}
-
 
 ## Prerequisites
 
@@ -69,9 +75,9 @@ You must send an ID (Bundle ID or Application ID) to Amadeus so that we can asso
     
     1. Add the following to your Podfile, with the latest version:
     ```
-    pod 'mobileid-wallet-sdk', '1.0.0-beta.3'
+    pod 'mobileid-wallet-sdk', '1.0.0'
     ```
-    2. Add MobileIdWalletSDK cocoapods repo as a source in your podfile:
+    2. Add cocoapods repo as a source in your podfile:
     ```
     source 'https://cdn.cocoapods.org/'
     ```
@@ -83,39 +89,40 @@ You must send an ID (Bundle ID or Application ID) to Amadeus so that we can asso
     **NOTE:** Due the necessity of the SDK to be built for distribution, a post installscript might be needed in your Podfile: (https://github.com/CocoaPods/CocoaPods/issues/9232).
     Example:
     ```
-    post_install do |installer|
-        installer.pods_project.build_configurations.each do |config|
-            config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
-            config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
-        end
-    end
+	 post_install do |pi|
+	     pi.pods_project.targets.each do |t|
+	         t.build_configurations.each do |config|
+	             config.build_settings['ONLY_ACTIVE_ARCH'] = 'NO'
+	             config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
+	         end
+	     end
+	 end
     ```
     
-    
-	finally a full pod file will look like:
+	finally a full pod file will look something like:
     
     ```
-	source 'https://github.com/CocoaPods/Specs.git'
+	source 'https://cdn.cocoapods.org/'
 	
 	platform :ios, '15.0'
 	use_modular_headers!  
 	
-	project 'MobileIdWalletDemoApp.xcodeproj'
 	workspace 'Workspace.xcworkspace'
+	project 'DemoApp.xcodeproj'
 	
-	target 'MobileIdWalletDemoApp' do
+	target 'DemoApp' do
 	  use_frameworks!
-	  project 'MobileIdWalletDemoApp.xcodeproj'
-	  pod "WalletLibrary"
-	  pod "lottie-ios"
-	  pod 'mobileid-wallet-sdk', '1.0.0-beta.3'
-	  pod 'mobileid-wallet-ui-sdk', '1.0.0-beta.3'
+	  project 'DemoApp.xcodeproj'
+	  pod 'mobileid-wallet-sdk', '1.0.0'
 	end
 	
-	post_install do |installer|
-	  installer.pods_project.build_configurations.each do |config|
-	    config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
-	  end
+	post_install do |pi|
+	    pi.pods_project.targets.each do |t|
+	        t.build_configurations.each do |config|
+	            config.build_settings['ONLY_ACTIVE_ARCH'] = 'NO'
+	            config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
+	        end
+	    end
 	end
 	```    
     
@@ -154,55 +161,31 @@ You must send an ID (Bundle ID or Application ID) to Amadeus so that we can asso
 === "iOS"
 
     ```swift
-        let walletCoreConfig: WalletCoreConfig = .init(serverHost: ConfigValues.WalletSDKCore.serverHost)
         let mobileIdWalletConfig: MobileIdWalletConfig = .init(
-            apiKey:ConfigValues.MobileIdSDK.apiKey,
-            baseURL:ConfigValues.MobileIdSDK.baseURL,
-            databaseID: ConfigValues.MobileIdSDK.databaseID,
-            walletCoreConfig: walletCoreConfig
+            enrolmentConfig: .init(apiConfig:
+                .init(
+                    baseURL: "<YOUR_WALLET_SERVER_HOST_BASE_URL>",
+                    timeout: 30,
+                    apiKey: "<YOUR_API_KEY>"
+                )
+            ),
+            documentReaderConfig: .init(
+                multipageProcessing: false,
+                databaseID: "<YOUR_DATABASE_ID>"
+            ),
+            enrolmentViewRegister: .init()
         )
     ```
     
 ## Initialize the SDK
 
-When integrating the Mobile ID Wallet SDK, you have two options depending on your needs:
-
-__Option 1 - MobileIdWalletUI__: This option provides a pre-built UI that is ready to use out of the box. It simplifies integration and allows developers to quickly implement Mobile ID functionality without worrying about designing the user interface.
-
-__Option 2 - MobileIdWalletSDK__: For more customization and flexibility, this option allows developers to implement their own UI and define the logic for various features. It requires additional development effort but enables a fully tailored user experience.
+For more customization and flexibility, this option allows developers to implement their own UI and define the logic for various features. It requires additional development effort but enables a fully tailored user experience.
 
 Choose the option that best fits your project’s requirements!
 
 === "Android"
 
     We advise to initialize the sdk on the application level:
-
-    __Option 1 - Using MobileIdWalletUISDK__
-    ```kotlin
-    MobileIdWalletUI.initialize(
-        context = this,
-        documentReaderParameters = DocumentReaderParameters(true),
-        boardingPassScanParameters = BoardingPassParameters(false),
-        config = MobileIdWalletUIConfig(
-            documentReaderConfig = DocumentReaderConfig(
-                multipageProcessing = true,
-                databaseId = "Full"
-            ),
-            apiConfig = APIConfig(
-                baseUrl = URL("<YOUR_ENROLMENT_BASE_URL>"),
-                timeout = 30,
-                logLevel = MobileAPILogLevel.NONE,
-                apiKey = "<YOUR_API_KEY>"
-            ),
-            walletUIConfig = WalletUIConfig(
-                url = URL("<YOUR_WALLET_SERVER_HOST_BASE_URL>"),
-                logLevel = WalletUILogLevel.NONE
-            )
-        )
-    )
-    ```
-
-    __Option 2 - Using MobileIdWalletSDK__
 
     ```kotlin
     MobileIdWallet.initialize(
@@ -229,85 +212,50 @@ Choose the option that best fits your project’s requirements!
     ```
 
 === "iOS"
-
-	__Option 1 - Using MobileIdWalletUI__
 	
     ```swift
-    import UIKit
-    import MobileIdWalletUISDK
-    import MobileIdWalletSDK
-
-    func applicationMobileIdWalletUIProtocol(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        window = UIWindow(frame: UIScreen.main.bounds)
-        //
-        // Prepare SDK Config
-        //
-        let mobileIdWalletConfig: MobileIdWalletConfig = .init(
-            apiKey: ConfigValues.MobileIdSDK.apiKey,
-            baseURL: ConfigValues.MobileIdSDK.baseURL,
-            databaseID: ConfigValues.MobileIdSDK.databaseID,
-            serverHost: ConfigValues.WalletSDKCore.serverHost
-        )
-        //
-        // Create SDK Instances & Setup SDK
-        //
-        let mobileIdWalletUI: MobileIdWalletUIProtocol = MobileIdWalletUI.shared
-        let mobileIdWallet: MobileIdWalletProtocol = MobileIdWallet.shared
-        mobileIdWalletUI.setup(.init(
-            mobileIdWallet: mobileIdWallet,
-            mobileIdWalletSetup: .init(
-                mobileIdWalletConfig: mobileIdWalletConfig
-            )
-        ))
-
-        //
-        // Inject MobileIdWalletUIRouterProtocol router in your initial screen
-        // More info at documentation website at Features/MobileIdWalletUISDK/Intro
-        let walletUIRouter: MobileIdWalletUIRouterProtocol = MobileIdWalletUIRouter()
-        let initialViewController = MobileIdWalletUISDKSampleViewController(router: walletUIRouter)
-        window?.rootViewController = UINavigationController(rootViewController: initialViewController)
-        window?.makeKeyAndVisible()
-        if let rootViewController = window?.rootViewController {
-            walletUIRouter.setup(rootViewController: rootViewController)
-        }
-        return true
-    }
-    ```
-
-    __Option 2 - Using MobileIdWalletSDK__
+	import UIKit
+	import MobileIdSDKiOS
+	import MobileIdWalletSDK
 	
-    ```swift
-    import MobileIdWalletUISDK
-    import MobileIdWalletSDK
-    
-    func applicationMobileIdWalletProtocol(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        window = UIWindow(frame: UIScreen.main.bounds)
-        //
-        // Prepare SDK Config
-        //
-        let mobileIdWalletConfig: MobileIdWalletConfig = .init(
-            apiKey: ConfigValues.MobileIdSDK.apiKey,
-            baseURL: ConfigValues.MobileIdSDK.baseURL,
-            databaseID: ConfigValues.MobileIdSDK.databaseID,
-            serverHost: ConfigValues.WalletSDKCore.serverHost
-        )
-        let mobileIdWalletSetup: MobileIdWalletSetup.Input = .init(
-            mobileIdWalletConfig: mobileIdWalletConfig
-        )
-        //
-        // Create SDK Instances & Setup
-        //
-        let mobileIdWallet: MobileIdWalletProtocol = MobileIdWallet.shared
-        mobileIdWallet.setup(mobileIdWalletSetup)
-        
-        //
-        // WelcomeScreenViewController is your app inititial screen
-        //
-        window?.rootViewController = UINavigationController(rootViewController: WelcomeScreenViewController(dependencies: nil))
-        window?.makeKeyAndVisible()
-
-        return true
-    }
+	extension AppDelegate {
+	    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+	        window = UIWindow(frame: UIScreen.main.bounds)
+	        //
+	        // Prepare SDK Config
+	        //
+	        let mobileIdWalletConfig: MobileIdWalletConfig = .init(
+	            enrolmentConfig: .init(apiConfig:
+	                .init(
+	                    baseURL: "<YOUR_ENROLMENT_BASE_URL>",
+	                    timeout: 30,
+	                    apiKey: "<YOUR_API_KEY>"
+	                )
+	            ),
+	            documentReaderConfig: .init(
+	                multipageProcessing: false,
+	                databaseID: "<YOUR_DATABASE_ID>"
+	            ),
+	            enrolmentViewRegister: .init()
+	        )
+	        let mobileIdWalletSetup: MobileIdWalletSetup.Input = .init(
+	            mobileIdWalletConfig: mobileIdWalletConfig
+	        )
+	        //
+	        // Create SDK Instances & Setup
+	        //
+	        let mobileIdWallet: MobileIdWalletProtocol = MobileIdWallet.shared
+	        mobileIdWallet.setup(mobileIdWalletSetup)
+	
+	        //
+	        // WelcomeScreenViewController is your app inititial screen
+	        //
+	        window?.rootViewController = UINavigationController(rootViewController: WelcomeScreenViewController(dependencies: nil))
+	        window?.makeKeyAndVisible()
+	
+	        return true
+	    }
+	}
     ```    
 
 
@@ -367,67 +315,12 @@ Choose the option that best fits your project’s requirements!
 
     ![Permissions](assets/Permissions.RFID_2.png "Permissions"){: style="display: block; margin: 5px auto"}
 
-### Deep Links
-In order for the SDK to use the deep links, the user must grant permission to do so.
-
-
-=== "Android"
-
-    In order to handle the deeplinks to share the credential, if you use the **MobileIdWalletUISDK** you don't need to do anything. The UI SDK already handles the deeplink.
-
-    If you are using the **MobileIdWalletSDK** you need to handle the deeplink. In the Manifest add the following intent-filter to your activity:
-
-    ```xml
-    <intent-filter >
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
-
-        <data android:scheme="openid-vc" />
-    </intent-filter>
-    ```
-
-    And in your activity:
-    ```kotlin
-    MobileIdWallet.getInstance().sharePassportCredential(
-        input = SharePassportCredential.Input(
-            url = intent.data,
-            verifiedCredentialId = digitalId,
-            requiresAuthenticationToCompleteFlow = true
-        )
-    )
-    ```
-    
-    The digital id, should be the id of the credential that the user wants to share.
-    
-=== "iOS"
-    
-    To configure, in the app's __Info.plist__ file, include __ CFBundleURLTypes__.
-    
-    ```
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>openid-vc</string>
-			</array>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-		</dict>
-	</array>
-	```
-	    
-    ![Permissions](assets/Permissions.Deeplinks.png "Permissions"){: style="display: block; margin: 5px auto"}
-
 ### FaceID
 In order for the SDK to use the FaceID, the user must grant permission to do so.
-
 
 === "Android"
 
     Nothing to do.
-    
     
 === "iOS"
     
@@ -470,7 +363,7 @@ In order for the SDK to use the camera, the user must grant permission to do so.
         
 === "iOS"
 
-    - 'MobileIdSDKiOS', '~> '8.0.0'
+    - 'MobileIdSDKiOS', '~> '8.1.6'
     - 'WalletLibrary', 
     - 'VBOcrMrzRfidRegula-ios'     
 
@@ -492,13 +385,3 @@ In order for the SDK to use the camera, the user must grant permission to do so.
 	on project settings.
 
     ![Permissions](assets/OtherSettings.Sandboxing.png "OtherSettings"){: style="display: block; margin: 5px auto"}
-
-## Sample App
-
-=== "Android"
-
-    You can find a sample [__here__](https://github.com/vbmobile/app-wallet-sample-android)
-
-=== "iOS"
-
-    You can find a sample [__here__](https://github.com/vbmobile/app-wallet-sample-ios)

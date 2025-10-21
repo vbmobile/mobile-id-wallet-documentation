@@ -51,25 +51,27 @@ Please notice that the method names can be updated in the final release.
 	    init(mobileIdWallet: MobileIdWalletProtocol) {
 	        self.mobileIdWallet = mobileIdWallet
 	    }
+	}
 	
-	    func getPassportCredentialsAssync() {
+	extension ClosureVsAssync {
+	    func getAllDocumentsAssync() {
 	        Task {
 	            do {
-	                let output = try await mobileIdWallet.getPassportCredentials(.init())
-	                guard let verifiedIdEntity = output.records.first else { return }
-	                print(verifiedIdEntity)
+	                let output = try await mobileIdWallet.getAllDocuments()
+	                guard let first = output.records.first else { return }
+	                print(first)
 	            } catch {
 	                print(error)
 	            }
 	        }
 	    }
-		
-	    func getPassportCredentialsCompletionHandler() {
-	        mobileIdWallet.getPassportCredentials(.init()) { result in
+	
+	    func getAllDocumentsCompletionHandler() {
+	        mobileIdWallet.getAllDocuments { result in
 	            switch result {
 	            case .success(let output):
-	                guard let verifiedIdEntity = output.records.first else { return }
-	                print(verifiedIdEntity)
+	                guard let first = output.records.first else { return }
+	                print(first)
 	            case .failure(let error):
 	                print(error)
 	            }
