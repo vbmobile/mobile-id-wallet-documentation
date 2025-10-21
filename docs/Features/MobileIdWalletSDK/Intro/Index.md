@@ -1,7 +1,5 @@
 # Intro
 
-Please notice that the method names can be updated in the final release.
-
 === "Android"
 
 	## Coroutines vs Callback
@@ -14,7 +12,7 @@ Please notice that the method names can be updated in the final release.
 		val result = MobileIdWallet.getInstance().getAllDocuments()
 		
 		if (result.isSuccess) {
-			val documents = result.getOrNull()
+			val documents = result.getOrNull().records
 			// handle success here
 		} else {
 			// handle error here
@@ -26,7 +24,7 @@ Please notice that the method names can be updated in the final release.
 	```kotlin
 	MobileIdWallet.getInstance().getAllDocuments {
 		if (it.isSuccess) {
-			val documents = it.getOrNull()
+			val documents = it.getOrNull().records
 			// handle success here
 		} else {
 			// handle error here

@@ -5,48 +5,7 @@ The Mobile ID Wallet SDK provides robust functionality for managing boarding pas
 All operations are fully asynchronous with async/await support and provide completion handler alternatives for legacy workflows. Inputs and outputs are strongly typed, ensuring safe and predictable access to boarding pass data, while the SDK maintains a consistent Swift-native API style for seamless integration into your app.
 
 
-
-## Setup
-
-=== "Android"
-
-    ```kotlin
-	val walletSdkConfig = WalletSdkConfig(
-        ...
-    ) 
-    MobileIdWallet.initialize(
-        context = this,
-        walletConfig = walletSdkConfig,
-        onEnrolmentInitialized = { success, error ->
-                if (!success) {
-                    print(error)
-                }
-            }
-        )
-    )
-    ```
-
-=== "iOS"
-
-    ```swift
-	import MobileIdWalletSDK
-	import Foundation
-	import UIKit
-	
-	class BoardingPassManagerSampleUsage {
-	    let mobileIdWallet: MobileIdWalletProtocol
-	    init(mobileIdWallet: MobileIdWalletProtocol) {
-	        self.mobileIdWallet = mobileIdWallet
-	    }
-	
-	    init(input: MobileIdWalletSetup.Input) {
-	        self.mobileIdWallet = MobileIdWallet.shared
-	        mobileIdWallet.setup(.init(mobileIdWalletConfig: input.mobileIdWalletConfig))
-	    }
-	}
-	```
-
-## Parse/Scan
+## Scan and Parse Boarding Pass
 
 === "Android"
 
@@ -110,7 +69,7 @@ All operations are fully asynchronous with async/await support and provide compl
 	}
 	```
 	
-## Get/Fetch 
+## Get all Boarding Passes 
 
 === "Android"
 
@@ -148,6 +107,31 @@ All operations are fully asynchronous with async/await support and provide compl
 	    }
 	}
 	```
+
+## Get a Boarding Pass
+
+=== "Android"
+
+    ```kotlin
+	launch {
+        val result = MobileIdWallet.getInstance().getBoardingPass(
+            input = GetBoardingPass.Input(boardingPassId),
+        )
+    
+        if (result.isSuccess) {
+            val boardingPass = result.getOrNull()?.boardingPass
+            // handle success here
+        } else {
+            // handle error here
+        }
+    }
+    ```
+
+=== "iOS"
+
+    ```swift
+    TODO
+    ```
 	
 ## Delete
 

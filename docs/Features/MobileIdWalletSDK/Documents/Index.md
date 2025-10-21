@@ -1,49 +1,15 @@
-# Document Reader 
+# Document Reader
 
-The Mobile ID Wallet SDK provides comprehensive support for managing identity documents within the wallet. Developers can retrieve all stored documents or access a specific document by its unique identifier. Documents can be added to the wallet by capturing them with the device camera and optionally using RFID for enhanced security. Stored documents can also be deleted when no longer needed. 
+The Mobile ID Wallet SDK provides comprehensive support for managing identity documents within the
+wallet. Developers can retrieve all stored documents or access a specific document by its unique
+identifier. Documents can be added to the wallet by capturing them with the device camera and
+optionally using RFID for enhanced security. Stored documents can also be deleted when no longer
+needed.
 
-All operations support Swift’s async/await concurrency model, with optional completion handler alternatives for traditional callback-based workflows. Strongly typed input and output models ensure safe and predictable access to document data, while the API maintains a consistent Swift-native style for seamless integration into your app.
-
-
-## Setup
-
-=== "Android"
-
-    ```kotlin
-    val walletSdkConfig = WalletSdkConfig(
-        ...
-    ) 
-    MobileIdWallet.initialize(
-        context = this,
-        walletConfig = walletSdkConfig,
-        onEnrolmentInitialized = { success, error ->
-            if (!success) {
-                print(error)
-            }
-        }
-    )
-    ```
-    
-=== "iOS"
-
-    ```swift
-	import Foundation
-	import WalletSDKCore
-	import MobileIdWalletSDK
-	import MobileIdSDKiOS // MobileID (VB Enrollment SDK)
-	
-	class DocumentsManagerSampleUsage {
-	    let mobileIdWallet: MobileIdWalletProtocol
-	    init(mobileIdWallet: MobileIdWalletProtocol) {
-	        self.mobileIdWallet = mobileIdWallet
-	    }
-	
-	    init(input: MobileIdWalletSetup.Input) {
-	        self.mobileIdWallet = MobileIdWallet.shared
-	        mobileIdWallet.setup(.init(mobileIdWalletConfig: input.mobileIdWalletConfig))
-	    }
-	}
-	```
+All operations support Swift’s async/await concurrency model, with optional completion handler
+alternatives for traditional callback-based workflows. Strongly typed input and output models ensure
+safe and predictable access to document data, while the API maintains a consistent Swift-native
+style for seamless integration into your app.
 
 ## Read
 
@@ -88,7 +54,7 @@ All operations support Swift’s async/await concurrency model, with optional co
 	    }
 	}
     ```
-    
+
 ## Retrieve stored documents
 
 === "Android"
@@ -117,34 +83,42 @@ All operations support Swift’s async/await concurrency model, with optional co
 	            print(result.records)
 	        }
 	    }
-	
-	    /// Retrieves a specific document from the wallet using its unique identifier.
-	    func getDocumentById() {
-	        Task {
-	            let documentId = "your_document_id"
-	            let getDocumentOutput = try? await mobileIdWallet.getDocument(.init(documentId: documentId))
-	            guard let document = getDocumentOutput?.record else {
-	                return
-	            }
-	            print(document)
-	        }
-	    }
-	
-	    /// Retrieves a specific document from the wallet using its unique identifier.
-	    func getDocumentReaderReportById() {
-	        Task {
-	            let documentId = "your_document_id"
-	            let getDocumentOutput = try? await mobileIdWallet.getDocument(.init(documentId: documentId))
-	            guard let document = getDocumentOutput?.record else {
-	                return
-	            }
-	            if let documentReaderReport = document.documentReaderReport {
-	                print(documentReaderReport)
-	            }
-	        }
-	    }
 	}
     ```
+
+## Get Document
+
+=== "Android"
+
+    ```kotlin
+	launch {
+        val result = MobileIdWallet.getInstance().getDocument(
+            GetDocument.Input(documentId)
+        )
+    
+        if (result.isSuccess) {
+            val document = result.getOrNull()?.record
+            // handle success here
+        } else {
+            // handle error here
+        }
+    }
+    ```
+
+=== "iOS"
+
+    ```swift
+    func getDocumentById() {
+        Task {
+            let documentId = "your_document_id"
+            let getDocumentOutput = try? await mobileIdWallet.getDocument(.init(documentId: documentId))
+            guard let document = getDocumentOutput?.record else {
+                return
+            }
+            print(document)
+        }
+    }
+	```
 
 ## Delete Document
 
@@ -182,3 +156,30 @@ All operations support Swift’s async/await concurrency model, with optional co
 	    }
 	}
 	```
+
+## Build Document from DocumentReaderReport
+
+We provide a facade method where the developer can convert a DocumentReaderReport into a Document.
+
+=== "Android"
+
+    ```kotlin
+    launch {
+		val result = MobileIdWallet.getInstance().mapDocumentReaderReportToDocument(
+            MapDocumentReaderReportToDocument.Input(documentReaderReport)
+        )
+
+		if (result.isSuccess && result.getOrNull()?.success == true) {
+            val document = result.getOrNull()?.document
+			// TODO handle success here
+		} else {
+			// TODO handle error here
+		}
+	}
+    ```
+
+=== "iOS"
+
+    ```swift
+    TODO
+    ```

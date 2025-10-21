@@ -7,7 +7,7 @@ hide:
 
 ## Introduction
 
-The Mobile ID Wallet SDK provides a comprehensive set of tools to manage digital identity documents and boarding passes securely within an app. It allows developers to capture and parse documents and boarding passes using the device camera, optionally leveraging RFID for added security. Parsed information can be stored in the wallet, retrieved for display, or deleted as needed. 
+The Mobile ID Wallet SDK provides a comprehensive set of tools to manage digital identity documents and boarding passes securely within an app. It allows developers to capture and parse documents and boarding passes using the device camera, optionally leveraging RFID for added security. Parsed information will be stored in the wallet, retrieved for display, or deleted as needed. 
 
 ### Key Features
 
@@ -60,7 +60,7 @@ You must send an ID (Bundle ID or Application ID) to Amadeus so that we can asso
     ```
     2. Declare Mobile ID SDK and document reader provider as a dependency in your app level gradle file:
     ```
-    implementation("com.amadeus.wallet.sdk:mobileid-wallet-sdk:<1.0.0-beta.6>@aar") { transitive = true }
+    implementation("com.amadeus.wallet.sdk:mobileid-wallet-sdk:1.0.0@aar") { transitive = true }
 
     ```
     3. Sync gradle.
@@ -130,7 +130,6 @@ You must send an ID (Bundle ID or Application ID) to Amadeus so that we can asso
 
 ### MobileIdWalletConfig, WalletCoreConfig
 
-- _serverHost_: serverHost from Mobile Wallet API server;
 - _apiKey_: apiKey from Mobile API server;
 - _baseURL_: baseURL from Mobile API server;
 - _databaseID_: databaseID from Mobile API server;
@@ -155,7 +154,6 @@ You must send an ID (Bundle ID or Application ID) to Amadeus so that we can asso
             ...
         )
         walletConfig = WalletConfig(
-            url = URL("<YOUR_WALLET_SERVER_HOST_BASE_URL>"),
             logLevel = WalletLogLevel.NONE
         )
     )
