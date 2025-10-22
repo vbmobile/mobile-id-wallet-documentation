@@ -1,31 +1,27 @@
 # Android Release Notes
 
-## 1.0.0-beta.1
+## 1.0.0
 
-### What's new
+### New Features
 
-- MobileIdWalletSDK:
-    - Feature scan document
-    - Feature scan boarding pass
-    - Feature issue credential
-    - Feature get credentials
-    - Feature delete credential
-    - Feature get boarding passes
-    - Feature get boarding pass by ID
-    - Feature delete boarding pass
-    - Feature associate boarding pass with credential
-    - Share credential
+#### Document & Boarding Pass Capture
+  - Read Document: Scan passport documents using the device camera and RFID reader.
+  - Read Document: Scan passport documents using the device camera and RFID reader.
+  - Scan Boarding Pass: Capture and parse boarding passes via camera input.
+  - Parse Boarding Pass: Automatically extract flight details from scanned boarding pass images.
 
-- MobileIdWalletUISDK:
-    - Create trip
-    - Show credentials list
-    - Show boarding Passes list
-    - Share credential
+#### Secure Storage & Retrieval
+  - Encrypted Wallet: Store parsed documents and boarding passes securely using device-level encryption.
+  - Flexible Retrieval: Retrieve all stored items or query specific entries using unique identifiers.
 
-### Improvements
+#### Deletion Operations
+  - Selective Deletion: Remove individual documents or boarding passes from the wallet.
+  - Bulk Deletion: Clear all wallet contents in a single operation.
 
-- MobileIdWalletUISDK:
-    - Create feature "Share with airport".
-    - Register credential activity
-    - Give the user the oportunity to choose the claims that he wants to share/associate
+#### Subject Enrollment
+  - Biometric Linking: Link boarding passes with passport data using biometric validation to streamline identity verification.
+  - Status Query: Check the current enrollment status of a subject using their unique ID.
+
+#### Setup & Customization
+  - Configurable Parameters: Customize wallet behavior and appearance using setup parameters tailored to your application needs.
     

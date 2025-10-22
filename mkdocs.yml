@@ -40,9 +40,9 @@ nav:
     #  - Intro: Features/MobileIdWalletUISDK/Intro/Index.md
     #  - Sharing Credentials: Features/MobileIdWalletUISDK/SharingCredentials/Index.md
             
-  #- Release notes:
-  #  - Android: ReleaseNotes/ReleaseNotes_Android.md
-  #  - iOS: ReleaseNotes/ReleaseNotes_iOS.md
+  - Release notes:
+    - Android: ReleaseNotes/ReleaseNotes_Android.md
+    - iOS: ReleaseNotes/ReleaseNotes_iOS.md
   #- Migration guide:
   #  - Android: MigrationGuide/MigrationGuide_Android.md
   #  - iOS: MigrationGuide/MigrationGuide_iOS.md
