@@ -21,11 +21,6 @@ The Mobile ID Wallet SDK provides additional utility functions to simplify walle
 === "iOS"
 
     ```swift
-	extension MiscSampleUsage {
-	    /// Deletes all content from the wallet.
-	    func batchDelete() {
-	        mobileIdWallet.batchDelete()
-	    }
-	}
+	mobileIdWallet.batchDelete()
 	```
 

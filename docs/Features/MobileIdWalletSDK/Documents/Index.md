@@ -33,26 +33,21 @@ needed.
 
 === "iOS"
 
-    ```swift
-	extension DocumentsManagerSampleUsage {
-	    /// Reads a document using the device camera and optionally RFID, parses its information, and stores it in the wallet.
-	    func readDocument() {
-	        let yourTopViewController: UIViewController = .init()
-	        let parameters: ReadDocumentParameters = .init(readRFID: true)
-	        Task {
-	            do {
-	                let result = try await mobileIdWallet.readDocument(.init(
-	                    viewController: yourTopViewController,
-	                    readDocumentParameters: parameters
-	                ))
-	                let document = result.document
-	                // handle success here
-	            } catch {
-	                // handle error here
-	            }
-	        }
-	    }
-	}
+	```swift
+    let yourTopViewController: UIViewController = .init()
+    let parameters: ReadDocumentParameters = .init(readRFID: true)
+    Task {
+        do {
+            let result = try await mobileIdWallet.readDocument(.init(
+                viewController: yourTopViewController,
+                readDocumentParameters: parameters
+            ))
+            let document = result.document
+            // handle success here
+        } catch {
+            // handle error here
+        }
+    }
     ```
 
 ## Retrieve stored documents
@@ -74,21 +69,16 @@ needed.
 
 === "iOS"
 
-    ```swift
-	extension DocumentsManagerSampleUsage {
-	    /// Retrieves all documents currently stored in the wallet.
-	    func getAllDocuments() {
-	        Task {
-	            do {
-	                let result = try await mobileIdWallet.getAllDocuments()
-	                let records = result.records
-	                // handle success here
-	            } catch {
-	                // handle error here
-	            }
-	        }
-	    }
-	}
+	```swift
+    Task {
+        do {
+            let result = try await mobileIdWallet.getAllDocuments()
+            let records = result.records
+            // handle success here
+        } catch {
+            // handle error here
+        }
+    }
     ```
 
 ## Get Document
@@ -112,22 +102,17 @@ needed.
 
 === "iOS"
 
-    ```swift
-	extension DocumentsManagerSampleUsage {
-	    /// Retrieves a specific document from the wallet using its unique identifier.
-	    func getDocumentById() {
-	        Task {
-	            do {
-	                let documentId = "<YOUR_DOCUMENT_ID>"
-	                let result = try await mobileIdWallet.getDocument(.init(documentId: documentId))
-	                let document = result.record
-	                // handle success here
-	            } catch {
-	                // handle error here
-	            }
-	        }
-	    }
-	}
+	```swift
+    Task {
+        do {
+            let documentId = "<YOUR_DOCUMENT_ID>"
+            let result = try await mobileIdWallet.getDocument(.init(documentId: documentId))
+            let document = result.record
+            // handle success here
+        } catch {
+            // handle error here
+        }
+    }
 	```
 
 ## Delete Document
@@ -152,25 +137,20 @@ needed.
 
 === "iOS"
 
-    ```swift
-	extension DocumentsManagerSampleUsage {
-	    /// Delete document by id
-	    func deleteDocument() {
-	        Task {
-	            do {
-	                let documentId = "<YOUR_DOCUMENT_ID>"
-	                let result = try await mobileIdWallet.deleteDocument(.init(documentId: documentId))
-	                if result.success {
-	                    // handle success here
-	                } else {
-	                    // handle error here
-	                }
-	            } catch {
-	                // handle error here
-	            }
-	        }
-	    }
-	}
+	```swift
+    Task {
+        do {
+            let documentId = "<YOUR_DOCUMENT_ID>"
+            let result = try await mobileIdWallet.deleteDocument(.init(documentId: documentId))
+            if result.success {
+                // handle success here
+            } else {
+                // handle error here
+            }
+        } catch {
+            // handle error here
+        }
+    }
 	```
 
 ## Build Document from DocumentReaderReport
@@ -196,19 +176,14 @@ We provide a facade method where the developer can convert a DocumentReaderRepor
 
 === "iOS"
 
-    ```swift
-	extension DocumentsManagerSampleUsage {
-	    /// We provide a method where the developer can convert a DocumentReaderReport into a Document.
-	    func buildDocument() {
-	        let documentReaderReport: DocumentReaderReport = .init(documentData: .init(),
-	                                                               idDocument: .init(),
-	                                                               documentType: .drivingLicense,
-	                                                               documentRFIDStatus: .success,
-	                                                               documentStatuses: [],
-	                                                               documentPhotoHash: nil,
-	                                                               documentDataHash: nil,
-	                                                               idDocumentHash: nil)
-	        let document: Model.DocumentData = documentReaderReport.mapToDocumentData
-	    }
-	}
+	```swift
+    let documentReaderReport: DocumentReaderReport = .init(documentData: .init(),
+                                                           idDocument: .init(),
+                                                           documentType: .drivingLicense,
+                                                           documentRFIDStatus: .success,
+                                                           documentStatuses: [],
+                                                           documentPhotoHash: nil,
+                                                           documentDataHash: nil,
+                                                           idDocumentHash: nil)
+    let document: Model.DocumentData = documentReaderReport.mapToDocumentData
     ```
