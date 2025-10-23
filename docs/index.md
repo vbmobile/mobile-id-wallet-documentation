@@ -211,41 +211,43 @@ Choose the option that best fits your project’s requirements!
 	import MobileIdWalletSDK
 	
 	extension AppDelegate {
-	    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-	        window = UIWindow(frame: UIScreen.main.bounds)
-	        //
-	        // Prepare SDK Config
-	        //
-	        let mobileIdWalletConfig: MobileIdWalletConfig = .init(
-	            enrolmentConfig: .init(apiConfig:
-	                .init(
-	                    baseURL: "<YOUR_ENROLMENT_BASE_URL>",
-	                    timeout: 30,
-	                    apiKey: "<YOUR_API_KEY>"
-	                )
-	            ),
-	            documentReaderConfig: .init(
-	                multipageProcessing: false,
-	                databaseID: "<YOUR_DATABASE_ID>"
-	            ),
-	            enrolmentViewRegister: .init()
-	        )
-	        let mobileIdWalletSetup: MobileIdWalletSetup.Input = .init(
-	            mobileIdWalletConfig: mobileIdWalletConfig
-	        )
-	        //
-	        // Create SDK Instances & Setup
-	        //
-	        let mobileIdWallet: MobileIdWalletProtocol = MobileIdWallet.shared
-	        mobileIdWallet.setup(mobileIdWalletSetup)
-	
-	        //
-	        // WelcomeScreenViewController is your app inititial screen
-	        //
-	        window?.rootViewController = UINavigationController(rootViewController: WelcomeScreenViewController(dependencies: nil))
-	        window?.makeKeyAndVisible()
-	
-	        return true
+	    func application(_ application: UIApplication, 
+	                     didFinishLaunchingWithOptions 
+	                     launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+		 /*
+		  * Your app delegate code...
+		  */
+		  
+        // Prepare the SDK config `MobileIdWalletConfig`
+        let mobileIdWalletConfig: MobileIdWalletConfig = .init(
+            enrolmentConfig: .init(apiConfig:
+                .init(
+                    baseURL: "<YOUR_ENROLMENT_BASE_URL>",
+                    timeout: 30,
+                    apiKey: "<YOUR_API_KEY>"
+                )
+            ),
+            documentReaderConfig: .init(
+                multipageProcessing: false,
+                databaseID: "<YOUR_DATABASE_ID>"
+            ),
+            enrolmentViewRegister: .init()
+        )
+        let mobileIdWalletSetup: MobileIdWalletSetup.Input = .init(
+            mobileIdWalletConfig: mobileIdWalletConfig
+        )
+        // Create SDK Instance & setup instance with config
+        let mobileIdWallet: MobileIdWalletProtocol = MobileIdWallet.shared
+        mobileIdWallet.setup(mobileIdWalletSetup)
+
+        // Start and inject your SDK instance into your app
+        let rootViewController: UIViewController = WelcomeScreenViewController(dependencies: .init(mobileIdWallet: mobileIdWallet))
+		 
+		 /*
+		  * Your app delegate code...
+		  */
+        
+        return true
 	    }
 	}
     ```    

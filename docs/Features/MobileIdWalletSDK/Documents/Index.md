@@ -6,10 +6,6 @@ identifier. Documents can be added to the wallet by capturing them with the devi
 optionally using RFID for enhanced security. Stored documents can also be deleted when no longer
 needed.
 
-All operations support Swift’s async/await concurrency model, with optional completion handler
-alternatives for traditional callback-based workflows. Strongly typed input and output models ensure
-safe and predictable access to document data, while the API maintains a consistent Swift-native
-style for seamless integration into your app.
 
 ## Read
 
@@ -44,12 +40,16 @@ style for seamless integration into your app.
 	        let yourTopViewController: UIViewController = .init()
 	        let parameters: ReadDocumentParameters = .init(readRFID: true)
 	        Task {
-	            let result = try? await mobileIdWallet.readDocument(.init(
-	                viewController: yourTopViewController,
-	                readDocumentParameters: parameters
-	            ))
-	            guard let document = result?.document else { return }
-	            print(document)
+	            do {
+	                let result = try await mobileIdWallet.readDocument(.init(
+	                    viewController: yourTopViewController,
+	                    readDocumentParameters: parameters
+	                ))
+	                let document = result.document
+	                // handle success here
+	            } catch {
+	                // handle error here
+	            }
 	        }
 	    }
 	}
@@ -79,8 +79,13 @@ style for seamless integration into your app.
 	    /// Retrieves all documents currently stored in the wallet.
 	    func getAllDocuments() {
 	        Task {
-	            guard let result = try? await mobileIdWallet.getAllDocuments() else { return }
-	            print(result.records)
+	            do {
+	                let result = try await mobileIdWallet.getAllDocuments()
+	                let records = result.records
+	                // handle success here
+	            } catch {
+	                // handle error here
+	            }
 	        }
 	    }
 	}
@@ -108,16 +113,21 @@ style for seamless integration into your app.
 === "iOS"
 
     ```swift
-    func getDocumentById() {
-        Task {
-            let documentId = "your_document_id"
-            let getDocumentOutput = try? await mobileIdWallet.getDocument(.init(documentId: documentId))
-            guard let document = getDocumentOutput?.record else {
-                return
-            }
-            print(document)
-        }
-    }
+	extension DocumentsManagerSampleUsage {
+	    /// Retrieves a specific document from the wallet using its unique identifier.
+	    func getDocumentById() {
+	        Task {
+	            do {
+	                let documentId = "<YOUR_DOCUMENT_ID>"
+	                let result = try await mobileIdWallet.getDocument(.init(documentId: documentId))
+	                let document = result.record
+	                // handle success here
+	            } catch {
+	                // handle error here
+	            }
+	        }
+	    }
+	}
 	```
 
 ## Delete Document
@@ -147,10 +157,16 @@ style for seamless integration into your app.
 	    /// Delete document by id
 	    func deleteDocument() {
 	        Task {
-	            let documentId = "your_document_id"
-	            let result = try? await mobileIdWallet.deleteDocument(.init(documentId: documentId))
-	            if let success = result?.success {
-	                print("success: \(success)")
+	            do {
+	                let documentId = "<YOUR_DOCUMENT_ID>"
+	                let result = try await mobileIdWallet.deleteDocument(.init(documentId: documentId))
+	                if result.success {
+	                    // handle success here
+	                } else {
+	                    // handle error here
+	                }
+	            } catch {
+	                // handle error here
 	            }
 	        }
 	    }
@@ -181,5 +197,18 @@ We provide a facade method where the developer can convert a DocumentReaderRepor
 === "iOS"
 
     ```swift
-    TODO
+	extension DocumentsManagerSampleUsage {
+	    /// We provide a method where the developer can convert a DocumentReaderReport into a Document.
+	    func buildDocument() {
+	        let documentReaderReport: DocumentReaderReport = .init(documentData: .init(),
+	                                                               idDocument: .init(),
+	                                                               documentType: .drivingLicense,
+	                                                               documentRFIDStatus: .success,
+	                                                               documentStatuses: [],
+	                                                               documentPhotoHash: nil,
+	                                                               documentDataHash: nil,
+	                                                               idDocumentHash: nil)
+	        let document: Model.DocumentData = documentReaderReport.mapToDocumentData
+	    }
+	}
     ```

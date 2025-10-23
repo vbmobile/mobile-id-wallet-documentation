@@ -2,9 +2,6 @@
 
 The Mobile ID Wallet SDK provides robust functionality for managing boarding passes within the wallet. Developers can retrieve all stored boarding passes or access a specific boarding pass by its unique identifier, including full details when needed. Boarding passes can be added to the wallet by parsing images or scanning them directly with the device camera, and they can also be deleted when no longer required. 
 
-All operations are fully asynchronous with async/await support and provide completion handler alternatives for legacy workflows. Inputs and outputs are strongly typed, ensuring safe and predictable access to boarding pass data, while the SDK maintains a consistent Swift-native API style for seamless integration into your app.
-
-
 ## Scan and Parse Boarding Pass
 
 === "Android"
@@ -48,10 +45,16 @@ All operations are fully asynchronous with async/await support and provide compl
 	    func scanBoardingPass() {
 	        let viewController = UIViewController()
 	        Task {
-	            try? await mobileIdWallet.scanBoardingPass(.init(
-	                viewController: viewController,
-	                parameters: .init(validateBoardingPass: true)
-	            ))
+	            do {
+	                let output = try await mobileIdWallet.scanBoardingPass(.init(
+	                    viewController: viewController,
+	                    parameters: .init(validateBoardingPass: true)
+	                ))
+	                let boardingPass = output.boardingPass
+	                // handle success here
+	            } catch {
+	                // handle error here
+	            }
 	        }
 	    }
 	
@@ -60,10 +63,16 @@ All operations are fully asynchronous with async/await support and provide compl
 	        let viewController = UIViewController()
 	        let boardingPassImage = UIImage()
 	        Task {
-	            try? await mobileIdWallet.parseBoardingPass(.init(
-	                viewController: viewController,
-	                parameters: .init(validateBoardingPass: true, boardingPassData: nil, boardingPassImage: boardingPassImage)
-	            ))
+	            do {
+	                let output = try await mobileIdWallet.parseBoardingPass(.init(
+	                    viewController: viewController,
+	                    parameters: .init(validateBoardingPass: true, boardingPassData: nil, boardingPassImage: boardingPassImage)
+	                ))
+	                let boardingPass = output.boardingPass
+	                // handle success here
+	            } catch {
+	                // handle error here
+	            }
 	        }
 	    }
 	}
@@ -91,19 +100,16 @@ All operations are fully asynchronous with async/await support and provide compl
     ```swift
 	extension BoardingPassManagerSampleUsage {
 	    /// Retrieves all boarding passes currently stored in the wallet.
-	    func getAllBoardingPass() async {
+	    func getAllBoardingPass() {
 	        Task {
-	            let result = try? await mobileIdWallet.getAllBoardingPass()
-	            print(result?.records ?? [])
+	            do {
+	                let output = try await mobileIdWallet.getAllBoardingPass()
+	                let records = output.records
+	                // handle success here
+	            } catch {
+	                // handle error here
+	            }
 	        }
-	    }
-	
-	    /// Retrieves a specific boarding pass using its unique identifier.
-	    func getBoardingPassById() async {
-	        let boardingPassId = "your_boarding_pass_id"
-	        let result = try? await mobileIdWallet.getBoardingPass(.init(boardingPassId: boardingPassId))
-	        guard let boardingPass = result?.record else { return }
-	        print(boardingPass)
 	    }
 	}
 	```
@@ -130,7 +136,21 @@ All operations are fully asynchronous with async/await support and provide compl
 === "iOS"
 
     ```swift
-    TODO
+	extension BoardingPassManagerSampleUsage {
+	    /// Retrieves a specific boarding pass using its unique identifier.
+	    func getBoardingPassById() {
+	        Task {
+	            do {
+	                let boardingPassId = "<YOUR_BOARDING_PASS_ID>"
+	                let output = try await mobileIdWallet.getBoardingPass(.init(boardingPassId: boardingPassId))
+	                let boardingPass = output.record
+	                // handle success here
+	            } catch {
+	                // handle error here
+	            }
+	        }
+	    }
+	}
     ```
 	
 ## Delete
@@ -158,9 +178,20 @@ All operations are fully asynchronous with async/await support and provide compl
     ```swift
 	extension BoardingPassManagerSampleUsage {
 	    /// Deletes a specific boarding pass using its unique identifier.
-	    func deleteBoardingPass() async {
-	        let boardingPassId = "your_boarding_pass_id"
-	        _ = try? await mobileIdWallet.deleteBoardingPass(.init(boardingPassId: boardingPassId))
+	    func deleteBoardingPass() {
+	        Task {
+	            do {
+	                let boardingPassId = "<YOUR_BOARDING_PASS_ID>"
+	                let output = try await mobileIdWallet.deleteBoardingPass(.init(boardingPassId: boardingPassId))
+	                if (output.success) {
+	                    // handle success here
+	                } else {
+	                    // handle error here
+	                }
+	            } catch {
+	                // handle error here
+	            }
+	        }
 	    }
 	}
 	```

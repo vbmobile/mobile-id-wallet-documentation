@@ -2,8 +2,6 @@
 
 The Mobile ID Wallet SDK provides functionality to manage the relationships between passengers, flights, documents, and boarding passes. Developers can retrieve the current status of a subject using its unique identifier, allowing apps to track verification progress or workflow state. The SDK also supports creating and verifying subjects by associating a boarding pass with a document, linking passengers to their flights securely within the wallet. 
 
-All operations support Swift’s async/await concurrency model and offer completion handler alternatives for legacy callback-based workflows. Inputs and outputs are strongly typed, ensuring safe and predictable access to subject and association data, while the API follows a consistent Swift-native design for seamless integration into your app.
-
 ## Add Subject
 
 === "Android"
@@ -35,16 +33,19 @@ All operations support Swift’s async/await concurrency model and offer complet
 	    func assocBoardingPassWithDocument() {
 	        let viewController = UIViewController()
 	        Task {
-	            let documentId = "your_document_id"
-	            let boardingPassId = "your_boarding_pass_id"
-	            let result = try? await mobileIdWallet.assocBoardingPassWithDocument(.init(
-	                viewController: viewController,
-	                documentId: documentId,
-	                boardingPassId: boardingPassId
-	            ))
-	            /// Returns the subject id
-	            guard let subjectId = result?.subjectId else { return }
-	            print(subjectId)
+	            let documentId = "<YOUR_DOCUMENT_ID>"
+	            let boardingPassId = "<YOUR_BOARDING_PASS_ID>"
+	            do {
+	                let output = try await mobileIdWallet.assocBoardingPassWithDocument(.init(
+	                    viewController: viewController,
+	                    documentId: documentId,
+	                    boardingPassId: boardingPassId
+	                ))
+	                let subjectId = output.subjectId
+	                // handle success here
+	            } catch {
+	                // handle error here
+	            }
 	        }
 	    }
 	}
@@ -76,11 +77,17 @@ All operations support Swift’s async/await concurrency model and offer complet
 	    /// Given a _subject id_, will return the `MobileIdSDKiOS.SubjectStatus`
 	    func getSubjectStatus() {
 	        Task {
-	            let subjectId = "your_subject_id"
-	            let output = try? await mobileIdWallet.getSubjectStatus(.init(subjectId: subjectId))
-	            guard let subjectStatus = output?.subjectStatus else { return }
-	            print(subjectStatus.id)
-	            print(subjectStatus.status)
+	            let subjectId = "<YOUR_SUBJECT_ID>"
+	            do {
+	                let output = try await mobileIdWallet.getSubjectStatus(.init(subjectId: subjectId))
+	                let subjectStatus = output.subjectStatus
+	                let subjectId = subjectStatus.id
+	                let status = subjectStatus.status
+	                // handle success here
+	            } catch {
+	                // handle error here
+	            }
+	
 	        }
 	    }
 	}

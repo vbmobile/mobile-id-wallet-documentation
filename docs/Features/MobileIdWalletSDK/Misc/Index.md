@@ -1,8 +1,6 @@
 # Misc Operations
 
 The Mobile ID Wallet SDK provides additional utility functions to simplify wallet management. This includes operations such as batch deleting multiple documents or boarding passes at once, allowing developers to efficiently manage wallet contents. These miscellaneous functions complement the main workflows for document and boarding pass handling, providing flexibility and control over stored data.
-
-All operations support Swift’s async/await concurrency model, with optional completion handler alternatives for callback-based workflows. Strongly typed inputs and outputs ensure safe, predictable access to data, and the API maintains a consistent Swift-native style for seamless integration into your app.
 	
 ## Batch Delete
 
@@ -26,9 +24,7 @@ All operations support Swift’s async/await concurrency model, with optional co
 	extension MiscSampleUsage {
 	    /// Deletes all content from the wallet.
 	    func batchDelete() {
-	        Task {
-	            await mobileIdWallet.batchDelete()
-	        }
+	        mobileIdWallet.batchDelete()
 	    }
 	}
 	```
