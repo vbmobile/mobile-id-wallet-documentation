@@ -7,7 +7,7 @@ hide:
 
 ## Introduction
 
-The Mobile ID Wallet SDK provides a comprehensive set of tools to manage digital identity documents and boarding passes securely within an app. It allows developers to capture and parse documents and boarding passes using the device camera, optionally leveraging RFID for added security. Parsed information can be stored in the wallet, retrieved for display, or deleted as needed. 
+The Mobile ID Wallet SDK provides a comprehensive set of tools to manage digital identity documents and boarding passes securely within an app. It allows developers to capture and parse documents and boarding passes using the device camera, optionally leveraging RFID for added security. Parsed information will be stored in the wallet, retrieved for display, or deleted as needed. 
 
 ### Key Features
 
@@ -60,7 +60,7 @@ You must send an ID (Bundle ID or Application ID) to Amadeus so that we can asso
     ```
     2. Declare Mobile ID SDK and document reader provider as a dependency in your app level gradle file:
     ```
-    implementation("com.amadeus.wallet.sdk:mobileid-wallet-sdk:<1.0.0-beta.6>@aar") { transitive = true }
+    implementation("com.amadeus.wallet.sdk:mobileid-wallet-sdk:1.0.0@aar") { transitive = true }
 
     ```
     3. Sync gradle.
@@ -130,7 +130,6 @@ You must send an ID (Bundle ID or Application ID) to Amadeus so that we can asso
 
 ### MobileIdWalletConfig, WalletCoreConfig
 
-- _serverHost_: serverHost from Mobile Wallet API server;
 - _apiKey_: apiKey from Mobile API server;
 - _baseURL_: baseURL from Mobile API server;
 - _databaseID_: databaseID from Mobile API server;
@@ -142,7 +141,7 @@ You must send an ID (Bundle ID or Application ID) to Amadeus so that we can asso
         enrolmentConfig = EnrolmentConfig(
             documentReaderConfig = DocumentReaderConfig(
                 multipageProcessing = true,
-                databaseId = "Full"
+                databaseId = "<YOUR_DATABASE_ID>"
             ),
             apiConfig = APIConfig(
                 baseUrl = URL("<YOUR_ENROLMENT_BASE_URL>"),
@@ -151,8 +150,10 @@ You must send an ID (Bundle ID or Application ID) to Amadeus so that we can asso
                 apiKey = "<YOUR_API_KEY>"
             )
         ),
+        enrolmentCustomViews = EnrolmentCustomViews(
+            ...
+        )
         walletConfig = WalletConfig(
-            url = URL("<YOUR_WALLET_SERVER_HOST_BASE_URL>"),
             logLevel = WalletLogLevel.NONE
         )
     )
@@ -188,26 +189,17 @@ Choose the option that best fits your project’s requirements!
     We advise to initialize the sdk on the application level:
 
     ```kotlin
+    val walletSdkConfig = WalletSdkConfig(
+        ...
+    ) 
     MobileIdWallet.initialize(
         context = this,
-        walletConfig = WalletSdkConfig(
-            enrolmentConfig = EnrolmentConfig(
-                documentReaderConfig = DocumentReaderConfig(
-                    multipageProcessing = true,
-                    databaseId = "Full"
-                ),
-                apiConfig = APIConfig(
-                    baseUrl = URL("<YOUR_ENROLMENT_BASE_URL>"),
-                    timeout = 30,
-                    logLevel = MobileAPILogLevel.NONE,
-                    apiKey = "<YOUR_API_KEY>"
-                )
-            ),
-            walletConfig = WalletConfig(
-                url = URL("<YOUR_WALLET_SERVER_HOST_BASE_URL>"),
-                logLevel = WalletLogLevel.NONE
-            )
-        )
+        walletConfig = walletSdkConfig,
+        onEnrolmentInitialized = { success, error ->
+            if (!success) {
+                print(error)
+            }
+        }
     )
     ```
 
@@ -219,41 +211,43 @@ Choose the option that best fits your project’s requirements!
 	import MobileIdWalletSDK
 	
 	extension AppDelegate {
-	    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-	        window = UIWindow(frame: UIScreen.main.bounds)
-	        //
-	        // Prepare SDK Config
-	        //
-	        let mobileIdWalletConfig: MobileIdWalletConfig = .init(
-	            enrolmentConfig: .init(apiConfig:
-	                .init(
-	                    baseURL: "<YOUR_ENROLMENT_BASE_URL>",
-	                    timeout: 30,
-	                    apiKey: "<YOUR_API_KEY>"
-	                )
-	            ),
-	            documentReaderConfig: .init(
-	                multipageProcessing: false,
-	                databaseID: "<YOUR_DATABASE_ID>"
-	            ),
-	            enrolmentViewRegister: .init()
-	        )
-	        let mobileIdWalletSetup: MobileIdWalletSetup.Input = .init(
-	            mobileIdWalletConfig: mobileIdWalletConfig
-	        )
-	        //
-	        // Create SDK Instances & Setup
-	        //
-	        let mobileIdWallet: MobileIdWalletProtocol = MobileIdWallet.shared
-	        mobileIdWallet.setup(mobileIdWalletSetup)
-	
-	        //
-	        // WelcomeScreenViewController is your app inititial screen
-	        //
-	        window?.rootViewController = UINavigationController(rootViewController: WelcomeScreenViewController(dependencies: nil))
-	        window?.makeKeyAndVisible()
-	
-	        return true
+	    func application(_ application: UIApplication, 
+	                     didFinishLaunchingWithOptions 
+	                     launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+		 /*
+		  * Your app delegate code...
+		  */
+		  
+        // Prepare the SDK config `MobileIdWalletConfig`
+        let mobileIdWalletConfig: MobileIdWalletConfig = .init(
+            enrolmentConfig: .init(apiConfig:
+                .init(
+                    baseURL: "<YOUR_ENROLMENT_BASE_URL>",
+                    timeout: 30,
+                    apiKey: "<YOUR_API_KEY>"
+                )
+            ),
+            documentReaderConfig: .init(
+                multipageProcessing: false,
+                databaseID: "<YOUR_DATABASE_ID>"
+            ),
+            enrolmentViewRegister: .init()
+        )
+        let mobileIdWalletSetup: MobileIdWalletSetup.Input = .init(
+            mobileIdWalletConfig: mobileIdWalletConfig
+        )
+        // Create SDK Instance & setup instance with config
+        let mobileIdWallet: MobileIdWalletProtocol = MobileIdWallet.shared
+        mobileIdWallet.setup(mobileIdWalletSetup)
+
+        // Start and inject your SDK instance into your app
+        let rootViewController: UIViewController = WelcomeScreenViewController(dependencies: .init(mobileIdWallet: mobileIdWallet))
+		 
+		 /*
+		  * Your app delegate code...
+		  */
+        
+        return true
 	    }
 	}
     ```    
@@ -353,9 +347,6 @@ In order for the SDK to use the camera, the user must grant permission to do so.
 ## Dependencies
 
 === "Android"
-
-    - Microsoft
-        - com.microsoft.entra.verifiedid:walletlibrary:1.0.0
 
     - Amadeus Enrolment
         - com.visionbox.mobileid.sdk:mid-sdk-enrolment:8.1.0
