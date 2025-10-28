@@ -165,7 +165,7 @@ You must send an ID (Bundle ID or Application ID) to Amadeus so that we can asso
         let mobileIdWalletConfig: MobileIdWalletConfig = .init(
             enrolmentConfig: .init(apiConfig:
                 .init(
-                    baseURL: "<YOUR_WALLET_SERVER_HOST_BASE_URL>",
+                    baseURL: "<YOUR_ENROLMENT_BASE_URL>",
                     timeout: 30,
                     apiKey: "<YOUR_API_KEY>"
                 )
@@ -233,15 +233,19 @@ Choose the option that best fits your project’s requirements!
             ),
             enrolmentViewRegister: .init()
         )
-        let mobileIdWalletSetup: MobileIdWalletSetup.Input = .init(
-            mobileIdWalletConfig: mobileIdWalletConfig
-        )
         // Create SDK Instance & setup instance with config
         let mobileIdWallet: MobileIdWalletProtocol = MobileIdWallet.shared
-        mobileIdWallet.setup(mobileIdWalletSetup)
-
-        // Start and inject your SDK instance into your app
-        let rootViewController: UIViewController = WelcomeScreenViewController(dependencies: .init(mobileIdWallet: mobileIdWallet))
+        mobileIdWallet.initialize(mobileIdWalletConfig, completion: { [weak self] result in
+            switch result {
+            case .success:
+                // Inject your SDK instance into your app
+                let rootViewController: UIViewController = WelcomeScreenViewController(dependencies: .init(mobileIdWallet: mobileIdWallet))
+                self?.window?.rootViewController = UINavigationController(rootViewController: rootViewController)
+                self?.window?.makeKeyAndVisible()
+            case .failure(let error):
+                print("SDK Initialization Error: \(error)")
+            }
+        })
 		 
 		 /*
 		  * Your app delegate code...
@@ -354,7 +358,7 @@ In order for the SDK to use the camera, the user must grant permission to do so.
         
 === "iOS"
 
-    - 'MobileIdSDKiOS', '~> '8.1.6'
+    - 'MobileIdSDKiOS', '~> '8.1.7'
     - 'WalletLibrary', 
     - 'VBOcrMrzRfidRegula-ios'     
 
