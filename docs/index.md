@@ -3,7 +3,7 @@ hide:
   - navigation
 ---
 
-# Getting started
+# Getting started 
 
 ## Introduction
 
