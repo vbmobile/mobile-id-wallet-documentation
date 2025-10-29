@@ -17,6 +17,7 @@ Mike plugin offers the following commands to test, publish and manage versioning
 - mike serve - starts localhost server
 - mike deploy --push <version_name> - Deploys a new version from current branch with the name passed in the command
 - mike deploy --push --update-aliases <version_name> latest - Deploys a new version and tags it as latest
+- mike delete <VersionName> --push     ex: mike delete 1.0.0-beta5 --push
 
 Release that has the tag latest will be used automatically. 
 Also when a user is viewing any other version that is not the latest, 
