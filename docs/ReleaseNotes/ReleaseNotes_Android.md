@@ -1,5 +1,10 @@
 # Android Release Notes
 
+## 1.0.1
+
+### Changes
+  - Replace Hilt by Dagger
+
 ## 1.0.0
 
 ### New Features
