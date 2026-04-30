@@ -1,12 +1,5 @@
 [
   {
-    "version": "release-documentation-ultralight",
-    "title": "release-documentation-ultralight",
-    "aliases": [
-      "latest"
-    ]
-  },
-  {
     "version": "1.0.1",
     "title": "1.0.1",
     "aliases": []
