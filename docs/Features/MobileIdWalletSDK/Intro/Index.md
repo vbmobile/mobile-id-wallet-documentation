@@ -42,7 +42,6 @@
 
     ```swift
 	import MobileIdWalletSDK
-	import WalletSDKCore
 	
 	class ClosureVsAssync {
 	    let mobileIdWallet: MobileIdWalletProtocol

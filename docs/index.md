@@ -43,7 +43,7 @@ You must send an ID (Bundle ID or Application ID) to Amadeus so that we can asso
     To integrate the **Mobile ID Wallet SDK** for iOS, the following prerequisites must be met: 
     
     - Install or update Xcode to latest version;
-    - Target iOS 14 or later. 
+    - Target iOS 15 or later. 
     - Install CocoaPods
 
 ## SDK install
@@ -75,7 +75,7 @@ You must send an ID (Bundle ID or Application ID) to Amadeus so that we can asso
     
     1. Add the following to your Podfile, with the latest version:
     ```
-    pod 'mobileid-wallet-sdk', '1.0.0'
+    pod 'mobileid-wallet-sdk', '1.0.1'
     ```
     2. Add cocoapods repo as a source in your podfile:
     ```
@@ -113,7 +113,7 @@ You must send an ID (Bundle ID or Application ID) to Amadeus so that we can asso
 	target 'DemoApp' do
 	  use_frameworks!
 	  project 'DemoApp.xcodeproj'
-	  pod 'mobileid-wallet-sdk', '1.0.0'
+	  pod 'mobileid-wallet-sdk', '1.0.1'
 	end
 	
 	post_install do |pi|
@@ -358,9 +358,10 @@ In order for the SDK to use the camera, the user must grant permission to do so.
         
 === "iOS"
 
-    - 'MobileIdSDKiOS', '~> '8.1.7'
-    - 'WalletLibrary', 
-    - 'VBOcrMrzRfidRegula-ios'     
+    - 'MobileIdSDKiOS', '~> 8.1.7'
+    - 'mobileid-wallet-common-sdk', '1.0.1'
+    - 'mobileid-wallet-core-sdk', '1.0.1'
+    - 'VBOcrMrzRfidRegula'
 
 
 ## Other Settings
