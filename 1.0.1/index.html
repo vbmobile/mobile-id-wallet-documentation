@@ -1033,7 +1033,7 @@ Perform batch deletion of all wallet content.</li>
 <p>To integrate the <strong>Mobile ID Wallet SDK</strong> for iOS, the following prerequisites must be met: </p>
 <ul>
 <li>Install or update Xcode to latest version;</li>
-<li>Target iOS 14 or later. </li>
+<li>Target iOS 15 or later. </li>
 <li>Install CocoaPods</li>
 </ul>
 </div>
@@ -1062,7 +1062,7 @@ maven { url &quot;https://jitpack.io&quot; }
 <p>To always use the latest release, add the following to your Podfile:</p>
 <ol>
 <li>Add the following to your Podfile, with the latest version:
-<div class="highlight"><pre><span></span><code>pod &#39;mobileid-wallet-sdk&#39;, &#39;1.0.0&#39;
+<div class="highlight"><pre><span></span><code>pod &#39;mobileid-wallet-sdk&#39;, &#39;1.0.1&#39;
 </code></pre></div></li>
 <li>Add cocoapods repo as a source in your podfile:
 <div class="highlight"><pre><span></span><code>source &#39;https://cdn.cocoapods.org/&#39;
@@ -1094,7 +1094,7 @@ project &#39;DemoApp.xcodeproj&#39;
 target &#39;DemoApp&#39; do
   use_frameworks!
   project &#39;DemoApp.xcodeproj&#39;
-  pod &#39;mobileid-wallet-sdk&#39;, &#39;1.0.0&#39;
+  pod &#39;mobileid-wallet-sdk&#39;, &#39;1.0.1&#39;
 end
 
 post_install do |pi|
@@ -1323,9 +1323,10 @@ After includ it, provide a message that explains the user why your app needs to 
 </div>
 <div class="tabbed-block">
 <ul>
-<li>'MobileIdSDKiOS', '~&gt; '8.1.7'</li>
-<li>'WalletLibrary', </li>
-<li>'VBOcrMrzRfidRegula-ios'     </li>
+<li>'MobileIdSDKiOS', '~&gt; 8.1.7'</li>
+<li>'mobileid-wallet-common-sdk', '1.0.1'</li>
+<li>'mobileid-wallet-core-sdk', '1.0.1'</li>
+<li>'VBOcrMrzRfidRegula'</li>
 </ul>
 </div>
 </div>
