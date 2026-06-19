@@ -1,5 +1,19 @@
 # iOS Release Notes
 
+## 1.0.1
+
+### Bug Fixes
+
+- Fixed boarding pass ID instability after flight date expires.
+
+### Installation
+
+```ruby
+pod 'mobileid-wallet-sdk', '1.0.1'
+```
+
+---
+
 ## 1.0.0
 
 ### New Features
